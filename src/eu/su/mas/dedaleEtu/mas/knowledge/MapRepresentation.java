@@ -2,12 +2,19 @@ package eu.su.mas.dedaleEtu.mas.knowledge;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.text.View;
 
 import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.graph.EdgeRejectedException;
@@ -16,8 +23,10 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSink;
 import org.graphstream.stream.file.FileSinkDGS;
+import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceDGS;
 import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.Viewer.CloseFramePolicy;
 
 /**
  * This simple topology representation only deals with the graph, not its content.</br>
@@ -53,10 +62,10 @@ public class MapRepresentation implements Serializable {
 
 		this.g= new SingleGraph("My world vision");
 		this.g.setAttribute("ui.stylesheet",nodeStyle);
-		this.viewer = this.g.display();
-		this.nbEdges=0;
 		
-		this.g.write(defaultNodeStyle);
+		this.viewer = this.g.display();
+		this.viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
+		this.nbEdges=0;
 	}
 
 	/**
@@ -130,19 +139,53 @@ public class MapRepresentation implements Serializable {
 		return shortestPath;
 	}
 	
-	public String save() throws IOException
+	public byte[] saveState(String path)
 	{
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		try 
+		{
+			FileSinkDGS fs = new FileSinkDGS();
+			
+			/* Save graph to file pointed by path */
+			fs.writeAll(this.g, path);
+			
+			byte[] data = Files.readAllBytes(Paths.get(path));
+			
+			//this.viewer.close();
+			
+			/* Remove non serializable objects */
+			this.viewer = null;
+			this.g = null;
+			
+			/* Return saved state */
+			return data;
+		}
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		FileSink sink = new FileSinkDGS();
-		sink.writeAll(this.g, stream);
-		return stream.toString();
+		return null;
 	}
 	
-	public void restore(String data)
+	public void restoreState(String path)
 	{
-		FileSourceDGS sink = new FileSourceDGS();
-		ByteArrayInputStream stream = new ByteArrayInputStream(data.getBytes());
-		this.g.read(stream, "Inch allah");
+		this.g = new SingleGraph("My world vision");
+		this.g.setAttribute("ui.stylesheet",nodeStyle);
+		this.viewer = this.g.display();
+		
+		FileSource fs = new FileSourceDGS();
+		fs.addSink(g);
+		
+		try 
+		{
+			fs.readAll(path);
+			fs.removeSink(g);
+			System.out.println("Graph loaded !");
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 }

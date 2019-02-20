@@ -13,7 +13,7 @@ import eu.su.mas.dedaleEtu.mas.agents.MapHandler;
 public class ExploreMultiAgent extends AbstractDedaleAgent {
 
 	private static final long serialVersionUID = -6431752665590433727L;
-	public MapHandler map;
+	public MapHandler map = new MapHandler();
 	
 	
 	
@@ -49,14 +49,15 @@ public class ExploreMultiAgent extends AbstractDedaleAgent {
 
 	}
 
-	protected void AfterMove()
+	protected void afterMove()
 	{
-		
+		this.map.AfterMove(this.getLocalName());
 	}
 	
-	protected void BeforeMove()
+	
+	protected void beforeMove()
 	{
-		
+		this.map.beforeMove(this.getLocalName());
 	}
 	
 }

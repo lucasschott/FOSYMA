@@ -1,5 +1,9 @@
 package eu.su.mas.dedaleEtu.mas.agents;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,7 +18,7 @@ public class MapHandler implements java.io.Serializable
 	
 	private MapRepresentation myMap;
 	
-	private String _save;
+	private byte[] _save;
 
 	/**
 	 * Nodes known but not yet visited
@@ -92,20 +96,28 @@ public class MapHandler implements java.io.Serializable
 		return this.openNodes.remove(nodeId);
 	}
 	
-	public void BeforeMove()
+	public void beforeMove(String path)
 	{
-		try {
-			this._save = this.myMap.save();
+		this._save = this.myMap.saveState(path);
+	}
+	
+	public void AfterMove(String path)
+	{
+		try (FileOutputStream stream = new FileOutputStream(path))
+		{
+			stream.write(this._save);
+			stream.close();
+			
+		    this.myMap = new MapRepresentation();
+			this.myMap.restoreState(path);
+		}
+		catch (FileNotFoundException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.myMap = null;
-	}
-	
-	public void AfterMove()
-	{
-		this.myMap = new MapRepresentation();
-		this.myMap.restore(this._save);
 	}
 }

@@ -68,9 +68,6 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 	@Override
 	public void action() {
 		
-		if (map == null)
-			map = new MapHandler();
-		
 		System.out.println(((ExploreMultiAgent)this.myAgent).map);
 		
 		//0) Retrieve the current position

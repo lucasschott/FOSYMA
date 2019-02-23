@@ -73,8 +73,6 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 
 	@Override
 	public void action() {
-		
-		System.out.println(((ExploreMultiAgent)this.myAgent).map);
 		AID other;
 		ACLMessage msg;
 		
@@ -108,7 +106,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(500);
+				this.myAgent.doWait(250);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -119,8 +117,9 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 			map.addNode(myPosition);
 			
 			//2) get the surrounding nodes and, if not in closedNodes, add them to open nodes.
-			String nextNode=null;
 			Iterator<Couple<String, List<Couple<Observation, Integer>>>> iter=lobs.iterator();
+			
+			String nextNode = null;
 			
 			while(iter.hasNext())
 			{
@@ -148,6 +147,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 				//Explo finished
 				finished=true;
 				System.out.println("Exploration successufully done, behaviour removed.");
+				System.out.println(this.map.getClosedNodes().size());
 			}else{
 				//4) select next move.
 				//4.1 If there exist one open node directly reachable, go for it,
@@ -155,6 +155,8 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 				if (nextNode==null){
 					//no directly accessible openNode
 					//chose one, compute the path and take the first step.
+					//System.out.println("From : " + myPosition + " to : " + map.getOpenNodes().get(0));
+					
 					nextNode=map.getMap().getShortestPath(myPosition, map.getOpenNodes().get(0)).get(0);
 				}
 				((AbstractDedaleAgent)this.myAgent).moveTo(nextNode);
@@ -275,17 +277,33 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		for(ArrayList<String> desc: match) {
 			String nodeId = desc.get(0);
 			
-			this.map.removeOpen(nodeId);
-			this.map.addClosed(nodeId);
+			/* No need to merge an already closed node */
+			if (this.map.isClosed(nodeId)) {
+				continue;
+			}
+			
+			/* Remove from open as it is now closed thanks to remote informations */
+			else if (this.map.isOpen(nodeId)) {
+				this.map.removeOpen(nodeId);
+				this.map.addClosed(nodeId);
+			}
+			
+			/* Node is neither open or closed , should not happen but.. */
+			else {
+				this.map.addNode(nodeId);
+				this.map.addOpen(nodeId);
+			}
+			
 			
 			for(int i = 1; i < desc.size(); i++) {
 				String newNode = desc.get(i);
 				
-				this.map.addNode(newNode);
-				this.map.addEdge(nodeId, newNode);
-				
-				if (!this.map.isOpen(newNode) && !this.map.isClosed(newNode))
+				/* Add new node / edge : robust again duplicates */
+				if (!this.map.isOpen(newNode) && !this.map.isClosed(newNode)) {
+					this.map.addNode(newNode);
+					this.map.addEdge(nodeId, newNode);
 					this.map.addOpen(newNode);
+				}
 			}
 				
 		}

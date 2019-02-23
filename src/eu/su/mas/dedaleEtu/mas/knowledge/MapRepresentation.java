@@ -21,6 +21,7 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.EdgeRejectedException;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSink;
 import org.graphstream.stream.file.FileSinkDGS;
@@ -62,6 +63,7 @@ public class MapRepresentation implements Serializable {
 		System.setProperty("org.graphstream.ui.renderer","org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 
 		this.g= new SingleGraph("My world vision");
+		this.g = Graphs.synchronizedGraph(this.g);
 		this.g.setAttribute("ui.stylesheet",nodeStyle);
 		
 		this.viewer = this.g.display();

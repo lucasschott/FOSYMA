@@ -32,7 +32,6 @@ public class ExploBroadcastBehaviour extends TickerBehaviour{
 	 */
 	public ExploBroadcastBehaviour (final Agent myagent){
 		super(myagent, 3000);
-		//super(myagent);
 		
 		DFAgentDescription dfd = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();
@@ -55,15 +54,16 @@ public class ExploBroadcastBehaviour extends TickerBehaviour{
 		ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
 		msg.setSender(this.myAgent.getAID());
 		msg.setProtocol("BROADCAST-EXPLORATION");
-		
+			
 		for (DFAgentDescription dsc : result)
 		{
-			msg.addReceiver(dsc.getName());
+			if (this.myAgent.getAID().toString() != dsc.getName().toString())
+				msg.addReceiver(dsc.getName());
 		}
 		
 		
 		if (myPosition!=""){
-			msg.setContent("Broadcasting from : "+myPosition);
+			msg.setContent("Broadcasting from : " + myPosition);
 
 			//Mandatory to use this method (it takes into account the environment to decide if someone is reachable or not)
 			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);

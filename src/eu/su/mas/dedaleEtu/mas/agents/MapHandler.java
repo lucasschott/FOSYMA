@@ -1,13 +1,17 @@
 package eu.su.mas.dedaleEtu.mas.agents;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import jade.core.Agent;
@@ -45,6 +49,23 @@ public class MapHandler implements java.io.Serializable
 	public List<String> getOpenNodes()
 	{
 		return this.openNodes;
+	}
+	
+	public String getOpenNodesString()
+	{
+		try (ByteArrayOutputStream bo = new ByteArrayOutputStream();
+				ObjectOutputStream so = new ObjectOutputStream(bo)) 
+		{
+	          so.writeObject(this.openNodes);
+	          so.flush();
+	          
+	          return Base64.getEncoder().encodeToString(bo.toByteArray());
+	    }
+	    catch (IOException e) 
+		{
+	    	
+		}
+	        return null;
 	}
 	
 	public Set<String> getClosedNodes()

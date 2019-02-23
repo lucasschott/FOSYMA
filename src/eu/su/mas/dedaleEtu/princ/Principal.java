@@ -307,7 +307,7 @@ public class Principal {
 		 * AGENT Explo1
 		 *********/
 		//1) Get the container where the agent will appear
-		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER2_NAME);
+		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER_NAME);
 		Assert.assertNotNull("This container does not exist",c);
 		
 		//2) Give the name of your agent, MUST be the same as the one given in the entities file.
@@ -326,7 +326,7 @@ public class Principal {
 		 *********/
 		
 		//1) Get the container where the agent will appear
-		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER2_NAME);
+		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER_NAME);
 		Assert.assertNotNull("This container does not exist",c);
 		
 		//2) Give the name of your agent, MUST be the same as the one given in the entities file.

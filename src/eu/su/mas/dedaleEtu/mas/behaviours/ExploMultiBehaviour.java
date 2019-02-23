@@ -1,6 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.behaviours;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
+import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 
@@ -20,6 +22,8 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import eu.su.mas.dedaleEtu.mas.agents.MapHandler;
 
 
@@ -69,6 +73,13 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 	public void action() {
 		
 		System.out.println(((ExploreMultiAgent)this.myAgent).map);
+		AID other;
+		
+		other = this.receivedBroadcast();
+		
+		if (other != null)
+			this.sendOpenNodes(other);
+		
 		
 		//0) Retrieve the current position
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
@@ -134,6 +145,44 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 			}
 
 		}
+	}
+	
+	private AID receivedBroadcast()
+	{
+		MessageTemplate pattern = MessageTemplate.and(MessageTemplate.MatchProtocol("BROADCAST-EXPLORATION"), MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+		ACLMessage msg;
+		
+		msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern);
+		
+		if (msg != null)
+			return msg.getSender();
+		
+		return null;
+	}
+	
+	private void sendOpenNodes(AID receiver)
+	{
+		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		msg.setProtocol("REQUEST-REMOTE-OPEN-NODES");
+		msg.setContent(this.map.getOpenNodesString());
+		msg.addReceiver(receiver);
+		
+		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+	}
+	
+	private ArrayList<String> receiveOpenNodes()
+	{
+		MessageTemplate pattern = MessageTemplate.MatchProtocol("REQUEST-REMOTE-OPEN-NODES");
+		pattern = MessageTemplate.and(pattern, MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
+		ACLMessage msg;
+		
+		msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern);
+		
+		if (msg != null)
+		{
+		}
+		
+		return null;
 	}
 
 	@Override

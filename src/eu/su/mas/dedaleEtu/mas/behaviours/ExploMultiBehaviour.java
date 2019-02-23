@@ -14,6 +14,8 @@ import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
+import eu.su.mas.dedaleEtu.mas.utils.Deserializer;
+import eu.su.mas.dedaleEtu.mas.utils.Serializer;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
@@ -74,12 +76,26 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		
 		System.out.println(((ExploreMultiAgent)this.myAgent).map);
 		AID other;
+		ACLMessage msg;
+		
 		
 		other = this.receivedBroadcast();
-		
 		if (other != null)
 			this.sendOpenNodes(other);
 		
+		msg = this.receiveOpenNodes();
+		if (msg != null) {
+			ArrayList<String> remoteOpen = this.unpackRemoteOpenNodes(msg);
+			ArrayList<ArrayList<String>> match = this.matchOpenedNodes(remoteOpen);
+			this.sendMatchNodes(msg.getSender(), match);
+		}
+		
+		msg = this.receiveMatchNodes();
+		if (msg != null) {
+			ArrayList<ArrayList<String>> match;
+  			match = this.unpackRemoteMatchNodes(msg);
+			this.mergeRemoteMatchNodes(match);
+		}
 		
 		//0) Retrieve the current position
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
@@ -150,6 +166,8 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 	private AID receivedBroadcast()
 	{
 		MessageTemplate pattern = MessageTemplate.and(MessageTemplate.MatchProtocol("BROADCAST-EXPLORATION"), MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+		pattern = MessageTemplate.and(pattern, MessageTemplate.not(MessageTemplate.MatchSender(this.myAgent.getAID())));
+		
 		ACLMessage msg;
 		
 		msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern);
@@ -163,26 +181,114 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 	private void sendOpenNodes(AID receiver)
 	{
 		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		String content;
+		
 		msg.setProtocol("REQUEST-REMOTE-OPEN-NODES");
-		msg.setContent(this.map.getOpenNodesString());
 		msg.addReceiver(receiver);
+		msg.setSender(this.myAgent.getAID());
+		
+		content = Serializer.serialize(this.map.getOpenNodes());
+		msg.setContent(content);
 		
 		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 	}
 	
-	private ArrayList<String> receiveOpenNodes()
+	private ACLMessage receiveOpenNodes()
 	{
 		MessageTemplate pattern = MessageTemplate.MatchProtocol("REQUEST-REMOTE-OPEN-NODES");
 		pattern = MessageTemplate.and(pattern, MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
+		pattern = MessageTemplate.and(pattern, MessageTemplate.not(MessageTemplate.MatchSender(this.myAgent.getAID())));
+		
 		ACLMessage msg;
 		
 		msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern);
 		
 		if (msg != null)
-		{
-		}
+			return msg;
 		
 		return null;
+	}
+	
+	private ArrayList<String> unpackRemoteOpenNodes(ACLMessage msg)
+	{
+		ArrayList<String> openNodes;
+		
+		openNodes = Deserializer.deserialize(msg.getContent());
+		return openNodes;
+	}
+	
+	private ArrayList<ArrayList<String>> matchOpenedNodes(ArrayList<String> remoteOpen)
+	{
+		ArrayList<ArrayList<String>> match = new ArrayList<>();
+		
+		for (String node : remoteOpen) {
+			if (this.map.isClosed(node)) {
+				ArrayList<String> description = new ArrayList<String>();
+				description.add(node);
+				description.addAll(this.map.getMap().getNeighbours(node));
+				match.add(description);
+			}
+		}
+		
+		return match;
+	}
+	
+	private void sendMatchNodes(AID receiver, ArrayList<ArrayList<String>> match)
+	{
+		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+		String content;
+		
+		msg.setProtocol("RESPONSE-REMOTE-OPEN-NODES");
+		msg.addReceiver(receiver);
+		msg.setSender(this.myAgent.getAID());
+		
+		content = Serializer.serialize(match);
+		msg.setContent(content);
+		
+		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+	}
+	
+	private ACLMessage receiveMatchNodes() {
+		MessageTemplate pattern = MessageTemplate.MatchProtocol("RESPONSE-REMOTE-OPEN-NODES");
+		pattern = MessageTemplate.and(pattern, MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+		ACLMessage msg;
+		
+		msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern);
+		
+		if (msg != null)
+			return msg;
+		
+		return null;
+	}
+	
+	private ArrayList<ArrayList<String>> unpackRemoteMatchNodes(ACLMessage msg)
+	{
+		ArrayList<ArrayList<String>> match;
+		
+		match = Deserializer.deserialize(msg.getContent());
+		
+		return match;
+	}
+	
+	private void mergeRemoteMatchNodes(ArrayList<ArrayList<String>> match)
+	{
+		for(ArrayList<String> desc: match) {
+			String nodeId = desc.get(0);
+			
+			this.map.removeOpen(nodeId);
+			this.map.addClosed(nodeId);
+			
+			for(int i = 1; i < desc.size(); i++) {
+				String newNode = desc.get(i);
+				
+				this.map.addNode(newNode);
+				this.map.addEdge(nodeId, newNode);
+				
+				if (!this.map.isOpen(newNode) && !this.map.isClosed(newNode))
+					this.map.addOpen(newNode);
+			}
+				
+		}
 	}
 
 	@Override

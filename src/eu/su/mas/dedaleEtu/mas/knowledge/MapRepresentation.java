@@ -17,6 +17,7 @@ import java.util.List;
 import javax.swing.text.View;
 
 import org.graphstream.algorithm.Dijkstra;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.EdgeRejectedException;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -166,6 +167,20 @@ public class MapRepresentation implements Serializable {
 		}
 		
 		return null;
+	}
+	
+	public ArrayList<String> getNeighbours(String nodeId)
+	{
+		ArrayList<String> neighbours = new ArrayList<String>();
+		
+		Node node = this.g.getNode(nodeId);
+		Iterator<Edge> iterator = node.getEdgeIterator();
+		
+		while(iterator.hasNext()) {
+			neighbours.add(iterator.next().getOpposite(node).getId());
+		}
+		
+		return neighbours;
 	}
 	
 	public void restoreState(String path)

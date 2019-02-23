@@ -1,11 +1,9 @@
 package eu.su.mas.dedaleEtu.mas.agents;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashSet;
@@ -14,7 +12,6 @@ import java.util.Set;
 
 
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
-import jade.core.Agent;
 
 public class MapHandler implements java.io.Serializable
 {

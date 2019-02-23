@@ -12,8 +12,9 @@ import jade.domain.FIPAAgentManagement.*;
 import jade.domain.DFService;
 
 /**
- * This example behaviour try to send a hello message (every 3s maximum) to agents Collect2 Collect1
- * @author hc
+ * This behaviour is used during the exploration phase:
+ * Every exploration agent is running it in order to inform nearby agents that informations can be requested.
+ * When the broadcast is received , the ExploreMultiAgent takes the communication over
  *
  */
 public class ExploBroadcastBehaviour extends TickerBehaviour{
@@ -30,7 +31,8 @@ public class ExploBroadcastBehaviour extends TickerBehaviour{
 	 * @throws FIPAException 
 	 *  
 	 */
-	public ExploBroadcastBehaviour (final Agent myagent){
+	public ExploBroadcastBehaviour (final Agent myagent)
+	{
 		super(myagent, 3000);
 		
 		DFAgentDescription dfd = new DFAgentDescription();

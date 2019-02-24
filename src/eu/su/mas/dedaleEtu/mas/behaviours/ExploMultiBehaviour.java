@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.env.Observation;
@@ -50,7 +51,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 	private DFAgentDescription desc = null;
 	private ExploreMultiAgent _myAgent;
 	private MapHandler map;
-	private HashMap<AID, Integer> timeoutTable = new HashMap<AID, Integer>();
+	private ConcurrentHashMap<AID, Integer> timeoutTable = new ConcurrentHashMap<AID, Integer>();
 
 	public ExploMultiBehaviour(final ExploreMultiAgent myagent, MapHandler map) 
 	{
@@ -97,6 +98,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 	
 		if (myPosition!=null){
+			
 			//List of observable from the agent's current position
 			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
 
@@ -104,7 +106,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(300);
+				this.myAgent.doWait(500);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -155,7 +157,9 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 					//no directly accessible openNode
 					//chose one, compute the path and take the first step.
 					System.out.println("From : " + myPosition + " to : " + map.getOpenNodes().get(0));
+					System.out.println("Node : " + myPosition + " inGraph : " + map.isInGraph(myPosition));
 					System.out.println("Node : " + map.getOpenNodes().get(0) + " inGraph : " + map.isInGraph(map.getOpenNodes().get(0)));
+					
 					
 					try {
 						List<String> shortestPath = map.getMap().getShortestPath(myPosition, map.getOpenNodes().get(0));
@@ -219,7 +223,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 	}
 	
 	private void addToTimeoutTable(AID other) {
-		this.timeoutTable.put(other, 10);
+		this.timeoutTable.put(other, 3);
 	}
 	
 	private void sendOpenNodes(AID receiver)
@@ -363,10 +367,10 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 			
 			/* Node is neither open or closed , should not happen but.. */
 			else {
-				this.map.addNode(nodeId);
-				this.map.addOpen(nodeId);
+				this.map.addClosed(nodeId);
 			}
 			
+			this.map.addNode(nodeId);
 			
 			for(int i = 1; i < desc.size(); i++) {
 				String newNode = desc.get(i);
@@ -374,11 +378,17 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 				/* Add new node / edge : robust again duplicates */
 				if (!this.map.isOpen(newNode) && !this.map.isClosed(newNode)) {
 					this.map.addNode(newNode);
-					this.map.addEdge(nodeId, newNode);
 					this.map.addOpen(newNode);
 				}
-			}
 				
+				this.map.addEdge(nodeId, newNode);
+			}
+		}
+		
+		/* Cleanup Open nodes if the associated closed one was received after */
+		for (String nodeId: this.map.getOpenNodes()) {
+			if (this.map.isClosed(nodeId))
+				this.map.removeOpen(nodeId);
 		}
 	}
 
@@ -387,6 +397,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		
 		if (finished == true) 
 		{
+			this.map.dumpGraph(this.myAgent.getLocalName());
 			try {
 				DFService.deregister(this.myAgent, desc);
 			} 

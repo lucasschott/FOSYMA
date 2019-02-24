@@ -45,7 +45,7 @@ public class MapRepresentation implements Serializable {
 
 	private static final long serialVersionUID = -1333959882640838272L;
 
-	private Graph g; //data structure
+	public Graph g; //data structure
 	private Viewer viewer; //ref to the display
 	private Integer nbEdges;//used to generate the edges ids
 	
@@ -63,7 +63,7 @@ public class MapRepresentation implements Serializable {
 		System.setProperty("org.graphstream.ui.renderer","org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 
 		this.g= new SingleGraph("My world vision");
-		this.g = Graphs.synchronizedGraph(this.g);
+		//this.g = Graphs.synchronizedGraph(this.g);
 		this.g.setAttribute("ui.stylesheet",nodeStyle);
 		
 		this.viewer = this.g.display();

@@ -8,11 +8,15 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.graphstream.graph.Node;
+import org.graphstream.stream.file.FileSinkDOT;
 
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
 
 public class MapHandler implements java.io.Serializable
 {
@@ -88,6 +92,21 @@ public class MapHandler implements java.io.Serializable
 	public void addNode(String nodeId)
 	{
 		this.myMap.addNode(nodeId);
+	}
+	
+	public void addNode(String nodeId, MapAttribute att) {
+		this.myMap.addNode(nodeId,  att);
+	}
+	
+	public void dumpGraph(String path)
+	{
+		FileSinkDOT fs = new FileSinkDOT();
+		try {
+			fs.writeAll(this.myMap.g, path);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void addEdge(String source, String destination)

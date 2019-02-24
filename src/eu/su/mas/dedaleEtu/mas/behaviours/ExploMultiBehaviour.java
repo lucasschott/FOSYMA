@@ -3,9 +3,11 @@ package eu.su.mas.dedaleEtu.mas.behaviours;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import dataStructures.tuple.Couple;
@@ -48,6 +50,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 	private DFAgentDescription desc = null;
 	private ExploreMultiAgent _myAgent;
 	private MapHandler map;
+	private HashMap<AID, Integer> timeoutTable = new HashMap<AID, Integer>();
 
 	public ExploMultiBehaviour(final ExploreMultiAgent myagent, MapHandler map) 
 	{
@@ -76,23 +79,18 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		AID other;
 		ACLMessage msg;
 		
+		System.out.println(this.myAgent.getLocalName() + " got : " + this.map.getClosedNodes().size());
+		
+		this.updateTimeoutTable();
 		
 		other = this.receivedBroadcast();
 		if (other != null)
-			this.sendOpenNodes(other);
+			this.sendClosedNodes(other);
 		
-		msg = this.receiveOpenNodes();
+		msg = this.receiveClosedNodes();
 		if (msg != null) {
-			ArrayList<String> remoteOpen = this.unpackRemoteOpenNodes(msg);
-			ArrayList<ArrayList<String>> match = this.matchOpenedNodes(remoteOpen);
-			this.sendMatchNodes(msg.getSender(), match);
-		}
-		
-		msg = this.receiveMatchNodes();
-		if (msg != null) {
-			ArrayList<ArrayList<String>> match;
-  			match = this.unpackRemoteMatchNodes(msg);
-			this.mergeRemoteMatchNodes(match);
+			ArrayList<ArrayList<String>> remoteClosed = this.unpackRemoteMatchNodes(msg);
+			this.mergeRemoteMatchNodes(remoteClosed);
 		}
 		
 		//0) Retrieve the current position
@@ -106,7 +104,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(250);
+				this.myAgent.doWait(300);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -148,18 +146,38 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 				finished=true;
 				System.out.println("Exploration successufully done, behaviour removed.");
 				System.out.println(this.map.getClosedNodes().size());
-			}else{
+			}
+			else{
 				//4) select next move.
 				//4.1 If there exist one open node directly reachable, go for it,
 				//	 otherwise choose one from the openNode list, compute the shortestPath and go for it
 				if (nextNode==null){
 					//no directly accessible openNode
 					//chose one, compute the path and take the first step.
-					//System.out.println("From : " + myPosition + " to : " + map.getOpenNodes().get(0));
+					System.out.println("From : " + myPosition + " to : " + map.getOpenNodes().get(0));
+					System.out.println("Node : " + map.getOpenNodes().get(0) + " inGraph : " + map.isInGraph(map.getOpenNodes().get(0)));
 					
-					nextNode=map.getMap().getShortestPath(myPosition, map.getOpenNodes().get(0)).get(0);
+					try {
+						List<String> shortestPath = map.getMap().getShortestPath(myPosition, map.getOpenNodes().get(0));
+						
+						if (shortestPath == null) {
+							nextNode = null;
+						}
+
+						else
+							nextNode=map.getMap().getShortestPath(myPosition, map.getOpenNodes().get(0)).get(0);	
+						
+					}
+					catch (NoSuchElementException ex) {
+						System.out.println("catched");
+					}
+					
 				}
-				((AbstractDedaleAgent)this.myAgent).moveTo(nextNode);
+				
+				/* If unable to move to desired location : shuffle open nodes */
+				if (nextNode == null || ((AbstractDedaleAgent)this.myAgent).moveTo(nextNode) == false) {
+					this.map.shuffleOpenNodes();
+				}
 			}
 
 		}
@@ -174,10 +192,34 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		
 		msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern);
 		
-		if (msg != null)
+		if (msg != null && this.isTimedOut(msg.getSender())) {
+			this.addToTimeoutTable(msg.getSender());
 			return msg.getSender();
+		}
 		
 		return null;
+	}
+	
+	private void updateTimeoutTable()
+	{
+		Set<AID> keys = this.timeoutTable.keySet();
+	
+		for (AID key: keys) {
+			Integer timeout = this.timeoutTable.get(key) - 1;
+			
+			if (timeout <= 0 )
+				this.timeoutTable.remove(key);
+			else
+				this.timeoutTable.put(key, timeout);
+		}
+	}
+	
+	private boolean isTimedOut(AID other) {
+		return this.timeoutTable.get(other) == null;
+	}
+	
+	private void addToTimeoutTable(AID other) {
+		this.timeoutTable.put(other, 10);
 	}
 	
 	private void sendOpenNodes(AID receiver)
@@ -193,6 +235,37 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		msg.setContent(content);
 		
 		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+	}
+	
+	private void sendClosedNodes(AID receiver)
+	{
+		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+		String content;
+		
+		msg.setProtocol("INFORM-CLOSED-NODES");
+		msg.addReceiver(receiver);
+		msg.setSender(this.myAgent.getAID());
+		
+		content = Serializer.serialize(this.matchOpenedNodes(null));
+		msg.setContent(content);
+		
+		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+	}
+	
+	private ACLMessage receiveClosedNodes()
+	{
+		MessageTemplate pattern = MessageTemplate.MatchProtocol("INFORM-CLOSED-NODES");
+		pattern = MessageTemplate.and(pattern, MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+		pattern = MessageTemplate.and(pattern, MessageTemplate.not(MessageTemplate.MatchSender(this.myAgent.getAID())));
+		
+		ACLMessage msg;
+		
+		msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern);
+		
+		if (msg != null)
+			return msg;
+		
+		return null;
 	}
 	
 	private ACLMessage receiveOpenNodes()
@@ -223,13 +296,11 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 	{
 		ArrayList<ArrayList<String>> match = new ArrayList<>();
 		
-		for (String node : remoteOpen) {
-			if (this.map.isClosed(node)) {
+			for(String node: this.map.getClosedNodes()) {
 				ArrayList<String> description = new ArrayList<String>();
 				description.add(node);
 				description.addAll(this.map.getMap().getNeighbours(node));
 				match.add(description);
-			}
 		}
 		
 		return match;
@@ -274,6 +345,8 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 	
 	private void mergeRemoteMatchNodes(ArrayList<ArrayList<String>> match)
 	{
+		System.out.println("Update : " + this.myAgent.getLocalName());
+		
 		for(ArrayList<String> desc: match) {
 			String nodeId = desc.get(0);
 			
@@ -320,6 +393,8 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 			catch (FIPAException fe) {
 				fe.printStackTrace(); 
 			}
+			
+			this.myAgent.addBehaviour(new RandomWalkBehaviour((AbstractDedaleAgent)this.myAgent));
 		}
 		
 		return finished;

@@ -88,18 +88,22 @@ public class MapRepresentation implements Serializable {
 		n.addAttribute("ui.label",id);
 	}
 
+	public boolean isInGraph(String id) {
+		return this.g.getNode(id) != null;
+	}
+	
 	/**
 	 * Add the node id if not already existing
 	 * @param id
 	 */
 	public void addNode(String id){
 		Node n=this.g.getNode(id);
-		if(n==null){
+		
+		if(n==null)
+		{
 			n=this.g.addNode(id);
-		}else{
-			n.clearAttributes();
+			n.addAttribute("ui.label",id);
 		}
-		n.addAttribute("ui.label",id);
 	}
 
    /**
@@ -138,6 +142,11 @@ public class MapRepresentation implements Serializable {
 			shortestPath.add(iter.next().getId());
 		}
 		dijkstra.clear();
+		System.out.println("From : " + idFrom + " To : " + idTo + " " + shortestPath);
+		
+		if (shortestPath.size() == 0) 
+			return null;
+		
 		shortestPath.remove(0);//remove the current position
 		return shortestPath;
 	}

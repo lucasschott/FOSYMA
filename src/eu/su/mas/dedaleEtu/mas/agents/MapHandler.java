@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -65,6 +66,10 @@ public class MapHandler implements java.io.Serializable
 	        return null;
 	}
 	
+	public void shuffleOpenNodes() {
+		Collections.shuffle(this.openNodes);
+	}
+	
 	public Set<String> getClosedNodes()
 	{
 		return this.closedNodes;
@@ -119,6 +124,10 @@ public class MapHandler implements java.io.Serializable
 		this._save = this.myMap.saveState(path);
 	}
 	
+	public boolean isInGraph(String nodeId)
+	{
+		return this.myMap.isInGraph(nodeId);
+	}
 	public void AfterMove(String path)
 	{
 		try (FileOutputStream stream = new FileOutputStream(path))

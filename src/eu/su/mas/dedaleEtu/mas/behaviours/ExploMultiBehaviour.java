@@ -226,6 +226,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		this.timeoutTable.put(other, 3);
 	}
 	
+	@Deprecated
 	private void sendOpenNodes(AID receiver)
 	{
 		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
@@ -272,6 +273,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		return null;
 	}
 	
+	@Deprecated
 	private ACLMessage receiveOpenNodes()
 	{
 		MessageTemplate pattern = MessageTemplate.MatchProtocol("REQUEST-REMOTE-OPEN-NODES");
@@ -310,6 +312,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		return match;
 	}
 	
+	@Deprecated
 	private void sendMatchNodes(AID receiver, ArrayList<ArrayList<String>> match)
 	{
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
@@ -325,6 +328,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 	}
 	
+	@Deprecated
 	private ACLMessage receiveMatchNodes() {
 		MessageTemplate pattern = MessageTemplate.MatchProtocol("RESPONSE-REMOTE-OPEN-NODES");
 		pattern = MessageTemplate.and(pattern, MessageTemplate.MatchPerformative(ACLMessage.INFORM));

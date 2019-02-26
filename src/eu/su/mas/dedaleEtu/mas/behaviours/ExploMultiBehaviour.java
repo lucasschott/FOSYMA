@@ -84,12 +84,10 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		
 		this.updateTimeoutTable();
 		
-		other = this.receivedBroadcast();
-		if (other != null)
+		while ((other = this.receivedBroadcast()) != null)
 			this.sendClosedNodes(other);
 		
-		msg = this.receiveClosedNodes();
-		if (msg != null) {
+		while ((msg = this.receiveClosedNodes()) != null) {	
 			ArrayList<ArrayList<String>> remoteClosed = this.unpackRemoteMatchNodes(msg);
 			this.mergeRemoteMatchNodes(remoteClosed);
 		}
@@ -106,7 +104,7 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(500);
+				this.myAgent.doWait(100);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

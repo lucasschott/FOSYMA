@@ -102,7 +102,7 @@ public class MapRepresentation implements Serializable {
 		if(n==null)
 		{
 			n=this.g.addNode(id);
-			n.addAttribute("ui.label",id);
+			
 		}
 	}
 

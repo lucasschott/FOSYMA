@@ -8,14 +8,16 @@ import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploBroadcastBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiBehaviour;
 import jade.core.behaviours.Behaviour;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import eu.su.mas.dedaleEtu.mas.agents.MapHandler;
 
 public class ExploreMultiAgent extends AbstractDedaleAgent {
 
 	private static final long serialVersionUID = -6431752665590433727L;
 	public MapHandler map = new MapHandler();
-	
-	
+	public DFAgentDescription desc = null;
+	ServiceDescription exploreService = new ServiceDescription();
 	
 	/**
 	 * This method is automatically called when "agent".start() is executed.
@@ -28,7 +30,14 @@ public class ExploreMultiAgent extends AbstractDedaleAgent {
 	protected void setup(){
 		super.setup();
 
+		desc = new DFAgentDescription();
+		desc.setName(this.getAID());
+		
+		exploreService.setType("EXPLORATION");
+		exploreService.setName(this.getLocalName());
+		
 		List<Behaviour> lb=new ArrayList<Behaviour>();
+		
 		
 		/************************************************
 		 * 
@@ -46,7 +55,6 @@ public class ExploreMultiAgent extends AbstractDedaleAgent {
 		addBehaviour(new startMyBehaviours(this,lb));
 		
 		System.out.println("the  agent "+this.getLocalName()+ " is started");
-
 	}
 
 	protected void afterMove()

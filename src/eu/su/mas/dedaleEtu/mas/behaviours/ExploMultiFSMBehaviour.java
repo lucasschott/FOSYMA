@@ -14,7 +14,8 @@ import jade.core.behaviours.FSMBehaviour;
 
 public class ExploMultiFSMBehaviour extends FSMBehaviour 
 {
-	ExploreMultiAgent myagent = null;
+	
+	private static final long serialVersionUID = -509109268524710516L;
 	
 	public enum Events{
 		SUCESS, FAILURE, END;
@@ -23,7 +24,7 @@ public class ExploMultiFSMBehaviour extends FSMBehaviour
 	public ExploMultiFSMBehaviour(final ExploreMultiAgent myagent) {
 		//definiton des etats
 		
-		super();
+		super(myagent);
 		
 		this.registerFirstState(new StartExplorationBehaviour(myagent), "START-EXPLORATION");
 		this.registerState	(new ExploreBehaviour(myagent),"EXPLORE");

@@ -8,44 +8,64 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
 public class SendBroadcastBehaviour extends OneShotBehaviour {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9116585529533332376L;
+
+	private DFAgentDescription dfd = new DFAgentDescription();
+	private ServiceDescription sd = new ServiceDescription();
+	
 	public SendBroadcastBehaviour(ExploreMultiAgent myagent) {
 		super(myagent);
+		sd.setType("EXPLORATION");
+		dfd.addServices(sd);
 	}
 
 	@Override
 	public void action() {
-		// TODO Auto-generated method stub
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 		DFAgentDescription[] result = {};
 		
-		try {
-			result = DFService.search(this.myAgent, ((ExploreMultiAgent)this.myAgent).desc);
-		} catch (FIPAException e) {
-			e.printStackTrace();
-		}
+		System.out.println(this.getClass().getName());
+		result = this.getExplorationAgents();
 		
-		//A message is defined by : a performative, a sender, a set of receivers, (a protocol),(a content (and/or contentOBject))
+		ACLMessage msg= this.buildBroadcastMessage(result);
+		
+		if (myPosition!=""){
+			msg.setContent(myPosition);
+			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+		}
+	}
+	
+	private ACLMessage buildBroadcastMessage(DFAgentDescription[] result) {
 		ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
+		
 		msg.setSender(this.myAgent.getAID());
 		msg.setProtocol("BROADCAST-EXPLORATION");
-			
+		
 		for (DFAgentDescription dsc : result)
 		{
 			if (this.myAgent.getAID().toString() != dsc.getName().toString())
 				msg.addReceiver(dsc.getName());
 		}
 		
-		
-		if (myPosition!=""){
-			msg.setContent("Broadcasting from : " + myPosition);
-
-			//Mandatory to use this method (it takes into account the environment to decide if someone is reachable or not)
-			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+		return msg;
+	}
+	
+	private DFAgentDescription[] getExplorationAgents() {
+		DFAgentDescription[] result = {};
+		try {
+			result = DFService.search(this.myAgent, this.dfd);
+		} catch (FIPAException e) {
+			e.printStackTrace();
 		}
+		return result;
 	}
 	
 	public int onEnd() {

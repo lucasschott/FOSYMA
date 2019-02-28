@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -63,7 +64,7 @@ public class MapRepresentation implements Serializable {
 		System.setProperty("org.graphstream.ui.renderer","org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 
 		this.g= new SingleGraph("My world vision");
-		//this.g = Graphs.synchronizedGraph(this.g);
+		this.g = Graphs.synchronizedGraph(this.g);
 		this.g.setAttribute("ui.stylesheet",nodeStyle);
 		
 		this.viewer = this.g.display();
@@ -86,6 +87,11 @@ public class MapRepresentation implements Serializable {
 		n.clearAttributes();
 		n.addAttribute("ui.class", mapAttribute.toString());
 		n.addAttribute("ui.label",id);
+		
+		Collection<String> a = n.getAttributeKeySet();
+		for (String attrib: a) {
+			
+		}
 	}
 
 	public boolean isInGraph(String id) {
@@ -102,7 +108,8 @@ public class MapRepresentation implements Serializable {
 		if(n==null)
 		{
 			n=this.g.addNode(id);
-			
+			n.clearAttributes();
+			n.addAttribute("ui.label",id);
 		}
 	}
 

@@ -66,7 +66,6 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		sd.setType("EXPLORATION");
 		sd.setName(myAgent.getLocalName());
 		
-		desc.addServices(sd);
 		try {
 			DFService.register(this.myAgent, desc);
 		} 
@@ -151,13 +150,9 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 				//4) select next move.
 				//4.1 If there exist one open node directly reachable, go for it,
 				//	 otherwise choose one from the openNode list, compute the shortestPath and go for it
-				if (nextNode==null){
+				if (nextNode==null) {
 					//no directly accessible openNode
 					//chose one, compute the path and take the first step.
-					System.out.println("From : " + myPosition + " to : " + map.getOpenNodes().get(0));
-					System.out.println("Node : " + myPosition + " inGraph : " + map.isInGraph(myPosition));
-					System.out.println("Node : " + map.getOpenNodes().get(0) + " inGraph : " + map.isInGraph(map.getOpenNodes().get(0)));
-					
 					
 					try {
 						List<String> shortestPath = map.getMap().getShortestPath(myPosition, map.getOpenNodes().get(0));

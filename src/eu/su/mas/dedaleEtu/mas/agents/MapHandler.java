@@ -53,6 +53,14 @@ public class MapHandler implements java.io.Serializable
 		return this.openNodes;
 	}
 	
+	public void computeCentroids() {
+		this.myMap.computeCentroids();
+	}
+	
+	public ArrayList<String> getCentroids() {
+		return this.myMap.getCentroids();
+	}
+	
 	public String getOpenNodesString()
 	{
 		try (ByteArrayOutputStream bo = new ByteArrayOutputStream();
@@ -147,6 +155,11 @@ public class MapHandler implements java.io.Serializable
 	{
 		return this.myMap.isInGraph(nodeId);
 	}
+	
+	public int getNodeDegree(String nodeId) {
+		return this.myMap.getNodeDegree(nodeId);
+	}
+	
 	public void AfterMove(String path)
 	{
 		try (FileOutputStream stream = new FileOutputStream(path))

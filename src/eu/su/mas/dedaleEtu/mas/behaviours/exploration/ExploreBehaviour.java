@@ -3,6 +3,7 @@ package eu.su.mas.dedaleEtu.mas.behaviours.exploration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.env.Observation;
@@ -31,7 +32,9 @@ public class ExploreBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() {
 		//0) Retrieve the current position
-		System.out.println(this.getClass().getName());
+		System.out.println(this.getClass().getName() + " " + this._myAgent.getLocalName());
+		System.out.println(this._myAgent.map.getClosedNodes());
+		System.out.println(this._myAgent.map.getOpenNodes().size());
 				String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 			
 				if (myPosition!=null){
@@ -112,11 +115,17 @@ public class ExploreBehaviour extends OneShotBehaviour {
 						
 						System.out.println(this.myAgent.getLocalName() + " Moving to : " + nextNode);
 						
-						if ((this.moved = ((AbstractDedaleAgent)this.myAgent).moveTo(nextNode)) == false)
-							this._myAgent.map.shuffleOpenNodes();
+						if ((this.moved = ((AbstractDedaleAgent)this.myAgent).moveTo(nextNode)) == false) {
+							//Random move from the current position
+							Random r = new Random();
+							int moveId=1+r.nextInt(lobs.size()-1);//removing the current position from the list of target, not necessary as to stay is an action but allow quicker random move
+							//The move action (if any) should be the last action of your behaviour
+							((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+							
 					}
 
 				}
+	}
 	}
 	
 	public int onEnd() {

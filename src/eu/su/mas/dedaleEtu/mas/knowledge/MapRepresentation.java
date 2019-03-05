@@ -17,7 +17,9 @@ import java.util.List;
 
 import javax.swing.text.View;
 
+import org.graphstream.algorithm.APSP;
 import org.graphstream.algorithm.Dijkstra;
+import org.graphstream.algorithm.Eccentricity;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.EdgeRejectedException;
 import org.graphstream.graph.Graph;
@@ -220,5 +222,33 @@ public class MapRepresentation implements Serializable {
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void computeCentroids() {
+		APSP apsp = new APSP();
+ 		apsp.init(this.g);
+ 		apsp.compute();
+ 
+ 		Eccentricity eccentricity = new Eccentricity();
+ 		eccentricity.init(this.g);
+ 		eccentricity.compute();
+ 
+	}
+	
+	public ArrayList<String> getCentroids() {
+		ArrayList<String> centroids = new ArrayList<String>();
+		
+		for (Node n : this.g.getEachNode()) {
+ 			Boolean in = n.getAttribute("eccentricity");
+ 			if (in) {
+ 				centroids.add(n.getId());
+ 			}
+ 		}
+		
+		return centroids;
+	}
+	
+	public int getNodeDegree(String nodeId) {
+		return this.g.getNode(nodeId).getDegree();
 	}
 }

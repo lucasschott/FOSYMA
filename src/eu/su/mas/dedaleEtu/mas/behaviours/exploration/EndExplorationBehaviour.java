@@ -2,6 +2,7 @@ package eu.su.mas.dedaleEtu.mas.behaviours.exploration;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
+import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import eu.su.mas.dedaleEtu.mas.behaviours.RandomWalkBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.RendezVousFSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
@@ -20,14 +21,12 @@ public class EndExplorationBehaviour extends OneShotBehaviour {
 	}
 
 	public void action() {
-		System.out.println(this.getClass().getName());
-		
 		ExploreMultiAgent agent = (ExploreMultiAgent) this.myAgent;
 		agent.deregisterService("EXPLORATION");
 	}
 	
 	public int onEnd() {
 		this.myAgent.addBehaviour(new RendezVousFSMBehaviour((ExploreMultiAgent)this.myAgent));
-		return 0;
+		return FSMCodes.Events.SUCESS.ordinal();
 	}
 }

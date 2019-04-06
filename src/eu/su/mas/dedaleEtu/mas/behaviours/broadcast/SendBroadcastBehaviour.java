@@ -1,8 +1,9 @@
-package eu.su.mas.dedaleEtu.mas.behaviours.exploration;
+package eu.su.mas.dedaleEtu.mas.behaviours.broadcast;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
@@ -20,11 +21,13 @@ public class SendBroadcastBehaviour extends OneShotBehaviour {
 
 	private DFAgentDescription dfd = new DFAgentDescription();
 	private ServiceDescription sd = new ServiceDescription();
+	private String service;
 	
-	public SendBroadcastBehaviour(ExploreMultiAgent myagent) {
+	public SendBroadcastBehaviour(ExploreMultiAgent myagent, String service) {
 		super(myagent);
-		sd.setType("EXPLORATION");
+		sd.setType(service);
 		dfd.addServices(sd);
+		this.service = service;
 	}
 
 	@Override
@@ -32,8 +35,9 @@ public class SendBroadcastBehaviour extends OneShotBehaviour {
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 		DFAgentDescription[] result = {};
 		
-		System.out.println(this.getClass().getName());
-		result = this.getExplorationAgents();
+		result = this.getMatchingAgents();
+		
+		System.out.println("Send broadcast : " + this.service);
 		
 		ACLMessage msg= this.buildBroadcastMessage(result);
 		
@@ -47,18 +51,21 @@ public class SendBroadcastBehaviour extends OneShotBehaviour {
 		ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
 		
 		msg.setSender(this.myAgent.getAID());
-		msg.setProtocol("BROADCAST-EXPLORATION");
+		msg.setProtocol(service);
+		
+		System.out.println("Result size : " + result.length);
 		
 		for (DFAgentDescription dsc : result)
 		{
-			if (this.myAgent.getAID().toString() != dsc.getName().toString())
+			if (!this.myAgent.getAID().toString().equals(dsc.getName().toString()))
 				msg.addReceiver(dsc.getName());
+				System.out.println(dsc.getName().toString());
 		}
 		
 		return msg;
 	}
 	
-	private DFAgentDescription[] getExplorationAgents() {
+	private DFAgentDescription[] getMatchingAgents() {
 		DFAgentDescription[] result = {};
 		try {
 			result = DFService.search(this.myAgent, this.dfd);
@@ -69,7 +76,7 @@ public class SendBroadcastBehaviour extends OneShotBehaviour {
 	}
 	
 	public int onEnd() {
-		return ExploMultiFSMBehaviour.Events.SUCESS.ordinal();
+		return FSMCodes.Events.SUCESS.ordinal();
 	}
 
 }

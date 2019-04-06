@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import eu.su.mas.dedaleEtu.mas.utils.Deserializer;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
@@ -39,13 +40,12 @@ public class ReceiveMapBehaviour extends OneShotBehaviour {
 	
 	public int onEnd() {
 		if (this.received == true)
-			return ExploMultiFSMBehaviour.Events.SUCESS.ordinal();
-		return ExploMultiFSMBehaviour.Events.SUCESS.ordinal();
+			return FSMCodes.Events.SUCESS.ordinal();
+		return FSMCodes.Events.SUCESS.ordinal();
 	}
 	
 	private void mergeRemoteMatchNodes(ArrayList<ArrayList<String>> match)
 	{
-		System.out.println("Update : " + this._myAgent.getLocalName());
 		System.out.println(this._myAgent.getLocalName() + " " + this._myAgent.map.getClosedNodes().size());
 		
 		for(ArrayList<String> desc: match) {

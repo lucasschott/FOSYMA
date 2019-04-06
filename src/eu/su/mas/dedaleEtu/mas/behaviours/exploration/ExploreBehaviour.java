@@ -10,6 +10,7 @@ import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
@@ -35,6 +36,7 @@ public class ExploreBehaviour extends OneShotBehaviour {
 		System.out.println(this.getClass().getName() + " " + this._myAgent.getLocalName());
 		System.out.println(this._myAgent.map.getClosedNodes());
 		System.out.println(this._myAgent.map.getOpenNodes().size());
+		
 				String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 			
 				if (myPosition!=null){
@@ -87,8 +89,8 @@ public class ExploreBehaviour extends OneShotBehaviour {
 						//Explo finished
 						finished=true;
 						System.out.println("Exploration successufully done, behaviour removed.");
-						System.out.println(this._myAgent.map.getClosedNodes().size());
 					}
+					
 					else{
 						//4) select next move.
 						//4.1 If there exist one open node directly reachable, go for it,
@@ -113,8 +115,6 @@ public class ExploreBehaviour extends OneShotBehaviour {
 							
 						}
 						
-						System.out.println(this.myAgent.getLocalName() + " Moving to : " + nextNode);
-						
 						if ((this.moved = ((AbstractDedaleAgent)this.myAgent).moveTo(nextNode)) == false) {
 							//Random move from the current position
 							Random r = new Random();
@@ -131,11 +131,11 @@ public class ExploreBehaviour extends OneShotBehaviour {
 	public int onEnd() {
 		
 		if (this.finished)
-			return ExploMultiFSMBehaviour.Events.END.ordinal();
+			return FSMCodes.Events.END.ordinal();
 		
 		if (this.moved)
-			return ExploMultiFSMBehaviour.Events.SUCESS.ordinal();
+			return FSMCodes.Events.SUCESS.ordinal();
 		
-		return ExploMultiFSMBehaviour.Events.FAILURE.ordinal();
+		return FSMCodes.Events.FAILURE.ordinal();
 	}	
 }

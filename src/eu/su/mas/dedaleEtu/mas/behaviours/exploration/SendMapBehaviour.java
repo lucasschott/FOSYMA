@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import eu.su.mas.dedaleEtu.mas.utils.Serializer;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
@@ -36,7 +37,7 @@ public class SendMapBehaviour extends OneShotBehaviour {
 	}
 	
 	public int onEnd() {
-		return ExploMultiFSMBehaviour.Events.SUCESS.ordinal();
+		return FSMCodes.Events.SUCESS.ordinal();
 	}
 	
 	private ArrayList<ArrayList<String>> getClosedNodes()
@@ -65,7 +66,7 @@ public class SendMapBehaviour extends OneShotBehaviour {
 	
 		for (DFAgentDescription dsc : result)
 		{
-			if (this.myAgent.getAID().toString() != dsc.getName().toString())
+			if (!this.myAgent.getAID().toString().equals(dsc.getName().toString()))
 				msg.addReceiver(dsc.getName());
 		}
 		
@@ -83,6 +84,8 @@ public class SendMapBehaviour extends OneShotBehaviour {
 		} catch (FIPAException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("CURRENTLY : " + result.length + " EXPLORATION AGENTS FOUND");
 		return result;
 	}
 }

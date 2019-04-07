@@ -123,7 +123,7 @@ public class ExploreMultiAgent extends AbstractDedaleAgent {
 	}
 	
 	public boolean addChildToTree(String treeId, AID child) {
-		if (this.treeExist(treeId) == true) {
+		if (this.treeExist(treeId) == false) {
 			return false;
 		}
 		
@@ -132,8 +132,17 @@ public class ExploreMultiAgent extends AbstractDedaleAgent {
 		return true;
 	}
 	
+	public boolean isTreeLocked(String treeId) {
+		return this.trees.get(treeId).getLocked();
+	}
+	
+	public void setTreeLocked(String treeId, boolean lock)
+	{
+		this.trees.get(treeId).setLocked(lock);
+	}
+	
 	public boolean removeChildFromTree(String treeId, AID child) {
-		if (this.treeExist(treeId) == true) {
+		if (this.treeExist(treeId) == false) {
 			return false;
 		}
 		

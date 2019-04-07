@@ -43,6 +43,5 @@ public class ExploMultiFSMBehaviour extends FSMBehaviour
 		this.registerTransition("RECEIVE-BROADCAST", "RECEIVE-MAP", FSMCodes.Events.FAILURE.ordinal());
 		this.registerTransition("SEND-MAP", "RECEIVE-MAP", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("RECEIVE-MAP", "EXPLORE", FSMCodes.Events.SUCESS.ordinal());
-
 	}
 }

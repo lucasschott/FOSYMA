@@ -11,10 +11,12 @@ public class TreeNode {
 	ArrayList<AID> childrens = new ArrayList<AID>();
 	AID parent;
 	String treeId;
+	boolean locked = false;
 	
 	public TreeNode(String treeId, AID parent, boolean root) {
 		this.parent = parent;
 		this.treeId = treeId;
+		this.isRoot = root;
 	}
 	
 	public void setParent(AID parent) {
@@ -51,5 +53,13 @@ public class TreeNode {
 	
 	public int getChildCount() {
 		return this.childrens.size();
+	}
+	
+	public boolean getLocked() {
+		return this.locked;
+	}
+	
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 }

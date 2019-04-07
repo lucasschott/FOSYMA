@@ -36,8 +36,6 @@ public class SendTreeRequestBehaviour extends OneShotBehaviour {
 		if (this._myagent.treeExist(tree) == false)
 			return;
 		
-		System.out.println(this._myagent.getLocalName().toString() + " Send tree request OK");
-		
 		DFAgentDescription[] result = {};
 		
 		result = this.getMatchingAgents();

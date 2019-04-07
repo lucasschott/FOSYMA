@@ -34,6 +34,7 @@ public class ReceiveBroadcastBehaviour extends OneShotBehaviour {
 		if (msg != null) {
 			this.received = true;
 			System.out.println("Received broadcast " + this.match);
+			
 		}
 	}
 	

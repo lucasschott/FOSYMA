@@ -38,7 +38,6 @@ public class ReceiveTreeRequestBehaviour extends OneShotBehaviour {
 			String treeId = msg.getContent();
 			
 			if (!this._myAgent.treeExist(treeId)) {
-				System.out.println("TEST");
 				this._myAgent.addTree(treeId, msg.getSender(), false);
 				this.sendAck(msg.getSender(), treeId);
 			}

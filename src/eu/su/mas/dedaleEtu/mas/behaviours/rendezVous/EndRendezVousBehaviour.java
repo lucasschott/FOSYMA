@@ -17,6 +17,7 @@ public class EndRendezVousBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub
+		System.out.println(this.myAgent.getLocalName() + " FINISHED RENDEZ VOUS !");
 
 	}
 

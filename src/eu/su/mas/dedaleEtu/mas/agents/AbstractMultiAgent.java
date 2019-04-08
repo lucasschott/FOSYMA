@@ -2,24 +2,26 @@ package eu.su.mas.dedaleEtu.mas.agents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
-import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
-import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.TreeNode;
 import jade.core.AID;
-import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import eu.su.mas.dedaleEtu.mas.agents.MapHandler;
 
-public class ExploreMultiAgent extends AbstractMultiAgent {
+public class AbstractMultiAgent extends AbstractDedaleAgent {
 
-	private static final long serialVersionUID = -6431752665590433727L;
+	public enum AgentType {
+		EXPLORATION, COLLECT, TANK
+	}
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 866869490272891433L;
+	
 	public MapHandler map = new MapHandler();
 	private DFAgentDescription desc = null;
 	
@@ -29,19 +31,14 @@ public class ExploreMultiAgent extends AbstractMultiAgent {
 	private ArrayList<String> path = null;
 	private String destinationId = null;
 	
-	/**
-	 * This method is automatically called when "agent".start() is executed.
-	 * Consider that Agent is launched for the first time. 
-	 * 			1) set the agent attributes 
-	 *	 		2) add the behaviours
-	 *          
-	 */
-	
-	ExploreMultiAgent() {
-		super(AbstractMultiAgent.AgentType.EXPLORATION);
+	private AgentType type;
+
+	public AbstractMultiAgent(AgentType type) {
+		this.type = type;
 	}
 	
-	protected void setup(){
+	protected void setup()
+	{
 		super.setup();
 
 		desc = new DFAgentDescription();
@@ -53,25 +50,8 @@ public class ExploreMultiAgent extends AbstractMultiAgent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		List<Behaviour> lb=new ArrayList<Behaviour>();
-		
-		/************************************************
-		 * 
-		 * ADD the behaviours of the Dummy Moving Agent
-		 * 
-		 ************************************************/
-		
-		lb.add(new ExploMultiFSMBehaviour(this));
-		
-		/***
-		 * MANDATORY TO ALLOW YOUR AGENT TO BE DEPLOYED CORRECTLY
-		 */
-		addBehaviour(new startMyBehaviours(this,lb));
-		
-		System.out.println("the  agent " + this.getLocalName() + " is started");
 	}
-
+	
 	public boolean registerService(String service) {
 		if (this.services.containsKey(service))
 			return false;

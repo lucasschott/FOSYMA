@@ -1,11 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
@@ -35,7 +31,7 @@ public class PushSumBehaviour extends OneShotBehaviour{
 	private int pending = 0;
 	private int value = 0;
 	private boolean finished = false;
-	Map<State, Runnable> actions = new HashMap<>();
+	private Map<State, Runnable> actions = new HashMap<>();
 	
 	
 	public PushSumBehaviour(ExploreMultiAgent myagent, String treeId, Mode mode, int treshold) {

@@ -7,7 +7,7 @@ import java.util.List;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedale.mas.agents.GateKeeperAgent;
-
+import eu.su.mas.dedale.mas.agents.dedaleDummyAgents.DummyCollectorAgent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -356,18 +356,18 @@ public class Principal {
 		 * AGENT Collect 1
 		 *********/
 		//1) Get the container where the agent will appear
-//		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER2_NAME);
-//		Assert.assertNotNull("This container does not exist",c);
+		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER2_NAME);
+		Assert.assertNotNull("This container does not exist",c);
 //		
 //		//2) Give the name of your agent, MUST be the same as the one given in the entities file.
-//		agentName="Collect1";
+		agentName="Collect1";
 //		
 //		//3) If you want to give specific parameters to your agent, add them here
-//		Object [] entityParametersC={"My parameters"};
+		Object [] entityParametersC={"My parameters"};
 //		
 //		//4) Give the class name of your agent to let the system instantiate it
-//		ag=createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParametersC);
-//		agentList.add(ag);
+		ag=createNewDedaleAgent(c, agentName, DummyCollectorAgent.class.getName(), entityParametersC);
+		agentList.add(ag);
 		
 		/***************
 		 * AGENT Tanker

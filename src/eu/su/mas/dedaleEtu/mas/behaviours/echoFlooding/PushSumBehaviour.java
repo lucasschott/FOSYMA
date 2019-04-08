@@ -1,6 +1,11 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
@@ -30,6 +35,8 @@ public class PushSumBehaviour extends OneShotBehaviour{
 	private int pending = 0;
 	private int value = 0;
 	private boolean finished = false;
+	Map<State, Runnable> actions = new HashMap<>();
+	
 	
 	public PushSumBehaviour(ExploreMultiAgent myagent, String treeId, Mode mode, int treshold) {
 		super(myagent);
@@ -38,6 +45,67 @@ public class PushSumBehaviour extends OneShotBehaviour{
 		this.mode = mode;
 		this.treshold = treshold;
 		this.state = State.IDLE;
+		  
+		this.actions.put(State.IDLE, () -> this.idle());
+		this.actions.put(State.WAIT_PARENT, () -> this.wait_parent());
+		this.actions.put(State.REQUEST_CHILDREN, () -> this.request_children());
+		this.actions.put(State.WAIT_CHILDREN, () -> this.wait_children());
+		this.actions.put(State.SEND_PARENT, () -> this.send_parent());
+	}
+	
+	private void idle()
+	{
+		this.pending = 0;
+		this.value = 0;
+		if (this._myAgent.getTree(treeId).getIsRoot() == true) {
+			this.state = State.REQUEST_CHILDREN;
+		}
+		else {
+			this.state = State.WAIT_PARENT;
+		}
+	}
+	
+	private void wait_parent()
+	{
+		if (this.checkParentRequest() == true) {
+			this.state = State.REQUEST_CHILDREN;
+		}
+	}
+	
+	private void request_children()
+	{
+		for (AID child: this._myAgent.getTree(treeId).getChildren()) {
+			this.request_child(child);
+			this.pending = this.pending + 1;
+		}
+		this.state = State.WAIT_CHILDREN;
+	}
+	
+	private void wait_children()
+	{
+		this.checkChildrenResponse();
+		if (this.pending == 0) {
+			this.state = State.SEND_PARENT;
+		}
+	}
+	
+	private void send_parent()
+	{
+		if (this._myAgent.getTree(treeId).getIsRoot() == false) {
+			this.sendParent();
+			this.state = State.IDLE;	
+		}
+		
+		else {
+
+			System.out.println("Count : " + (this.value + 1) + " Treshold : " + String.valueOf(this.treshold));
+			
+			if (this.value + 1 >= this.treshold) {
+				this.finished = true;
+			}
+			
+			this.state = State.IDLE;
+		}
 	}
 	
 	@Override
@@ -50,57 +118,7 @@ public class PushSumBehaviour extends OneShotBehaviour{
 	
 	public void action_treeSize()
 	{	
-		if (this.state == State.IDLE) {
-			this.pending = 0;
-			this.value = 0;
-			if (this._myAgent.getTree(treeId).getIsRoot() == true) {
-				this.state = State.REQUEST_CHILDREN;
-			}
-			else {
-				this.state = State.WAIT_PARENT;
-			}
-		}
-		
-		if (this.state == State.WAIT_PARENT) {	
-			if (this.checkParentRequest() == true) {
-				this.state = State.REQUEST_CHILDREN;
-			}
-		}
-		
-		if (this.state == State.REQUEST_CHILDREN) {	
-			for (AID child: this._myAgent.getTree(treeId).getChildren()) {
-				this.request_child(child);
-				this.pending = this.pending + 1;
-			}
-			this.state = State.WAIT_CHILDREN;
-		}
-		
-		if (this.state == State.WAIT_CHILDREN)
-		{
-			this.checkChildrenResponse();
-			if (this.pending == 0) {
-				this.state = State.SEND_PARENT;
-			}
-		}
-		
-		if (this.state == State.SEND_PARENT)
-		{
-			if (this._myAgent.getTree(treeId).getIsRoot() == false) {
-				this.sendParent();
-				this.state = State.IDLE;	
-			}
-			
-			else {
-
-				System.out.println("Count : " + (this.value + 1) + " Treshold : " + String.valueOf(this.treshold));
-				
-				if (this.value + 1 >= this.treshold) {
-					this.finished = true;
-				}
-				
-				this.state = State.IDLE;
-			}
-		}
+		this.actions.get(this.state).run();
 	}
 	
 	public void sendParent()

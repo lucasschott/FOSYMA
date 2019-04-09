@@ -26,6 +26,7 @@ public class MergeObservationsBehaviour extends TreeOperations {
 	public MergeObservationsBehaviour(AbstractMultiAgent myagent, String treeId) 
 	{
 		super(myagent, treeId);
+		this.treeType = "MERGE-OBSERVATIONS";
 	}
 	
 	@Override
@@ -35,7 +36,7 @@ public class MergeObservationsBehaviour extends TreeOperations {
 
 	@Override
 	protected Serializable sendParentStrategy() {
-		return null;
+		return this._myAgent.getTreasureMap();
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	private HashMap<String, TreeNode> trees = new HashMap<String, TreeNode>();
 	private ArrayList<String> path = null;
 	private String destinationId = null;
-	private HashMap<String, Couple<Observation, Integer>> treasuresMap = new HashMap<String, Couple<Observation, Integer>>();
+	private HashMap<String, Couple<Observation, Integer>> treasureMap = new HashMap<String, Couple<Observation, Integer>>();
 	
 	private AgentType type;
 
@@ -56,17 +56,22 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	public void updateTreasuresMap(String node, Observation obs, Integer quantity)
 	{
 		Couple<Observation, Integer> couple = new Couple<Observation, Integer>(obs, quantity);
-		this.treasuresMap.put(node, couple);
+		this.treasureMap.put(node, couple);
 	}
 	
 	public void clearTreasureMap()
 	{
-		this.treasuresMap.clear();
+		this.treasureMap.clear();
 	}
 	
 	public HashMap<String, Couple<Observation, Integer>> getTreasureMap()
 	{
-		return this.treasuresMap;
+		return this.treasureMap;
+	}
+	
+	public void mergeTreasureMap(HashMap<String, Couple<Observation, Integer>> newMap)
+	{
+		this.treasureMap.putAll(newMap);
 	}
 	
 	public boolean registerService(String service) {

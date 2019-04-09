@@ -10,6 +10,7 @@ public class EndRendezVousBehaviour extends OneShotBehaviour {
 	 * 
 	 */
 	private static final long serialVersionUID = 1279452839140119908L;
+	
 	AbstractMultiAgent _myAgent;
 	
 	public EndRendezVousBehaviour(AbstractMultiAgent myAgent) {
@@ -19,10 +20,9 @@ public class EndRendezVousBehaviour extends OneShotBehaviour {
 	
 	@Override
 	public void action() {
-		// TODO Auto-generated method stub
 		this._myAgent.deregisterService("EXPLORATION");
 		System.out.println(this.myAgent.getLocalName() + " FINISHED RENDEZ VOUS !");
-
+		System.out.println(this._myAgent.getTreasureMap());
 	}
 
 }

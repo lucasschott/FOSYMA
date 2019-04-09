@@ -62,6 +62,24 @@ public class ExploreBehaviour extends OneShotBehaviour {
 					//2) get the surrounding nodes and, if not in closedNodes, add them to open nodes.
 					Iterator<Couple<String, List<Couple<Observation, Integer>>>> iter=lobs.iterator();
 					
+					// Update treasures map
+					for (int index = 0; index < lobs.size(); index++)
+					{
+						String node = lobs.get(index).getLeft();
+						
+						for (Couple<Observation, Integer> obs: lobs.get(index).getRight()) {
+							switch(obs.getLeft()) {
+							
+							case DIAMOND:
+							case GOLD:
+								this._myAgent.updateTreasuresMap(node, obs.getLeft(), obs.getRight());
+							
+							default:
+								break;
+							}
+						}
+					}
+					
 					String nextNode = null;
 					
 					while(iter.hasNext())

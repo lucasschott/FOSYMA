@@ -3,6 +3,7 @@ package eu.su.mas.dedaleEtu.mas.agents;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.TreeNode;
 import jade.core.AID;
@@ -10,6 +11,7 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import eu.su.mas.dedale.env.Observation;
 
 public class AbstractMultiAgent extends AbstractDedaleAgent {
 
@@ -24,12 +26,11 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	
 	public MapHandler map = new MapHandler();
 	private DFAgentDescription desc = null;
-	
 	private HashMap<String, ServiceDescription> services = new HashMap<String, ServiceDescription>();
 	private HashMap<String, TreeNode> trees = new HashMap<String, TreeNode>();
-	
 	private ArrayList<String> path = null;
 	private String destinationId = null;
+	private HashMap<String, Couple<Observation, Integer>> treasuresMap = new HashMap<String, Couple<Observation, Integer>>();
 	
 	private AgentType type;
 
@@ -50,6 +51,22 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void updateTreasuresMap(String node, Observation obs, Integer quantity)
+	{
+		Couple<Observation, Integer> couple = new Couple<Observation, Integer>(obs, quantity);
+		this.treasuresMap.put(node, couple);
+	}
+	
+	public void clearTreasureMap()
+	{
+		this.treasuresMap.clear();
+	}
+	
+	public HashMap<String, Couple<Observation, Integer>> getTreasureMap()
+	{
+		return this.treasuresMap;
 	}
 	
 	public boolean registerService(String service) {
@@ -175,5 +192,10 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	public ArrayList<String> getPath()
 	{
 		return this.path;
+	}
+	
+	public AbstractMultiAgent.AgentType getType()
+	{
+		return this.type;
 	}
 }

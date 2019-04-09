@@ -98,7 +98,25 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 			
 			//List of observable from the agent's current position
 			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-
+			
+			// Update treasures map
+			for (int index = 0; index < lobs.size(); index++)
+			{
+				String node = lobs.get(index).getLeft();
+				
+				for (Couple<Observation, Integer> obs: lobs.get(index).getRight()) {
+					switch(obs.getLeft()) {
+					
+					case DIAMOND:
+					case GOLD:
+						this._myAgent.updateTreasuresMap(node, obs.getLeft(), obs.getRight());
+					
+					default:
+						break;
+					}
+				}
+			}
+			
 			/**
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */

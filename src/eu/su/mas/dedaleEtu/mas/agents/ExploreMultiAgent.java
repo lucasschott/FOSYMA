@@ -29,8 +29,6 @@ public class ExploreMultiAgent extends AbstractMultiAgent {
 	 *          
 	 */
 	
-	
-	
 	public ExploreMultiAgent() {
 		super(AbstractMultiAgent.AgentType.EXPLORATION);
 	}

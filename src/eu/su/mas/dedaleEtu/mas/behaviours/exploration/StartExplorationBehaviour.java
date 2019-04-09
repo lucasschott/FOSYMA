@@ -20,7 +20,7 @@ public class StartExplorationBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() {
 		AbstractMultiAgent agent = (AbstractMultiAgent) this.myAgent;
-		agent.registerService("EXPLORE_AGENTS");
+		agent.registerService("ALL_AGENTS");
 		agent.registerService("EXPLORATION");
 		System.out.println(this.getClass().getName());
 	}

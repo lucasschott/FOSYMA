@@ -35,7 +35,7 @@ public class RendezVousFSMBehaviour extends FSMBehaviour
 		//definiton des etats
 		
 		super(myagent);
-		sd.setType("EXPLORE_AGENTS");
+		sd.setType("ALL_AGENTS");
 		dfd.addServices(sd);
 		
 		this.registerFirstState(new ComputeRendezVousPoint(myagent), "COMPUTE-RENDEZ-VOUS-POINT");
@@ -48,7 +48,7 @@ public class RendezVousFSMBehaviour extends FSMBehaviour
 		this.registerState(new SendTreeRequestBehaviour(myagent, "RENDEZ-VOUS-TREE", "RENDEZ-VOUS"), "SEND-TREE-REQUEST");
 		this.registerState(new ReceiveTreeRequestBehaviour(myagent), "RECEIVE-TREE-REQUEST");
 		this.registerState(new ReceiveTreeRequestAckBehaviour(myagent), "RECEIVE-TREE-REQUEST-ACK");
-		this.registerState(new PushSumBehaviour(myagent, "RENDEZ-VOUS-TREE", PushSumBehaviour.Mode.TREE_SIZE, this.getMatchingAgents().length), "PUSH-SUM");
+		this.registerState(new PushSumBehaviour(myagent, "RENDEZ-VOUS-TREE", this.getMatchingAgents().length), "PUSH-SUM");
 		this.registerState(new ReceiveTreeTearDownBehaviour(myagent, "RENDEZ-VOUS-TREE"), "RECEIVE-TREE-TEAR-DOWN");
 		this.registerState(new SendTreeTearDownBehaviour(myagent, "RENDEZ-VOUS-TREE"), "SEND-TREE-TEAR-DOWN");
 		this.registerLastState(new EndRendezVousBehaviour(myagent) , "END-RENDEZ-VOUS");

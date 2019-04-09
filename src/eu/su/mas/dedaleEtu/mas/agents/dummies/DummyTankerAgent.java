@@ -9,6 +9,8 @@ import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.ReceiveTreasureTankerBehaviour;
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
+import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.TickerBehaviour;
 
@@ -21,7 +23,7 @@ import jade.core.behaviours.TickerBehaviour;
  * @author hc
  *
  */
-public class DummyTankerAgent extends AbstractDedaleAgent{
+public class DummyTankerAgent extends AbstractMultiAgent{
 
 	/**
 	 * 
@@ -37,12 +39,17 @@ public class DummyTankerAgent extends AbstractDedaleAgent{
 	 *	 		2) add the behaviours
 	 *          
 	 */
+	
+	public DummyTankerAgent() {
+		super(AbstractMultiAgent.AgentType.TANK);
+	}
+	
 	protected void setup(){
 
 		super.setup();
 
 		List<Behaviour> lb=new ArrayList<Behaviour>();
-		lb.add(new RandomTankerBehaviour(this));
+		lb.add(new ExploMultiFSMBehaviour(this));
 		
 		addBehaviour(new startMyBehaviours(this,lb));
 		

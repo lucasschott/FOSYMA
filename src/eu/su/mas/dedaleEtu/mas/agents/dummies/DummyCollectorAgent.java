@@ -4,6 +4,8 @@ package eu.su.mas.dedaleEtu.mas.agents.dummies;
 import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
+import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import jade.core.behaviours.TickerBehaviour;
  * @author hc
  *
  */
-public class DummyCollectorAgent extends AbstractDedaleAgent{
+public class DummyCollectorAgent extends AbstractMultiAgent{
 
 	/**
 	 * 
@@ -31,6 +33,11 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 
 
 
+	public DummyCollectorAgent()
+	{
+		super(AbstractMultiAgent.AgentType.COLLECT);
+	}
+	
 	/**
 	 * This method is automatically called when "agent".start() is executed.
 	 * Consider that Agent is launched for the first time. 
@@ -43,12 +50,12 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 		super.setup();
 
 		List<Behaviour> lb=new ArrayList<Behaviour>();
-		lb.add(new RandomWalkExchangeBehaviour(this));
+		
+		lb.add(new ExploMultiFSMBehaviour(this));
 
 		addBehaviour(new startMyBehaviours(this,lb));
 
 		System.out.println("the  agent "+this.getLocalName()+ " is started");
-
 	}
 
 

@@ -23,8 +23,6 @@ public class MapHandler implements java.io.Serializable
 	private static final long serialVersionUID = -6431752665590433727L;
 	
 	private MapRepresentation myMap;
-	
-	private byte[] _save;
 
 	/**
 	 * Nodes known but not yet visited
@@ -106,17 +104,6 @@ public class MapHandler implements java.io.Serializable
 		this.myMap.addNode(nodeId,  att);
 	}
 	
-	public void dumpGraph(String path)
-	{
-		FileSinkDOT fs = new FileSinkDOT();
-		try {
-			fs.writeAll(this.myMap.g, path);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	public void addEdge(String source, String destination)
 	{
 		this.myMap.addEdge(source, destination);
@@ -148,7 +135,7 @@ public class MapHandler implements java.io.Serializable
 	
 	public void beforeMove(String path)
 	{
-		this._save = this.myMap.saveState(path);
+		this.myMap.prepareMigration();
 	}
 	
 	public boolean isInGraph(String nodeId)
@@ -162,21 +149,6 @@ public class MapHandler implements java.io.Serializable
 	
 	public void AfterMove(String path)
 	{
-		try (FileOutputStream stream = new FileOutputStream(path))
-		{
-			stream.write(this._save);
-			stream.close();
-			
-		    this.myMap = new MapRepresentation();
-			this.myMap.restoreState(path);
-		}
-		catch (FileNotFoundException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.myMap.loadSavedData();
 	}
 }

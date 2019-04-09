@@ -1,5 +1,6 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.exploration;
 
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
@@ -12,13 +13,13 @@ public class StartExplorationBehaviour extends OneShotBehaviour {
 
 	private static final long serialVersionUID = -1560211412262637077L;
 
-	public StartExplorationBehaviour(ExploreMultiAgent myagent) {
+	public StartExplorationBehaviour(AbstractMultiAgent myagent) {
 		super(myagent);
 	}
 
 	@Override
 	public void action() {
-		ExploreMultiAgent agent = (ExploreMultiAgent) this.myAgent;
+		AbstractMultiAgent agent = (AbstractMultiAgent) this.myAgent;
 		agent.registerService("EXPLORE_AGENTS");
 		agent.registerService("EXPLORATION");
 		System.out.println(this.getClass().getName());

@@ -1,5 +1,6 @@
 package eu.su.mas.dedaleEtu.mas.behaviours;
 
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.MapHandler;
 import eu.su.mas.dedaleEtu.mas.behaviours.broadcast.ReceiveBroadcastBehaviour;
@@ -17,7 +18,7 @@ public class ExploMultiFSMBehaviour extends FSMBehaviour
 	
 	private static final long serialVersionUID = -509109268524710516L;
 	
-	public ExploMultiFSMBehaviour(final ExploreMultiAgent myagent) {
+	public ExploMultiFSMBehaviour(final AbstractMultiAgent myagent) {
 		//definiton des etats
 		
 		super(myagent);

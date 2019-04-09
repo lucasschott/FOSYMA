@@ -1,6 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.AID;
@@ -13,9 +14,9 @@ public class ReceiveTreeRequestBehaviour extends OneShotBehaviour {
 
 	private static final long serialVersionUID = 7295849474602290463L;
 	private boolean received = false;
-	private ExploreMultiAgent _myAgent;
+	private AbstractMultiAgent _myAgent;
 		
-	public ReceiveTreeRequestBehaviour(ExploreMultiAgent myagent) {
+	public ReceiveTreeRequestBehaviour(AbstractMultiAgent myagent) {
 		super(myagent);
 		this._myAgent = myagent;
 	}

@@ -1,6 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.OneShotBehaviour;
@@ -20,9 +21,9 @@ public class SendTreeRequestBehaviour extends OneShotBehaviour {
 	private DFAgentDescription dfd = new DFAgentDescription();
 	private ServiceDescription sd = new ServiceDescription();
 	private String tree;
-	private ExploreMultiAgent _myagent = null;
+	private AbstractMultiAgent _myagent = null;
 	
-	public SendTreeRequestBehaviour(ExploreMultiAgent myagent, String tree, String service) {
+	public SendTreeRequestBehaviour(AbstractMultiAgent myagent, String tree, String service) {
 		super(myagent);
 		this._myagent = myagent;
 		this.tree = tree;

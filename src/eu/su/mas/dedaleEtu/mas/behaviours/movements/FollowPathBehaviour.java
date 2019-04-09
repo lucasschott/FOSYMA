@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.OneShotBehaviour;
@@ -12,9 +13,9 @@ public class FollowPathBehaviour extends OneShotBehaviour {
 
 	private static final long serialVersionUID = 7295849474602290463L;
 	private boolean finished = false;
-	private ExploreMultiAgent _myAgent;
+	private AbstractMultiAgent _myAgent;
 	
-	public FollowPathBehaviour(ExploreMultiAgent myagent) {
+	public FollowPathBehaviour(AbstractMultiAgent myagent) {
 		super(myagent);
 		this._myAgent = myagent;
 	}
@@ -23,7 +24,7 @@ public class FollowPathBehaviour extends OneShotBehaviour {
 	public void action() {
 	
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-		ArrayList<String> path = ((ExploreMultiAgent)this._myAgent).getPath();
+		ArrayList<String> path = this._myAgent.getPath();
 		boolean moved;
 		
 		if (path.size() > 0) 

@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.text.View;
+import dataStructures.serializableGraph.*;
 
 import org.graphstream.algorithm.APSP;
 import org.graphstream.algorithm.Dijkstra;
@@ -59,19 +60,23 @@ public class MapRepresentation implements Serializable {
 	private String defaultNodeStyle= "node {"+"fill-color: black;"+" size-mode:fit;text-alignment:under; text-size:14;text-color:white;text-background-mode:rounded-box;text-background-color:black;}";
 	private String nodeStyle_open = "node.agent {"+"fill-color: forestgreen;"+"}";
 	private String nodeStyle_agent = "node.open {"+"fill-color: blue;"+"}";
+	
 	private String nodeStyle=defaultNodeStyle+nodeStyle_agent+nodeStyle_open;
-
+	
+	private SerializableSimpleGraph<String, MapAttribute> sg;//used as a temporary dataStructure during migration
 	
 	public MapRepresentation() {
 		System.setProperty("org.graphstream.ui.renderer","org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-
+		
 		this.g= new SingleGraph("My world vision");
-		this.g = Graphs.synchronizedGraph(this.g);
+		//this.g = Graphs.synchronizedGraph(this.g);
 		this.g.setAttribute("ui.stylesheet",nodeStyle);
 		
-		this.viewer = this.g.display();
-		this.viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
+		//this.viewer = this.g.display();
+		//this.viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
 		this.nbEdges=0;
+		
+		this.openGui();
 	}
 
 	/**
@@ -89,11 +94,6 @@ public class MapRepresentation implements Serializable {
 		n.clearAttributes();
 		n.addAttribute("ui.class", mapAttribute.toString());
 		n.addAttribute("ui.label",id);
-		
-		Collection<String> a = n.getAttributeKeySet();
-		for (String attrib: a) {
-			
-		}
 	}
 
 	public boolean isInGraph(String id) {
@@ -160,35 +160,6 @@ public class MapRepresentation implements Serializable {
 		return shortestPath;
 	}
 	
-	public byte[] saveState(String path)
-	{
-		try 
-		{
-			FileSinkDGS fs = new FileSinkDGS();
-			
-			/* Save graph to file pointed by path */
-			fs.writeAll(this.g, path);
-			
-			byte[] data = Files.readAllBytes(Paths.get(path));
-			
-			//this.viewer.close();
-			
-			/* Remove non serializable objects */
-			this.viewer = null;
-			this.g = null;
-			
-			/* Return saved state */
-			return data;
-		}
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-	
 	public ArrayList<String> getNeighbours(String nodeId)
 	{
 		ArrayList<String> neighbours = new ArrayList<String>();
@@ -201,27 +172,6 @@ public class MapRepresentation implements Serializable {
 		}
 		
 		return neighbours;
-	}
-	
-	public void restoreState(String path)
-	{
-		this.g = new SingleGraph("My world vision");
-		this.g.setAttribute("ui.stylesheet",nodeStyle);
-		this.viewer = this.g.display();
-		
-		FileSource fs = new FileSourceDGS();
-		fs.addSink(g);
-		
-		try 
-		{
-			fs.readAll(path);
-			fs.removeSink(g);
-			System.out.println("Graph loaded !");
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
 	}
 	
 	public void computeCentroids() {
@@ -251,4 +201,72 @@ public class MapRepresentation implements Serializable {
 	public int getNodeDegree(String nodeId) {
 		return this.g.getNode(nodeId).getDegree();
 	}
+	
+	/**
+	 * Before the migration we kill all non serializable components and store their data in a serializable form
+	 */
+	public void prepareMigration(){
+		this.sg= new SerializableSimpleGraph<String,MapAttribute>();
+		for(Node n: this.g.getEachNode()){
+			sg.addNode(n.getId(),n.getAttribute("ui.class"));
+		}
+		for (Edge e:this.g.getEdgeSet()){
+			Node sn=e.getSourceNode();
+			Node tn=e.getTargetNode();
+			sg.addEdge(e.getId(), sn.getId(), tn.getId());
+		}
+
+		closeGui();
+
+		this.g=null;
+	}
+
+	/**
+	 * After migration we load the serialized data and recreate the non serializable components (Gui,..)
+	 */
+	public void loadSavedData(){
+		
+		this.g= new SingleGraph("My world vision");
+		this.g.setAttribute("ui.stylesheet",nodeStyle);
+		
+		openGui();
+		
+		Integer nbEd=0;
+		for (SerializableNode<String, MapAttribute> n: this.sg.getAllNodes()){
+			this.g.addNode(n.getNodeId()).addAttribute("ui.class", n.getNodeContent().toString());
+			for(String s:this.sg.getEdges(n.getNodeId())){
+				this.g.addEdge(nbEd.toString(),n.getNodeId(),s);
+				nbEd++;
+			}
+		}
+		System.out.println("Loading done");
+	}
+
+	/**
+	 * Method called before migration to kill all non serializable graphStream components
+	 */
+	private void closeGui() {
+		//once the graph is saved, clear non serializable components
+		if (this.viewer!=null){
+			try{
+
+				this.viewer.removeView(this.viewer.getDefaultView().getId());
+				this.viewer.close();
+			}catch(NullPointerException e){
+				System.err.println("Bug graphstream viewer.close() work-around - https://github.com/graphstream/gs-core/issues/150");
+			}
+			this.viewer=null;
+		}
+	}
+
+	/**
+	 * Method called after a migration to reopen GUI components
+	 */
+	private void openGui() {
+		this.viewer =new Viewer(this.g, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		viewer.enableAutoLayout();
+		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
+		viewer.addDefaultView(true);
+	}
+
 }

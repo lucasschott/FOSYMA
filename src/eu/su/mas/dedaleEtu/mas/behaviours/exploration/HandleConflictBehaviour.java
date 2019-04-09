@@ -1,5 +1,6 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.exploration;
 
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
@@ -9,7 +10,7 @@ public class HandleConflictBehaviour extends OneShotBehaviour {
 
 	private static final long serialVersionUID = -6969057364841117291L;
 
-	public HandleConflictBehaviour(ExploreMultiAgent myagent) {
+	public HandleConflictBehaviour(AbstractMultiAgent myagent) {
 		super(myagent);
 	}
 
@@ -17,7 +18,7 @@ public class HandleConflictBehaviour extends OneShotBehaviour {
 	public void action() {
 		// TODO Auto-generated method stub
 		System.out.println(this.getClass().getName());
-		((ExploreMultiAgent)this.myAgent).map.shuffleOpenNodes();
+		((AbstractMultiAgent)this.myAgent).map.shuffleOpenNodes();
 	}
 
 	public int onEnd() {

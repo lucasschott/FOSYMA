@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.AID;
@@ -22,7 +23,7 @@ public class PushSumBehaviour extends OneShotBehaviour{
 	}
 	
 	private static final long serialVersionUID = 7295849474602290463L;
-	private ExploreMultiAgent _myAgent;
+	private AbstractMultiAgent _myAgent;
 	private String treeId;
 	private Mode mode;
 	private State state;
@@ -34,7 +35,7 @@ public class PushSumBehaviour extends OneShotBehaviour{
 	private Map<State, Runnable> actions = new HashMap<>();
 	
 	
-	public PushSumBehaviour(ExploreMultiAgent myagent, String treeId, Mode mode, int treshold) {
+	public PushSumBehaviour(AbstractMultiAgent myagent, String treeId, Mode mode, int treshold) {
 		super(myagent);
 		this._myAgent = myagent;
 		this.treeId = treeId;

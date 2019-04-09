@@ -1,6 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.broadcast;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
@@ -23,7 +24,7 @@ public class SendBroadcastBehaviour extends OneShotBehaviour {
 	private ServiceDescription sd = new ServiceDescription();
 	private String service;
 	
-	public SendBroadcastBehaviour(ExploreMultiAgent myagent, String service) {
+	public SendBroadcastBehaviour(AbstractMultiAgent myagent, String service) {
 		super(myagent);
 		sd.setType(service);
 		dfd.addServices(sd);

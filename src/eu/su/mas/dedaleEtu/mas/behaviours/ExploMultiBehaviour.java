@@ -394,7 +394,6 @@ public class ExploMultiBehaviour extends SimpleBehaviour {
 		
 		if (finished == true) 
 		{
-			this.map.dumpGraph(this.myAgent.getLocalName());
 			try {
 				DFService.deregister(this.myAgent, desc);
 			} 

@@ -144,11 +144,16 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	
 	protected void afterMove()
 	{
+		System.out.println(this.getLocalName() + " AFTER MOVE");
+		super.afterMove();
 		this.map.AfterMove(this.getLocalName());
 	}
 	
 	protected void beforeMove()
 	{
+
+		System.out.println(this.getLocalName() + " BEFORE MOVE");
+		super.beforeMove();
 		this.map.beforeMove(this.getLocalName());
 	}
 

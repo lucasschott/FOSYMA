@@ -3,6 +3,7 @@ package eu.su.mas.dedaleEtu.mas.behaviours.exploration;
 import java.util.ArrayList;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
@@ -16,10 +17,10 @@ public class ReceiveMapBehaviour extends OneShotBehaviour {
 
 	private static final long serialVersionUID = -6852053045294451837L;
 	
-	ExploreMultiAgent _myAgent;
+	AbstractMultiAgent _myAgent;
 	boolean received = false;
 	
-	public ReceiveMapBehaviour(ExploreMultiAgent myagent) {
+	public ReceiveMapBehaviour(AbstractMultiAgent myagent) {
 		super(myagent);
 		
 		// Keep an ExploreMultiAgent reference to avoid long cast in action method

@@ -3,6 +3,7 @@ package eu.su.mas.dedaleEtu.mas.behaviours.exploration;
 import java.util.ArrayList;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
@@ -18,11 +19,11 @@ import jade.lang.acl.ACLMessage;
 public class SendMapBehaviour extends OneShotBehaviour {
 
 	private static final long serialVersionUID = 1076955317152012381L;
-	private ExploreMultiAgent _myAgent;
+	private AbstractMultiAgent _myAgent;
 	private DFAgentDescription dfd = new DFAgentDescription();
 	private ServiceDescription sd = new ServiceDescription();
 	
-	public SendMapBehaviour(ExploreMultiAgent myagent) {
+	public SendMapBehaviour(AbstractMultiAgent myagent) {
 		super(myagent);
 		this._myAgent = myagent;
 		sd.setType("EXPLORATION");
@@ -34,6 +35,7 @@ public class SendMapBehaviour extends OneShotBehaviour {
 		System.out.println(this.getClass().getName());
 		ArrayList<ArrayList<String>> closedNodes = this.getClosedNodes();
 		this.sendClosedNodes(closedNodes);
+		System.out.println("SEND MAP : " + this._myAgent.getLocalName() );
 	}
 	
 	public int onEnd() {

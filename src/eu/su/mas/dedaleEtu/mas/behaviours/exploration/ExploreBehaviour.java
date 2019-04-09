@@ -8,6 +8,7 @@ import java.util.Random;
 import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
@@ -18,11 +19,11 @@ import jade.core.behaviours.SimpleBehaviour;
 public class ExploreBehaviour extends OneShotBehaviour {
 
 	private static final long serialVersionUID = 8703772007577156629L;
-	private ExploreMultiAgent _myAgent;
+	private AbstractMultiAgent _myAgent;
 	private boolean finished = false;
 	private boolean moved = false;
 
-	public ExploreBehaviour(final ExploreMultiAgent myagent) {
+	public ExploreBehaviour(final AbstractMultiAgent myagent) {
 		super(myagent);
 		this._myAgent = myagent;
 	}

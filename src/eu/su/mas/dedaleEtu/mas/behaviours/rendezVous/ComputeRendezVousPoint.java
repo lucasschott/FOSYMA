@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.Behaviour;
@@ -12,11 +13,11 @@ import jade.core.behaviours.OneShotBehaviour;
 
 public class ComputeRendezVousPoint extends OneShotBehaviour {
 
-	ExploreMultiAgent _myAgent;
+	AbstractMultiAgent _myAgent;
 	
 	private static final long serialVersionUID = 7107325471968158201L;
 
-	public ComputeRendezVousPoint(ExploreMultiAgent myAgent) {
+	public ComputeRendezVousPoint(AbstractMultiAgent myAgent) {
 		super(myAgent);
 		_myAgent = myAgent;
 	}

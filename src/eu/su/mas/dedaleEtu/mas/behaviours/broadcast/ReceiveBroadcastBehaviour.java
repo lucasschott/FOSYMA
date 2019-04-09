@@ -1,6 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.broadcast;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
@@ -16,7 +17,7 @@ public class ReceiveBroadcastBehaviour extends OneShotBehaviour {
 	private boolean received = false;
 	private String match = null;
 	
-	public ReceiveBroadcastBehaviour(ExploreMultiAgent myagent, String match) {
+	public ReceiveBroadcastBehaviour(AbstractMultiAgent myagent, String match) {
 		super(myagent);
 		this.match = match;
 	}

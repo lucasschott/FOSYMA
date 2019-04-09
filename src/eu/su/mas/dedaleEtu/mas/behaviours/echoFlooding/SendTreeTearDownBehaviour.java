@@ -1,6 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.AID;
@@ -14,9 +15,9 @@ public class SendTreeTearDownBehaviour extends OneShotBehaviour {
 	 */
 	private static final long serialVersionUID = 4089508053328052949L;
 	private String treeId;
-	private ExploreMultiAgent _myAgent;
+	private AbstractMultiAgent _myAgent;
 	
-	public SendTreeTearDownBehaviour(ExploreMultiAgent myagent, String treeId) {
+	public SendTreeTearDownBehaviour(AbstractMultiAgent myagent, String treeId) {
 		super(myagent);
 		this.treeId = treeId;
 		this._myAgent = myagent;

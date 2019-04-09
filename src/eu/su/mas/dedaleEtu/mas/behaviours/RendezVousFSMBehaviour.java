@@ -1,5 +1,6 @@
 package eu.su.mas.dedaleEtu.mas.behaviours;
 
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.broadcast.ReceiveBroadcastBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.broadcast.SendBroadcastBehaviour;
@@ -30,7 +31,7 @@ public class RendezVousFSMBehaviour extends FSMBehaviour
 	private DFAgentDescription dfd = new DFAgentDescription();
 	private ServiceDescription sd = new ServiceDescription();
 	
-	public RendezVousFSMBehaviour(final ExploreMultiAgent myagent) {
+	public RendezVousFSMBehaviour(final AbstractMultiAgent myagent) {
 		//definiton des etats
 		
 		super(myagent);

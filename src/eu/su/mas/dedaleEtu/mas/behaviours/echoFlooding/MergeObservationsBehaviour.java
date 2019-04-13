@@ -2,21 +2,12 @@ package eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 
 import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.env.Observation;
-import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
-import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
-import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.PushSumBehaviour.Mode;
-import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.PushSumBehaviour.State;
-import jade.core.AID;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 
-public class MergeObservationsBehaviour extends TreeOperations {
+public class MergeObservationsBehaviour extends BottomUpTreeOperations {
 
 	/**
 	 * 
@@ -57,6 +48,7 @@ public class MergeObservationsBehaviour extends TreeOperations {
 	@Override
 	protected void resetStrategy() 
 	{
+		this.pending = this._myAgent.getTree(this.treeId).getChildCount();
 	}
 
 }

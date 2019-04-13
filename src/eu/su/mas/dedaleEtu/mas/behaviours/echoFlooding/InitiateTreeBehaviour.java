@@ -19,7 +19,8 @@ public class InitiateTreeBehaviour extends OneShotBehaviour{
 	@Override
 	public void action() {
 		if (_myAgent.treeExist(this.treeId) == false) {
-			System.out.println("CREATE TREEE");
+			System.out.println(this._myAgent.getLocalName() + " CREATE TREEE");
+			System.out.println(this._myAgent.getLocalName() + " at " + this._myAgent.getCurrentPosition());
 			_myAgent.addTree(this.treeId, null, true);
 		}
 	}

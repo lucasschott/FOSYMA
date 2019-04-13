@@ -2,6 +2,7 @@ package eu.su.mas.dedaleEtu.mas.behaviours.rendezVous;
 
 import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
+import eu.su.mas.dedaleEtu.mas.behaviours.MergeObservationsFSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 
 public class EndRendezVousBehaviour extends OneShotBehaviour {
@@ -22,7 +23,7 @@ public class EndRendezVousBehaviour extends OneShotBehaviour {
 	public void action() {
 		this._myAgent.deregisterService("EXPLORATION");
 		System.out.println(this.myAgent.getLocalName() + " FINISHED RENDEZ VOUS !");
-		System.out.println(this._myAgent.getTreasureMap());
+		this._myAgent.addBehaviour(new MergeObservationsFSMBehaviour(this._myAgent));
 	}
 
 }

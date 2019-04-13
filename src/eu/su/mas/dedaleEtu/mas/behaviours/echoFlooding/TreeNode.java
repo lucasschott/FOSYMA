@@ -27,6 +27,10 @@ public class TreeNode {
 		return this.isRoot;
 	}
 	
+	public boolean getIsLeaf() {
+		return this.childrens.size() == 0;
+	}
+	
 	public void setIsRoot(boolean isRoot) {
 		this.isRoot = isRoot;
 	}

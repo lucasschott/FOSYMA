@@ -39,12 +39,6 @@ public abstract class TreeOperations extends OneShotBehaviour{
 		this._myAgent = myagent;
 		this.treeId = treeId;
 		this.state = State.IDLE;
-		  
-		this.actions.put(State.IDLE, () -> this.idle());
-		this.actions.put(State.WAIT_PARENT, () -> this.wait_parent());
-		this.actions.put(State.REQUEST_CHILDREN, () -> this.request_children());
-		this.actions.put(State.WAIT_CHILDREN, () -> this.wait_children());
-		this.actions.put(State.SEND_PARENT, () -> this.send_parent());
 		
 		this.treeType = "";
 	}
@@ -56,72 +50,12 @@ public abstract class TreeOperations extends OneShotBehaviour{
 	protected abstract void receiveChildStrategy(Serializable s);
 	protected abstract void resetStrategy();
 	
-	protected void idle()
-	{
-		this.pending = 0;
-		
-		this.resetStrategy();
-		
-		if (this._myAgent.getTree(treeId).getIsRoot() == true) {
-			this.state = State.REQUEST_CHILDREN;
-		}
-		else {
-			this.state = State.WAIT_PARENT;
-		}
-	}
+	protected abstract void idle();
+	protected abstract void wait_parent();
+	protected abstract void request_children();
+	protected abstract void wait_children();
+	protected abstract void send_parent();
 	
-	protected void wait_parent()
-	{
-		if (this.receiveParent() == true) {
-			this.state = State.REQUEST_CHILDREN;
-		}
-	}
-	
-	protected void request_children()
-	{
-		for (AID child: this._myAgent.getTree(treeId).getChildren()) {
-			this.sendChild(child);
-			this.pending = this.pending + 1;
-		}
-		this.state = State.WAIT_CHILDREN;
-	}
-	
-	protected void wait_children()
-	{
-		for (AID child: this._myAgent.getTree(treeId).getChildren()) 
-		{
-			if (this.receiveChild(child))
-				this.pending = this.pending - 1;
-		}
-		
-		if (this.pending == 0) {
-			this.state = State.SEND_PARENT;
-		}
-	}
-	
-	protected void send_parent()
-	{
-		if (this._myAgent.getTree(treeId).getIsRoot() == false) {
-			this.sendParent();
-			this.state = State.IDLE;	
-		}
-		
-		else {
-			
-			if (this.endConditionStrategy())
-				this.finished = true;
-			
-			this.state = State.IDLE;
-		}
-	}
-	
-	@Override
-	public void action() 
-	{
-		if (this._myAgent.treeExist(this.treeId)) {
-			this.actions.get(this.state).run();
-		}
-	}
 	
 	protected void sendParent()
 	{
@@ -158,6 +92,7 @@ public abstract class TreeOperations extends OneShotBehaviour{
 		
 		if (msg != null) 
 		{
+			System.out.println(this._myAgent.getLocalName() + " Received parent from : " + this._myAgent.getTree(treeId).getParent());
 			try 
 			{
 				this.receiveParentStrategy(msg.getContentObject());
@@ -221,12 +156,41 @@ public abstract class TreeOperations extends OneShotBehaviour{
 		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 	}
 	
+	public boolean receiveDone(AID from)
+	{
+		MessageTemplate pattern = MessageTemplate.and(MessageTemplate.MatchProtocol(this.treeType + "-INFORM-DONE"), MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+		pattern = MessageTemplate.and(pattern, MessageTemplate.MatchSender(from));
+		pattern = MessageTemplate.and(pattern, MessageTemplate.MatchConversationId(this.treeId));
+		pattern = MessageTemplate.and(pattern, MessageTemplate.MatchLanguage(this.treeType));
+		
+		ACLMessage msg;
+		
+		msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern);
+		
+		if (msg != null)
+			System.out.println(this._myAgent.getLocalName() + " RECEIVED DONE !");
+		
+		return msg != null;
+	}
+	
+	protected void sendDone(AID child)
+	{
+		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+		
+		msg.setSender(this.myAgent.getAID());
+		msg.addReceiver(child);
+		msg.setProtocol(this.treeType + "-INFORM-DONE");
+		msg.setLanguage(this.treeType);
+		msg.setConversationId(this.treeId);
+		
+		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+		
+		System.out.println(this._myAgent.getLocalName() + " SEND DONE !");
+	}
+	
 	public int onEnd() 
 	{
-		if (this.finished == true) {
-			return FSMCodes.Events.SUCESS.ordinal();	
-		}
-		
-		return FSMCodes.Events.FAILURE.ordinal();
+		return FSMCodes.Events.SUCESS.ordinal();
 	}
+	
 }

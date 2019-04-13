@@ -1,29 +1,14 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
-import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
-import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
-import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
-import jade.core.AID;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 
-public class PushSumBehaviour extends TreeOperations{
+public class PushSumBehaviour extends TopDownTreeOperations{
 
 	public enum Mode {
 		TREE_SIZE, CAPACITY, LOCK_PICK
 	}
-	
-	enum State {
-		IDLE, WAIT_PARENT, WAIT_CHILDREN, REQUEST_CHILDREN, SEND_PARENT
-	}
-	
+
 	private static final long serialVersionUID = 7295849474602290463L;
 	
 	private int treshold;
@@ -39,6 +24,7 @@ public class PushSumBehaviour extends TreeOperations{
 
 	@Override
 	protected boolean endConditionStrategy() {
+		System.out.println("Current value TOP DOWN : " + (this.value + 1));
 		return (this.value + 1) >= this.treshold;
 	}
 
@@ -49,6 +35,7 @@ public class PushSumBehaviour extends TreeOperations{
 
 	@Override
 	protected Serializable sendChildStrategy() {
+		System.out.println("SEND CHILD STRATEGY");
 		return null;
 	}
 
@@ -63,10 +50,13 @@ public class PushSumBehaviour extends TreeOperations{
 		Integer childValue = (Integer) s;
 		
 		this.value = this.value + childValue;
+		
+		System.out.println("RECEIVE : " + this._myAgent.getLocalName() + " (" + this._myAgent.getTree(this.treeId).getIsRoot() + ") count : " + this.value);
 	}
 
 	@Override
 	protected void resetStrategy() {
+		System.out.println("RESET STRATEGY");
 		this.value = 0;
 	}
 }

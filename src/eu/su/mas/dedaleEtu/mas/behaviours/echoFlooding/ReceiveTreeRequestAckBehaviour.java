@@ -37,6 +37,7 @@ public class ReceiveTreeRequestAckBehaviour extends OneShotBehaviour {
 			if (this._myAgent.treeExist(msg.getContent())) {
 				System.out.println(this.myAgent.getLocalName().toString() + " Adding " + msg.getSender().toString() + " to tree");
 				this._myAgent.addChildToTree(msg.getContent(), msg.getSender());
+				System.out.println(this._myAgent.getTree(msg.getContent()) + " Child count : " + this._myAgent.getTree(msg.getContent()).getChildCount());
 			}
 		}
 	}

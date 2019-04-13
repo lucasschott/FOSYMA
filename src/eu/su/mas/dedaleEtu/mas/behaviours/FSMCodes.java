@@ -4,7 +4,13 @@ public class FSMCodes
 {
 	public enum Events
 	{
-		SUCESS, FAILURE, END;
+		SUCESS,
+		SUCESS_CHILD, 
+		SUCESS_PARENT,
+		FAILURE,
+		FAILURE_CHILD,
+		FAILURE_PARENT,
+		END;
 	}
 	
 }

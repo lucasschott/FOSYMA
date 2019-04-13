@@ -41,6 +41,8 @@ public class ComputeRendezVousPoint extends OneShotBehaviour {
 		
 		this._myAgent.setPath(shortestPath);
 		this._myAgent.setDestinationId(centroids.get(degrees.indexOf(Collections.max(degrees))));
+		
+		System.out.println("TARGET CENTROID : " + this._myAgent.getDestinationId());
 		this._myAgent.registerService("RENDEZ-VOUS");
 	}
 	

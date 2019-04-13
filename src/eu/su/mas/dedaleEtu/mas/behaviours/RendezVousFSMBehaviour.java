@@ -5,6 +5,7 @@ import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.broadcast.ReceiveBroadcastBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.broadcast.SendBroadcastBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.InitiateTreeBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.MergeObservationsBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.PushSumBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.ReceiveTreeRequestAckBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.ReceiveTreeRequestBehaviour;
@@ -49,8 +50,6 @@ public class RendezVousFSMBehaviour extends FSMBehaviour
 		this.registerState(new ReceiveTreeRequestBehaviour(myagent), "RECEIVE-TREE-REQUEST");
 		this.registerState(new ReceiveTreeRequestAckBehaviour(myagent), "RECEIVE-TREE-REQUEST-ACK");
 		this.registerState(new PushSumBehaviour(myagent, "RENDEZ-VOUS-TREE", this.getMatchingAgents().length), "PUSH-SUM");
-		this.registerState(new ReceiveTreeTearDownBehaviour(myagent, "RENDEZ-VOUS-TREE"), "RECEIVE-TREE-TEAR-DOWN");
-		this.registerState(new SendTreeTearDownBehaviour(myagent, "RENDEZ-VOUS-TREE"), "SEND-TREE-TEAR-DOWN");
 		this.registerLastState(new EndRendezVousBehaviour(myagent) , "END-RENDEZ-VOUS");
 		
 		// COMPUTE RENDEZ VOUS POINT -> GO TO RENDEZ VOUS POINT
@@ -70,11 +69,9 @@ public class RendezVousFSMBehaviour extends FSMBehaviour
 		this.registerTransition("RECEIVE-BROADCAST-EXPLORATION","SEND-MAP", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("RECEIVE-BROADCAST-EXPLORATION", "PUSH-SUM", FSMCodes.Events.FAILURE.ordinal());
 		this.registerTransition("SEND-MAP", "PUSH-SUM", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("PUSH-SUM", "RECEIVE-TREE-TEAR-DOWN", FSMCodes.Events.FAILURE.ordinal());
-		this.registerTransition("PUSH-SUM", "SEND-TREE-TEAR-DOWN", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("RECEIVE-TREE-TEAR-DOWN", "SEND-TREE-TEAR-DOWN", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("RECEIVE-TREE-TEAR-DOWN", "GO-TO-RENDEZ-VOUS", FSMCodes.Events.FAILURE.ordinal());
-		this.registerTransition("SEND-TREE-TEAR-DOWN", "END-RENDEZ-VOUS", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("PUSH-SUM", "GO-TO-RENDEZ-VOUS", FSMCodes.Events.FAILURE.ordinal());
+		this.registerTransition("PUSH-SUM", "END-RENDEZ-VOUS", FSMCodes.Events.SUCESS_CHILD.ordinal());
+		this.registerTransition("PUSH-SUM", "END-RENDEZ-VOUS", FSMCodes.Events.SUCESS_PARENT.ordinal());
 	}
 	
 	private DFAgentDescription[] getMatchingAgents() {

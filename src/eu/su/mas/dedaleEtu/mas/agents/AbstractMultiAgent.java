@@ -34,6 +34,7 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	private DFAgentDescription dfd;
 	private ServiceDescription sd;
 	private Integer clock;
+	private boolean moveAllowed = true;
 	
 	private AgentType type;
 
@@ -45,6 +46,15 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	public AgentType getAgentType()
 	{
 		return this.type;
+	}
+	
+	public void setMoveAllowed(boolean moveAllowed) {
+		this.moveAllowed = moveAllowed;
+	}
+	
+	public boolean getMoveAllowed()
+	{
+		return this.moveAllowed;
 	}
 	
 	protected void setup()

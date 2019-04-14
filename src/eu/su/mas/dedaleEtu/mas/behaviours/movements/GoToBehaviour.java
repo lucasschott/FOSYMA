@@ -20,6 +20,10 @@ public class GoToBehaviour extends OneShotBehaviour {
 
 	@Override
 	public void action() {
+		
+		if (this._myagent.getMoveAllowed() == false)
+			return;
+		
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 		
 		System.out.println("GOTO " + _myagent.getLocalName());

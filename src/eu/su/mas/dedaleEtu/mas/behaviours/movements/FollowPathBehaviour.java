@@ -23,6 +23,9 @@ public class FollowPathBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() {
 	
+		if (this._myAgent.getMoveAllowed() == false)
+			return;
+		
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 		ArrayList<String> path = this._myAgent.getPath();
 		boolean moved;

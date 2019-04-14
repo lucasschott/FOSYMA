@@ -29,22 +29,12 @@ public class SendMissionAssignementBehaviour extends OneShotBehaviour {
 	{
 		if (this._myAgent.getAvailableCount() > 0)
 		{
-			System.out.println("Available count : " + this._myAgent.getAvailableCount());
-			
-			System.out.println("TANKER TREASURE MAP : " + this._myAgent.getTreasureMap());
-			
 			if (this._myAgent.getTreasureMap().size() == 0)
 				return;
 			
 			String max = this._myAgent.getMaxTreasureQuantity();
-			
-			System.out.println("Max quantity found at : " + max);
-			
 			Agent agent = this._myAgent.popAvailable();
-			
 			Mission newMission = new Mission(agent, max,  this._myAgent.getTreasureMap().get(max).getLeft(),  this._myAgent.getTreasureMap().get(max).getRight());
-			
-			System.out.println("MIssion : " + newMission);
 			
 			this._myAgent.removeFromTreasureMap(max);
 			this._myAgent.addPendingMission(newMission);

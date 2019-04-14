@@ -22,6 +22,7 @@ public class EndRendezVousBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() {
 		this._myAgent.deregisterService("EXPLORATION");
+		this._myAgent.setMoveAllowed(true);
 		System.out.println(this.myAgent.getLocalName() + " FINISHED RENDEZ VOUS !");
 		this._myAgent.addBehaviour(new MergeObservationsFSMBehaviour(this._myAgent));
 	}

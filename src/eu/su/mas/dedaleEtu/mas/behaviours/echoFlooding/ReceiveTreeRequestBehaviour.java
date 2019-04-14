@@ -33,6 +33,7 @@ public class ReceiveTreeRequestBehaviour extends OneShotBehaviour {
 		
 		if (msg != null) {
 			this.received = true;
+			this._myAgent.setMoveAllowed(false);
 			System.out.println(this.myAgent.getLocalName().toString() + " Received Tree Request from " + msg.getSender().toString());
 			System.out.println("ON tree : " + msg.getContent());
 			

@@ -16,8 +16,8 @@ public class TankMultiAgent extends AbstractMultiAgent {
 		private static final long serialVersionUID = -6431752665590433727L;
 		
 		private ArrayList<Agent> availableAgents = new ArrayList<Agent>();
-		private ArrayList<Mission> onGoingMissions = new ArrayList<Mission>();
-		private ArrayList<Mission> pendingMissions = new ArrayList<Mission>();
+		private HashMap<String, Mission> onGoingMissions = new HashMap<String, Mission>();
+		private HashMap<String, Mission> pendingMissions = new HashMap<String, Mission>();
 		
 		/**
 		 * This method is automatically called when "agent".start() is executed.
@@ -26,6 +26,11 @@ public class TankMultiAgent extends AbstractMultiAgent {
 		 *	 		2) add the behaviours
 		 *          
 		 */
+		
+		public ArrayList<Agent> getAvailableAgents()
+		{
+			return this.availableAgents;
+		}
 		
 		public void addAvailableAgent(Agent newAgent)
 		{
@@ -36,15 +41,19 @@ public class TankMultiAgent extends AbstractMultiAgent {
 		
 		public void addPendingMission(Mission mission)
 		{
-			if (this.pendingMissions.contains(mission))
+			if (this.pendingMissions.keySet().contains(mission.getUUID()))
 				return;
 			
-			this.pendingMissions.add(mission);
+			this.pendingMissions.put(mission.getUUID(), mission);
 		}
 		
-		public void setMissionOnGoing(Mission mission)
+		public void setMissionOnGoing(String uuid)
 		{
+			if (!this.pendingMissions.keySet().contains(uuid))
+				return;
 			
+			Mission mission = this.pendingMissions.remove(uuid);
+			this.onGoingMissions.put(mission.getUUID(), mission);
 		}
 		
 		public TankMultiAgent() {

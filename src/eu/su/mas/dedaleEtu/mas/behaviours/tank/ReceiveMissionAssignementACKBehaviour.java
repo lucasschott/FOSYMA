@@ -3,32 +3,30 @@ package eu.su.mas.dedaleEtu.mas.behaviours.tank;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.TankMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
-import eu.su.mas.dedaleEtu.mas.utils.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.lang.acl.UnreadableException;
 
-public class ReceiveMissionRequestBehaviour extends OneShotBehaviour {
+public class ReceiveMissionAssignementACKBehaviour extends OneShotBehaviour {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7181433716622840145L;
+	private static final long serialVersionUID = -5124156471440331676L;
 	private boolean received = false;
 	private TankMultiAgent _myAgent;
 
-	public ReceiveMissionRequestBehaviour(TankMultiAgent myagent)
-	{
+	public ReceiveMissionAssignementACKBehaviour(TankMultiAgent myagent) {
 		super(myagent);
 		this._myAgent = myagent;
 	}
 	
 	@Override
-	public void action() {
+	public void action() 
+	{
 		this.received = false;
 		
-		MessageTemplate pattern = MessageTemplate.and(MessageTemplate.MatchProtocol("REQUEST-MISSION"), MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
+		MessageTemplate pattern = MessageTemplate.and(MessageTemplate.MatchProtocol("ACCEPT-MISSION"), MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL));
 		pattern = MessageTemplate.and(pattern, MessageTemplate.not(MessageTemplate.MatchSender(this.myAgent.getAID())));
 		
 		ACLMessage msg;
@@ -38,13 +36,11 @@ public class ReceiveMissionRequestBehaviour extends OneShotBehaviour {
 		if (msg != null) 
 		{
 			this.received = true;
-			try {
-				this._myAgent.addAvailableAgent((Agent)msg.getContentObject());
-				System.out.println("Received Mission request from : " + msg.getSender());
-			} catch (UnreadableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			String uuid = msg.getContent();
+			this._myAgent.setMissionOnGoing(uuid);
+			
+			System.out.println("Received mission ACK FROM : " + msg.getSender());
 		}
 	}
 	

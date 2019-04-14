@@ -86,9 +86,32 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 		this.treasureMap.put(node, couple);
 	}
 	
+	public void removeFromTreasureMap(String node)
+	{
+		if (this.treasureMap.containsKey(node) == false)
+			return;
+		
+		this.treasureMap.remove(node);
+	}
+	
 	public void clearTreasureMap()
 	{
 		this.treasureMap.clear();
+	}
+	
+	public String getMaxTreasureQuantity()
+	{
+		String node = null;
+		Integer quantity = -1;
+		
+		for (String key: this.treasureMap.keySet()) {
+			if (this.treasureMap.get(key).getRight() >= quantity) {
+				quantity = this.treasureMap.get(key).getRight();
+				node = key;
+			}
+		}
+		
+		return node;
 	}
 	
 	public HashMap<String, Couple<Observation, Integer>> getTreasureMap()

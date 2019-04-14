@@ -4,8 +4,8 @@ import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.OneShotBehaviour;
 
-public class StartCollectBehaviour extends OneShotBehaviour {
-
+public class EndCollectBehaviour  extends OneShotBehaviour 
+{
 	/**
 	 * 
 	 */
@@ -13,7 +13,7 @@ public class StartCollectBehaviour extends OneShotBehaviour {
 	
 	AbstractMultiAgent _myAgent;
 	
-	public StartCollectBehaviour(AbstractMultiAgent myagent)
+	public EndCollectBehaviour(AbstractMultiAgent myagent)
 	{
 		super(myagent);
 		this._myAgent = myagent;
@@ -22,7 +22,7 @@ public class StartCollectBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() 
 	{
-		this._myAgent.registerService("COLLECT");
+		this._myAgent.deregisterService("COLLECT");
 	}
 
 	public int onEnd()

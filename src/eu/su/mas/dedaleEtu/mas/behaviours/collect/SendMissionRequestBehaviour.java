@@ -6,6 +6,7 @@ import java.util.HashMap;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
+import eu.su.mas.dedaleEtu.mas.utils.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -36,15 +37,12 @@ public class SendMissionRequestBehaviour extends OneShotBehaviour {
 		
 		result = this._myAgent.getMatchingAgents("TANK");
 		
-		HashMap<String, Object> payload = new HashMap<String, Object>();
+		Agent payload = new Agent();
 		
-		payload.put("Position", this._myAgent.getCurrentPosition());
-		payload.put("Capacity", this._myAgent.getBackPackFreeSpace());
+		payload.setAID(this._myAgent.getAID());
+		payload.setBackPackCapacity(this._myAgent.getBackPackFreeSpace());
 		
-		//payload.put("Expertise-gold", this._myAgent.getMyExpertise());
-		//payload.put("Expertise-diamond", this._myAgent.getMyExpertise());
-		
-		ACLMessage msg= this.buildMessage(result);
+		ACLMessage msg = this.buildMessage(result);
 		
 		try {
 			msg.setContentObject(payload);
@@ -64,6 +62,7 @@ public class SendMissionRequestBehaviour extends OneShotBehaviour {
 		{
 			if (!this.myAgent.getAID().toString().equals(dsc.getName().toString()))
 				msg.addReceiver(dsc.getName());
+			System.out.println("SENDING REQUEST TO : " + dsc.getName());
 		}
 		
 		return msg;

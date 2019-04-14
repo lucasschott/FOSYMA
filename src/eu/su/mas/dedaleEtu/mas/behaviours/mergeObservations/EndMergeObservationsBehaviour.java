@@ -1,6 +1,9 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.mergeObservations;
 
 import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
+import eu.su.mas.dedaleEtu.mas.agents.CollectMultiAgent;
+import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
+import eu.su.mas.dedaleEtu.mas.agents.TankMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.CollectFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploreFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
@@ -34,18 +37,21 @@ public class EndMergeObservationsBehaviour extends OneShotBehaviour{
 			switch(this._myAgent.getAgentType())
 			{
 				case COLLECT:
+					CollectMultiAgent collectAgent = ((CollectMultiAgent)this._myAgent);
 					System.out.println(this.myAgent.getLocalName() + " switching to collect role");
-					this._myAgent.addBehaviour(new CollectFSMBehaviour(this._myAgent));
+					this._myAgent.addBehaviour(new CollectFSMBehaviour(collectAgent));
 				break;
 				
 				case TANK:
+					TankMultiAgent tankAgent = ((TankMultiAgent)this._myAgent);
 					System.out.println(this.myAgent.getLocalName() + " switching to tank role");
-					this._myAgent.addBehaviour(new TankFSMBehaviour(this._myAgent));
+					this._myAgent.addBehaviour(new TankFSMBehaviour(tankAgent));
 				break;
 					
 				case EXPLORATION:
+					ExploreMultiAgent exploreAgent = ((ExploreMultiAgent)this._myAgent);
 					System.out.println(this.myAgent.getLocalName() + " switching to exploration role");
-					this._myAgent.addBehaviour(new ExploreFSMBehaviour(this._myAgent));
+					this._myAgent.addBehaviour(new ExploreFSMBehaviour(exploreAgent));
 				break;
 					
 				default:

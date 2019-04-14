@@ -1,8 +1,9 @@
 package eu.su.mas.dedaleEtu.mas.utils;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.UUID;
+
+import eu.su.mas.dedale.env.Observation;
 
 public class Mission implements Serializable {
 	
@@ -14,11 +15,16 @@ public class Mission implements Serializable {
 	private Agent leader;
 	private boolean pending;
 	private String uuid;
-	private HashMap<String, Object> description;
+	private Integer TTL = 30;
+	private String destination;
+	private Observation type;
+	private Integer quantity;
 	
-	public Mission(Agent leader, HashMap<String, Object> description) {
+	public Mission(Agent leader, String destination, Observation type, Integer quantity) {
 		this.uuid = UUID.randomUUID().toString();
-		this.description = description;
+		this.setDestination(destination);
+		this.setType(type);
+		this.setQuantity(quantity);
 		this.leader = leader;
 		this.pending = true;
 	}
@@ -41,11 +47,41 @@ public class Mission implements Serializable {
 		return this.leader;
 	}
 	
-	public HashMap<String, Object> getDescription() {
-		return this.description;
-	}
-	
 	public boolean equals(Mission other) {
 		return this.uuid.equals(other.getUUID());
+	}
+	
+	public void decreaseTTL()
+	{
+		this.TTL = this.TTL - 1;
+	}
+	
+	public boolean isExpired()
+	{
+		return this.TTL <= 0;
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public Observation getType() {
+		return type;
+	}
+
+	public void setType(Observation type) {
+		this.type = type;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 }

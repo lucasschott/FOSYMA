@@ -37,11 +37,18 @@ public class ReceiveMissionRequestBehaviour extends OneShotBehaviour {
 		
 		if (msg != null) 
 		{
-			this.received = true;
 			try {
+				Agent agent = (Agent) msg.getContentObject();
+				
+				if (this._myAgent.isInMission(agent) || this._myAgent.getAvailableAgents().contains(agent))
+					return;
+				
+				this.received = true;
+				
 				this._myAgent.addAvailableAgent((Agent)msg.getContentObject());
 				System.out.println("Received Mission request from : " + msg.getSender());
-			} catch (UnreadableException e) {
+			} 
+			catch (UnreadableException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

@@ -71,7 +71,7 @@ public class Agent implements Serializable {
 	
 	public boolean equals(Agent other)
 	{
-		return this.id == other.id;
+		return this.id.getLocalName().toString().equals(other.id.getLocalName().toString());
 	}
 	
 }

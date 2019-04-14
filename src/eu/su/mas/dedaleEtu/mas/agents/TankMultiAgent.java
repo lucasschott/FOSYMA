@@ -32,10 +32,59 @@ public class TankMultiAgent extends AbstractMultiAgent {
 			return this.availableAgents;
 		}
 		
+		public Agent popAvailable()
+		{
+			return this.availableAgents.remove(0);
+		}
+		
+		public Integer getAvailableCount()
+		{
+			return this.availableAgents.size();
+		}
+		
+		public  HashMap<String, Mission> getPendingMissions()
+		{
+			return this.pendingMissions;
+		}
+		
+		public  HashMap<String, Mission> getOnGoingMissions()
+		{
+			return this.onGoingMissions;
+		}
+	
+		public boolean isInMission(Agent newAgent) {
+			
+			System.out.println("LOOKING FOR : " + newAgent.getAID().getLocalName());
+			
+			for (Mission mission: this.pendingMissions.values()) {
+				System.out.println("LEADER : " + mission.getLeader().toString());
+				if (mission.getLeader().equals(newAgent)) {
+					System.out.println(newAgent + " in pending missions");
+					return true;
+				}
+			}
+			
+			for (Mission mission: this.onGoingMissions.values()) {
+				System.out.println("LEADER : " + mission.getLeader().getAID().getLocalName().toString());
+				if (mission.getLeader().equals(newAgent)) {
+					System.out.println(newAgent + " in ongoing missions");
+					return true;
+				}
+			}
+			
+			System.out.println(newAgent + " not in missions");
+			return false;
+		}
 		public void addAvailableAgent(Agent newAgent)
 		{
-			if (this.availableAgents.contains(newAgent))
+			if (this.availableAgents.contains(newAgent) || this.isInMission(newAgent))
 				return;
+			
+			System.out.println("CURRENT PENDING MISSIONS : " + this.pendingMissions);
+			System.out.println("CURRENT ONGOING MISSIONS : " + this.onGoingMissions);
+			System.out.println("CURRENT AVAILABLE LIST : " + this.availableAgents);
+			System.out.println("ADDING : " + newAgent);
+			
 			this.availableAgents.add(newAgent);
 		}
 		

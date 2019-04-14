@@ -51,9 +51,10 @@ public class Mission implements Serializable {
 		return this.uuid.equals(other.getUUID());
 	}
 	
-	public void decreaseTTL()
+	public Integer decreaseTTL()
 	{
 		this.TTL = this.TTL - 1;
+		return this.TTL;
 	}
 	
 	public boolean isExpired()

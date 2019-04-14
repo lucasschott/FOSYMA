@@ -2,7 +2,9 @@ package eu.su.mas.dedaleEtu.mas.agents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
@@ -52,38 +54,27 @@ public class TankMultiAgent extends AbstractMultiAgent {
 			return this.onGoingMissions;
 		}
 	
-		public boolean isInMission(Agent newAgent) {
-			
-			System.out.println("LOOKING FOR : " + newAgent.getAID().getLocalName());
-			
+		public boolean isInMission(Agent newAgent) 
+		{
 			for (Mission mission: this.pendingMissions.values()) {
-				System.out.println("LEADER : " + mission.getLeader().toString());
 				if (mission.getLeader().equals(newAgent)) {
-					System.out.println(newAgent + " in pending missions");
 					return true;
 				}
 			}
 			
 			for (Mission mission: this.onGoingMissions.values()) {
-				System.out.println("LEADER : " + mission.getLeader().getAID().getLocalName().toString());
 				if (mission.getLeader().equals(newAgent)) {
-					System.out.println(newAgent + " in ongoing missions");
 					return true;
 				}
 			}
 			
-			System.out.println(newAgent + " not in missions");
 			return false;
 		}
+		
 		public void addAvailableAgent(Agent newAgent)
 		{
 			if (this.availableAgents.contains(newAgent) || this.isInMission(newAgent))
 				return;
-			
-			System.out.println("CURRENT PENDING MISSIONS : " + this.pendingMissions);
-			System.out.println("CURRENT ONGOING MISSIONS : " + this.onGoingMissions);
-			System.out.println("CURRENT AVAILABLE LIST : " + this.availableAgents);
-			System.out.println("ADDING : " + newAgent);
 			
 			this.availableAgents.add(newAgent);
 		}
@@ -107,6 +98,18 @@ public class TankMultiAgent extends AbstractMultiAgent {
 		
 		public TankMultiAgent() {
 			super(AbstractMultiAgent.AgentType.TANK);
+		}
+		
+		public void updatePendingMissionsTTL() {
+			  Iterator<Map.Entry<String, Mission>> iterator = this.pendingMissions.entrySet().iterator();
+			  while (iterator.hasNext()) {
+		            Map.Entry<String, Mission> entry  = iterator.next();
+		            
+		            if (entry.getValue().decreaseTTL() <= 0) {
+		            	iterator.remove();
+		            	this.addAvailableAgent(entry.getValue().getLeader());
+		            }
+			  }
 		}
 		
 		protected void setup(){

@@ -2,13 +2,9 @@ package eu.su.mas.dedaleEtu.mas.behaviours.rendezVous;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
-import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
-import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 
 public class ComputeRendezVousPoint extends OneShotBehaviour {
@@ -30,6 +26,7 @@ public class ComputeRendezVousPoint extends OneShotBehaviour {
 		
 		this._myAgent.map.computeCentroids();
 		ArrayList<String> centroids = this._myAgent.map.getCentroids();
+		Collections.sort(centroids);
 		
 		for (String centroid : centroids) {
 			degrees.add(this._myAgent.map.getNodeDegree(centroid));

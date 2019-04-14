@@ -31,11 +31,20 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	private ArrayList<String> path = null;
 	private String destinationId = null;
 	private HashMap<String, Couple<Observation, Integer>> treasureMap = new HashMap<String, Couple<Observation, Integer>>();
+	private DFAgentDescription dfd;
+	private ServiceDescription sd;
+	private Integer clock;
 	
 	private AgentType type;
 
 	public AbstractMultiAgent(AgentType type) {
 		this.type = type;
+		this.clock = 0;
+	}
+	
+	public AgentType getAgentType()
+	{
+		return this.type;
 	}
 	
 	protected void setup()
@@ -52,7 +61,25 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public DFAgentDescription[] getMatchingAgents(String service) {
+		
+		sd = new ServiceDescription();
+		dfd = new DFAgentDescription();
+		
+		sd.setType("TANK");
+		dfd.addServices(sd);
+		
+		DFAgentDescription[] result = {};
+		try {
+			result = DFService.search(this, dfd);
+		} catch (FIPAException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	public void updateTreasuresMap(String node, Observation obs, Integer quantity)
 	{
 		Couple<Observation, Integer> couple = new Couple<Observation, Integer>(obs, quantity);

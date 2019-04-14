@@ -69,11 +69,7 @@ public class MapRepresentation implements Serializable {
 		System.setProperty("org.graphstream.ui.renderer","org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		
 		this.g= new SingleGraph("My world vision");
-		//this.g = Graphs.synchronizedGraph(this.g);
 		this.g.setAttribute("ui.stylesheet",nodeStyle);
-		
-		//this.viewer = this.g.display();
-		//this.viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
 		this.nbEdges=0;
 		
 		this.openGui();

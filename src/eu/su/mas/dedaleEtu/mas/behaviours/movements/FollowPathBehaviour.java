@@ -30,6 +30,7 @@ public class FollowPathBehaviour extends OneShotBehaviour {
 		if (path.size() > 0) 
 		{
 			moved = this._myAgent.moveTo(path.get(0));
+			
 			if (moved) {
 				path.remove(0);
 				this._myAgent.setPath(path);

@@ -12,6 +12,7 @@ public class CollectMultiAgent  extends AbstractMultiAgent {
 
 	private static final long serialVersionUID = -6431752665590433727L;
 	private Mission currentMission = null;
+	private String tankPosition = null;
 	
 	/**
 	 * This method is automatically called when "agent".start() is executed.
@@ -54,5 +55,13 @@ public class CollectMultiAgent  extends AbstractMultiAgent {
 	public void setCurrentMission(Mission mission)
 	{
 		this.currentMission = mission;
+	}
+
+	public String getTankPosition() {
+		return tankPosition;
+	}
+
+	public void setTankPosition(String tankerPosition) {
+		this.tankPosition = tankerPosition;
 	}
 }

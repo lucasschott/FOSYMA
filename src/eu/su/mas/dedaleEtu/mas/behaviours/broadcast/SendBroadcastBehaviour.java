@@ -23,12 +23,14 @@ public class SendBroadcastBehaviour extends OneShotBehaviour {
 	private DFAgentDescription dfd = new DFAgentDescription();
 	private ServiceDescription sd = new ServiceDescription();
 	private String service;
+	private String protocol;
 	
-	public SendBroadcastBehaviour(AbstractMultiAgent myagent, String service) {
+	public SendBroadcastBehaviour(AbstractMultiAgent myagent, String service, String protocol) {
 		super(myagent);
 		sd.setType(service);
 		dfd.addServices(sd);
 		this.service = service;
+		this.protocol = protocol;
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class SendBroadcastBehaviour extends OneShotBehaviour {
 		ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
 		
 		msg.setSender(this.myAgent.getAID());
-		msg.setProtocol(service);
+		msg.setProtocol(this.protocol);
 		
 		System.out.println("Result size : " + result.length);
 		

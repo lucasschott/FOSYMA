@@ -16,8 +16,6 @@ public class HandleConflictBehaviour extends OneShotBehaviour {
 
 	@Override
 	public void action() {
-		// TODO Auto-generated method stub
-		System.out.println(this.getClass().getName());
 		((AbstractMultiAgent)this.myAgent).map.shuffleOpenNodes();
 	}
 

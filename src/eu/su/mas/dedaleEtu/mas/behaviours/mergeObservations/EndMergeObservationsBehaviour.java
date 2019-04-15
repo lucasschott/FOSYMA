@@ -5,7 +5,7 @@ import eu.su.mas.dedaleEtu.mas.agents.CollectMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.TankMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.CollectFSMBehaviour;
-import eu.su.mas.dedaleEtu.mas.behaviours.ExploreFSMBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.ExploreMultiFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import eu.su.mas.dedaleEtu.mas.behaviours.TankFSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
@@ -51,7 +51,7 @@ public class EndMergeObservationsBehaviour extends OneShotBehaviour{
 				case EXPLORATION:
 					ExploreMultiAgent exploreAgent = ((ExploreMultiAgent)this._myAgent);
 					System.out.println(this.myAgent.getLocalName() + " switching to exploration role");
-					this._myAgent.addBehaviour(new ExploreFSMBehaviour(exploreAgent));
+					this._myAgent.addBehaviour(new ExploreMultiFSMBehaviour(exploreAgent));
 				break;
 					
 				default:

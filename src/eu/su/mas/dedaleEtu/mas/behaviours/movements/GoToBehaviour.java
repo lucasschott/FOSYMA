@@ -3,6 +3,7 @@ package eu.su.mas.dedaleEtu.mas.behaviours.movements;
 import java.util.List;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.OneShotBehaviour;
@@ -11,9 +12,9 @@ public class GoToBehaviour extends OneShotBehaviour {
 
 	private static final long serialVersionUID = 7295849474602290463L;
 	private boolean moved = false;
-	private ExploreMultiAgent _myagent;
+	private AbstractMultiAgent _myagent;
 	
-	public GoToBehaviour(ExploreMultiAgent myagent) {
+	public GoToBehaviour(AbstractMultiAgent myagent) {
 		super(myagent);
 		this._myagent = myagent;
 	}

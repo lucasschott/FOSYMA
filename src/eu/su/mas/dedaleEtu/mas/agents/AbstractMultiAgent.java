@@ -35,6 +35,7 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	private ServiceDescription sd;
 	private Integer clock;
 	private boolean moveAllowed = true;
+	private String centroid;
 	
 	private AgentType type;
 
@@ -46,6 +47,15 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	public AgentType getAgentType()
 	{
 		return this.type;
+	}
+	
+	public void setCentroid(String centroid)
+	{
+		this.centroid = centroid;
+	}
+	
+	public String getCentroid() {
+		return this.centroid;
 	}
 	
 	public void setMoveAllowed(boolean moveAllowed) {

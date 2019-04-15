@@ -1,4 +1,4 @@
-package eu.su.mas.dedaleEtu.mas.behaviours.collect;
+package eu.su.mas.dedaleEtu.mas.behaviours.collect.GetMission;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.CollectMultiAgent;
@@ -52,6 +52,7 @@ public class ReceiveMissionAssignementBehaviour extends OneShotBehaviour {
 			System.out.println("RECEIVE MISSION ASSIGNEMENT");
 			DFAgentDescription[] result = this._myAgent.getMatchingAgents("TANK");
 			this.sendAck(result, this._myAgent.getCurrentMission().getUUID());
+			this._myAgent.setDestinationId(this._myAgent.getCurrentMission().getDestination());
 			this.received = true;
 		}
 		
@@ -79,7 +80,7 @@ public class ReceiveMissionAssignementBehaviour extends OneShotBehaviour {
 	
 	public int onEnd()
 	{
-		if (this.received = true)
+		if (this.received == true)
 			return FSMCodes.Events.SUCESS.ordinal();
 		return FSMCodes.Events.FAILURE.ordinal();
 	}

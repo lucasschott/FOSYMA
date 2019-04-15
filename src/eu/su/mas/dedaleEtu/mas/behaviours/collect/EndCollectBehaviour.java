@@ -1,6 +1,6 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.collect;
 
-import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
+import eu.su.mas.dedaleEtu.mas.agents.CollectMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.OneShotBehaviour;
 
@@ -11,9 +11,9 @@ public class EndCollectBehaviour  extends OneShotBehaviour
 	 */
 	private static final long serialVersionUID = -4094788259802184113L;
 	
-	AbstractMultiAgent _myAgent;
+	CollectMultiAgent _myAgent;
 	
-	public EndCollectBehaviour(AbstractMultiAgent myagent)
+	public EndCollectBehaviour(CollectMultiAgent myagent)
 	{
 		super(myagent);
 		this._myAgent = myagent;
@@ -23,6 +23,8 @@ public class EndCollectBehaviour  extends OneShotBehaviour
 	public void action() 
 	{
 		this._myAgent.deregisterService("COLLECT");
+		System.out.println(this._myAgent.getLocalName() + " On mission : " + this._myAgent.getCurrentMission());
+		System.out.println(this._myAgent.getLocalName() + " Going to : " + this._myAgent.getDestinationId());
 	}
 
 	public int onEnd()

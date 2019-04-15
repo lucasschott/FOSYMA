@@ -1,4 +1,4 @@
-package eu.su.mas.dedaleEtu.mas.behaviours.collect;
+package eu.su.mas.dedaleEtu.mas.behaviours.collect.GetMission;
 
 import java.io.IOException;
 import java.util.HashMap;

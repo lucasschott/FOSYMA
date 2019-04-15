@@ -2,13 +2,13 @@ package eu.su.mas.dedaleEtu.mas.behaviours;
 
 import eu.su.mas.dedaleEtu.mas.agents.CollectMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.collect.EndCollectBehaviour;
-import eu.su.mas.dedaleEtu.mas.behaviours.collect.ReceiveMissionAssignementBehaviour;
-import eu.su.mas.dedaleEtu.mas.behaviours.collect.SendMissionRequestBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.collect.StartCollectBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.collect.GetMission.GetMissionFSMBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.collect.LookForTank.LookForTankFSMBehaviour;
 import jade.core.behaviours.FSMBehaviour;
 
-public class CollectFSMBehaviour  extends FSMBehaviour {
-	
+public class CollectFSMBehaviour  extends FSMBehaviour 
+{
 	/**
 	 * 
 	 */
@@ -18,14 +18,12 @@ public class CollectFSMBehaviour  extends FSMBehaviour {
 		super(myagent);
 	
 		this.registerFirstState(new StartCollectBehaviour(myagent), "START-COLLECT");
-		this.registerState(new SendMissionRequestBehaviour(myagent),"SEND-MISSION-REQUEST");
-		this.registerState(new ReceiveMissionAssignementBehaviour(myagent), "RECEIVE-MISSION-ASSIGNEMENT");
+		this.registerState(new LookForTankFSMBehaviour(myagent),"LOOK-FOR-TANK");
+		this.registerState(new GetMissionFSMBehaviour(myagent), "GET-MISSION");
 		this.registerLastState(new EndCollectBehaviour(myagent), "END-COLLECT");
 		
-		//definition des transaction
-		this.registerTransition("START-COLLECT", "SEND-MISSION-REQUEST", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("SEND-MISSION-REQUEST", "RECEIVE-MISSION-ASSIGNEMENT", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("RECEIVE-MISSION-ASSIGNEMENT", "END-COLLECT", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("RECEIVE-MISSION-ASSIGNEMENT","SEND-MISSION-REQUEST", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("START-COLLECT", "LOOK-FOR-TANK", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("LOOK-FOR-TANK", "GET-MISSION", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("GET-MISSION", "END-COLLECT", FSMCodes.Events.SUCESS.ordinal());
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Random;
 import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 
 /**************************************
@@ -18,7 +19,7 @@ import jade.core.behaviours.TickerBehaviour;
  **************************************/
 
 
-public class RandomWalkBehaviour extends TickerBehaviour{
+public class RandomWalkBehaviour extends OneShotBehaviour{
 	
 	/**
 	 * When an agent choose to move
@@ -27,14 +28,17 @@ public class RandomWalkBehaviour extends TickerBehaviour{
 	private static final long serialVersionUID = 9088209402507795289L;
 
 	public RandomWalkBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 600);
+		super(myagent);
 	}
 
 	@Override
-	public void onTick() {
+	public void action() {
 		//Example to retrieve the current position
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 		System.out.println(this.myAgent.getLocalName()+" -- myCurrentPosition is: "+myPosition);
+		
+		this.myAgent.doWait(500);
+		
 		if (myPosition!=null){
 			//List of observable from the agent's current position
 			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
@@ -53,6 +57,7 @@ public class RandomWalkBehaviour extends TickerBehaviour{
 
 			//example related to the use of the backpack for the treasure hunt
 			Boolean b=false;
+			
 			for(Couple<Observation,Integer> o:lObservations){
 				switch (o.getLeft()) {
 				case DIAMOND:case GOLD:
@@ -70,7 +75,7 @@ public class RandomWalkBehaviour extends TickerBehaviour{
 			}
 
 			//If the agent picked (part of) the treasure
-			if (b){
+			if (false){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs2=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
 				System.out.println(this.myAgent.getLocalName()+" - State of the observations after trying to pick something "+lobs2);
 			}
@@ -83,6 +88,10 @@ public class RandomWalkBehaviour extends TickerBehaviour{
 			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 		}
 
+	}
+
+	public int onEnd() {
+		return FSMCodes.Events.SUCESS.ordinal();
 	}
 
 }

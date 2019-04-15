@@ -25,9 +25,9 @@ public class ExploMultiFSMBehaviour extends FSMBehaviour
 		
 		this.registerFirstState(new StartExplorationBehaviour(myagent), "START-EXPLORATION");
 		this.registerState	(new ExploreBehaviour(myagent),"EXPLORE");
-		this.registerState(new SendBroadcastBehaviour(myagent, "EXPLORATION"),"SEND-BROADCAST");
+		this.registerState(new SendBroadcastBehaviour(myagent, "EXPLORATION", "EXPLORATION"),"SEND-BROADCAST");
 		this.registerState(new HandleConflictBehaviour(myagent), "HANDLE-CONFLICT");
-		this.registerState(new ReceiveBroadcastBehaviour(myagent, "EXPLORATION"),"RECEIVE-BROADCAST");
+		this.registerState(new ReceiveBroadcastBehaviour(myagent, "EXPLORATION", "EXPLORATION"),"RECEIVE-BROADCAST");
 		this.registerState(new SendMapBehaviour(myagent), "SEND-MAP");
 		this.registerState(new ReceiveMapBehaviour(myagent),"RECEIVE-MAP");
 		this.registerLastState(new EndExplorationBehaviour(myagent) , "END-EXPLORATION");

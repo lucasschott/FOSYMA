@@ -41,10 +41,10 @@ public class RendezVousFSMBehaviour extends FSMBehaviour
 		
 		this.registerFirstState(new ComputeRendezVousPoint(myagent), "COMPUTE-RENDEZ-VOUS-POINT");
 		this.registerState(new FollowPathBehaviour(myagent), "GO-TO-RENDEZ-VOUS");
-		this.registerState(new SendBroadcastBehaviour(myagent, "RENDEZ-VOUS"),"SEND-BROADCAST-RENDEZ-VOUS");
+		this.registerState(new SendBroadcastBehaviour(myagent, "RENDEZ-VOUS", "RENDEZ-VOUS"),"SEND-BROADCAST-RENDEZ-VOUS");
 		this.registerState(new InitiateTreeBehaviour(myagent, "RENDEZ-VOUS-TREE"), "INITIATE-TREE-RENDEZ-VOUS");
-		this.registerState(new ReceiveBroadcastBehaviour(myagent, "RENDEZ-VOUS"),"RECEIVE-BROADCAST-RENDEZ-VOUS");
-		this.registerState(new ReceiveBroadcastBehaviour(myagent, "EXPLORATION"),"RECEIVE-BROADCAST-EXPLORATION");
+		this.registerState(new ReceiveBroadcastBehaviour(myagent, "RENDEZ-VOUS", "RENDEZ-VOUS"),"RECEIVE-BROADCAST-RENDEZ-VOUS");
+		this.registerState(new ReceiveBroadcastBehaviour(myagent, "EXPLORATION","EXPLORATION"),"RECEIVE-BROADCAST-EXPLORATION");
 		this.registerState(new SendMapBehaviour(myagent), "SEND-MAP");
 		this.registerState(new SendTreeRequestBehaviour(myagent, "RENDEZ-VOUS-TREE", "RENDEZ-VOUS"), "SEND-TREE-REQUEST");
 		this.registerState(new ReceiveTreeRequestBehaviour(myagent), "RECEIVE-TREE-REQUEST");

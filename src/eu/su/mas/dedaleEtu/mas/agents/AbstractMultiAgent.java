@@ -33,7 +33,7 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	private HashMap<String, Couple<Observation, Integer>> treasureMap = new HashMap<String, Couple<Observation, Integer>>();
 	private DFAgentDescription dfd;
 	private ServiceDescription sd;
-	private Integer clock;
+	private Integer priority = 0;
 	private boolean moveAllowed = true;
 	private String centroid;
 	
@@ -41,7 +41,6 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 
 	public AbstractMultiAgent(AgentType type) {
 		this.type = type;
-		this.clock = 0;
 	}
 	
 	public AgentType getAgentType()

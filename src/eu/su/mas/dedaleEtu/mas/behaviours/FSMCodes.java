@@ -10,7 +10,9 @@ public class FSMCodes
 		FAILURE,
 		FAILURE_CHILD,
 		FAILURE_PARENT,
-		END;
+		END,
+		CONFLICT,
+		WUMPUS;
 	}
 	
 }

@@ -27,6 +27,8 @@ public class GoToBehaviour extends OneShotBehaviour {
 		
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 		
+		this._myagent.doWait(500);
+		
 		System.out.println("GOTO " + _myagent.getLocalName());
 		
 		if (myPosition!=null && _myagent.getDestinationId() != null &&  !myPosition.equals(_myagent.getDestinationId()))

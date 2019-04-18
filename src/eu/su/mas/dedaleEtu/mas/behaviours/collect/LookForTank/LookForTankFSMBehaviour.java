@@ -34,6 +34,9 @@ public class LookForTankFSMBehaviour extends FSMBehaviour {
 	}
 	
 	public int onEnd() {
+		System.out.println("FINISHED LOOK FOR TANK");
+		this.reset();
+		this.resetChildren();
 		return FSMCodes.Events.SUCESS.ordinal();
 	}
 	

@@ -30,6 +30,7 @@ public class FollowPathBehaviour extends OneShotBehaviour {
 		ArrayList<String> path = this._myAgent.getPath();
 		boolean moved;
 		
+		this._myAgent.doWait(500);
 		if (path.size() > 0) 
 		{
 			moved = this._myAgent.moveTo(path.get(0));

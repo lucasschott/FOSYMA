@@ -19,10 +19,16 @@ public class StartLookForTankBehaviour extends OneShotBehaviour {
 	{
 		this._myAgent.setTankPosition(this._myAgent.getCentroid());
 		this._myAgent.setDestinationId(this._myAgent.getCentroid());
+		this.clearMessageQueue();
 	}
 	
 	public int onEnd() {
+		System.out.println("START LOOK FOR TANK !");
 		return FSMCodes.Events.SUCESS.ordinal();
+	}
+	
+	public void clearMessageQueue() {
+		while (this._myAgent.receive() != null) {}
 	}
 
 }

@@ -23,8 +23,13 @@ public class GetMissionFSMBehaviour extends FSMBehaviour {
 	}
 	
 	public int onEnd() {
-		if (this._myAgent.getCurrentMission() != null)
+		this.resetChildren();
+		this.reset();
+		System.out.println("END GET MISSION");
+		if (this._myAgent.getCurrentMission() != null) {
+			System.out.println("GOT MY MISSION");
 			return FSMCodes.Events.SUCESS.ordinal();
+		}
 		return FSMCodes.Events.FAILURE.ordinal();
 	}
 }

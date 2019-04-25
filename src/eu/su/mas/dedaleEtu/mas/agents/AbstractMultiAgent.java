@@ -118,13 +118,13 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 		this.treasureMap.clear();
 	}
 	
-	public String getMaxTreasureQuantity()
+	public String getMaxTreasureQuantity(Observation type)
 	{
 		String node = null;
 		Integer quantity = -1;
 		
 		for (String key: this.treasureMap.keySet()) {
-			if (this.treasureMap.get(key).getRight() >= quantity) {
+			if (this.treasureMap.get(key).getRight() >= quantity && this.treasureMap.get(key).getLeft() == type) {
 				quantity = this.treasureMap.get(key).getRight();
 				node = key;
 			}

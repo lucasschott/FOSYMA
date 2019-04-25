@@ -2,6 +2,7 @@ package eu.su.mas.dedaleEtu.mas.utils;
 
 import java.io.Serializable;
 
+import eu.su.mas.dedale.env.Observation;
 import jade.core.AID;
 
 public class Agent implements Serializable {
@@ -13,10 +14,9 @@ public class Agent implements Serializable {
 	
 	AID id;
 	Integer capacity;
-	Integer gold_capacity;
-	Integer diamond_capacity;
 	Integer lockPick;
 	Integer strength;
+	Observation treasureType;
 	
 	public Agent() {
 	}
@@ -35,22 +35,6 @@ public class Agent implements Serializable {
 	
 	public Integer getBackPackCapacity() {
 		return this.capacity;
-	}
-	
-	public void setGoldCapacity(Integer gold_capacity) {
-		this.gold_capacity = gold_capacity;
-	}
-	
-	public Integer getGoldCapacity() {
-		return this.gold_capacity;
-	}
-	
-	public void setDiamondCapacity(Integer diamond_capacity) {
-		this.diamond_capacity = diamond_capacity;
-	}
-	
-	public Integer getDiamondCapacity() {
-		return this.diamond_capacity;
 	}
 	
 	public void setLockPick(Integer lockPick) {
@@ -74,4 +58,13 @@ public class Agent implements Serializable {
 		return this.id.getLocalName().toString().equals(other.id.getLocalName().toString());
 	}
 	
+	public void setTreasureType(Observation type)
+	{
+		this.treasureType = type;
+	}
+	
+	public Observation getTreasureType()
+	{
+		return this.treasureType;
+	}
 }

@@ -35,14 +35,14 @@ public class RandomWalkBehaviour extends OneShotBehaviour{
 	public void action() {
 		//Example to retrieve the current position
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-		System.out.println(this.myAgent.getLocalName()+" -- myCurrentPosition is: "+myPosition);
+		//System.out.println(this.myAgent.getLocalName()+" -- myCurrentPosition is: "+myPosition);
 		
 		this.myAgent.doWait(500);
 		
 		if (myPosition!=null){
 			//List of observable from the agent's current position
 			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-			System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
+			//System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 
 			//Little pause to allow you to follow what is going on
 			/*try {
@@ -62,11 +62,11 @@ public class RandomWalkBehaviour extends OneShotBehaviour{
 				switch (o.getLeft()) {
 				case DIAMOND:case GOLD:
 					
-					System.out.println(this.myAgent.getLocalName()+" - My treasure type is : "+((AbstractDedaleAgent) this.myAgent).getMyTreasureType());
-					System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
-					System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
-					System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+((AbstractDedaleAgent) this.myAgent).pick());
-					System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
+					//System.out.println(this.myAgent.getLocalName()+" - My treasure type is : "+((AbstractDedaleAgent) this.myAgent).getMyTreasureType());
+					//System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
+					//System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
+					//System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+((AbstractDedaleAgent) this.myAgent).pick());
+					//System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
 					b=true;
 					break;
 				default:
@@ -77,7 +77,7 @@ public class RandomWalkBehaviour extends OneShotBehaviour{
 			//If the agent picked (part of) the treasure
 			if (false){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs2=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-				System.out.println(this.myAgent.getLocalName()+" - State of the observations after trying to pick something "+lobs2);
+				//System.out.println(this.myAgent.getLocalName()+" - State of the observations after trying to pick something "+lobs2);
 			}
 
 			//Random move from the current position

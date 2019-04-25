@@ -19,7 +19,10 @@ public class PickUpObjectiveBehaviour extends OneShotBehaviour {
 	
 	@Override
 	public void action() {
+		System.out.println("Current position : " + this._myAgent.getCurrentPosition());
+		System.out.println("Current backpack : " + this._myAgent.getBackPackFreeSpace());
 		System.out.println(this._myAgent.getLocalName() + " PICKED : " + this._myAgent.pick());
+		
 	}
 	
 

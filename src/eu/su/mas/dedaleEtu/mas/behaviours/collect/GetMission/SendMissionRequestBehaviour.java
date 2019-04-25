@@ -41,6 +41,7 @@ public class SendMissionRequestBehaviour extends OneShotBehaviour {
 		
 		payload.setAID(this._myAgent.getAID());
 		payload.setBackPackCapacity(this._myAgent.getBackPackFreeSpace());
+		payload.setTreasureType(this._myAgent.getMyTreasureType());
 		
 		ACLMessage msg = this.buildMessage(result);
 		

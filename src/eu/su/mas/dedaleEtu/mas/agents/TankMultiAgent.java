@@ -71,12 +71,24 @@ public class TankMultiAgent extends AbstractMultiAgent {
 			return false;
 		}
 		
+		public void removeMission(Mission mission) {
+			this.onGoingMissions.remove(mission.getUUID());
+		}
+		
 		public void addAvailableAgent(Agent newAgent)
 		{
 			if (this.availableAgents.contains(newAgent) || this.isInMission(newAgent))
 				return;
 			
 			this.availableAgents.add(newAgent);
+		}
+		
+		public boolean isAlreadyAvailable(Agent agent) {
+			for (Agent _agent: this.availableAgents) {
+				if (_agent.getAID().toString().equals(agent.getAID().toString()))
+					return true;
+			}
+			return false;
 		}
 		
 		public void addPendingMission(Mission mission)

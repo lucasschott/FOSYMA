@@ -1,19 +1,29 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.collect.NotifyMissionCompletion;
 
-import jade.core.behaviours.Behaviour;
+import eu.su.mas.dedaleEtu.mas.agents.CollectMultiAgent;
+import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
+import jade.core.behaviours.OneShotBehaviour;
 
-public class EndNotifyMissionCompletionBehaviour extends Behaviour {
+public class EndNotifyMissionCompletionBehaviour extends OneShotBehaviour {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 811115560270540374L;
+	private CollectMultiAgent _myAgent;
+	
+	public EndNotifyMissionCompletionBehaviour(CollectMultiAgent myagent) {
+		super(myagent);
+		this._myAgent = myagent;
+	}
 	@Override
 	public void action() {
-		// TODO Auto-generated method stub
-
+		this._myAgent.setCurrentMission(null);
 	}
 
 	@Override
-	public boolean done() {
-		// TODO Auto-generated method stub
-		return false;
+	public int onEnd() {
+		return FSMCodes.Events.SUCESS.ordinal();
 	}
 
 }

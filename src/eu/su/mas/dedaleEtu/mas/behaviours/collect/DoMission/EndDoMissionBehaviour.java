@@ -18,6 +18,7 @@ public class EndDoMissionBehaviour extends OneShotBehaviour {
 	
 	@Override
 	public void action() {
+		System.out.println("END MISSION");
 	}
 
 }

@@ -10,15 +10,17 @@ public class EndGetMissionBehaviour extends OneShotBehaviour {
 	 * 
 	 */
 	private static final long serialVersionUID = 2352609891646885428L;
-
+	private CollectMultiAgent _myAgent;
+	
 	public EndGetMissionBehaviour(CollectMultiAgent myagent) {
 		super(myagent);
+		_myAgent = myagent;
 	}
 	
 	@Override
 	public void action() {
-		// TODO Auto-generated method stub
-
+		System.out.println("ON MISSION : GOING TO : " + this._myAgent.getCurrentMission().getDestination());
+		System.out.println("Currently on : " + this._myAgent.getCurrentPosition());
 	}
 
 	@Override

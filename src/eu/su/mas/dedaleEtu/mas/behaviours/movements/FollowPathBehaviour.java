@@ -23,6 +23,8 @@ public class FollowPathBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() {
 	
+		finished = false;
+		
 		if (this._myAgent.getMoveAllowed() == false)
 			return;
 		

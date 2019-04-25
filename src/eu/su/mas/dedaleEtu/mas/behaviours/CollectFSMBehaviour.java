@@ -39,4 +39,10 @@ public class CollectFSMBehaviour  extends FSMBehaviour
 		this.registerTransition("NOTIFY-MISSION-COMPLETION", "LOOK-FOR-TANK-START",FSMCodes.Events.SUCESS.ordinal());
 	}
 	
+	public int onEnd() {
+		this.reset();
+		this.resetChildren();
+		return FSMCodes.Events.SUCESS.ordinal();
+	}
+	
 }

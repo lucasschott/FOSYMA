@@ -5,6 +5,7 @@ import eu.su.mas.dedaleEtu.mas.behaviours.broadcast.SendBroadcastBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.movements.GoToBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.EndTankBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.ReceiveMissionAssignementACKBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.tank.ReceiveMissionCompletionNotification;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.ReceiveMissionRequestBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.SendMissionAssignementBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.StartTankBehaviour;
@@ -26,6 +27,7 @@ public class TankFSMBehaviour  extends FSMBehaviour {
 		this.registerState(new ReceiveMissionRequestBehaviour(myagent), "RECEIVE-MISSION-REQUEST");
 		this.registerState(new SendMissionAssignementBehaviour(myagent), "SEND-MISSION-ASSIGNEMENT");
 		this.registerState(new ReceiveMissionAssignementACKBehaviour(myagent), "RECEIVE-MISSION-ASSIGNEMENT-ACK");
+		this.registerState(new ReceiveMissionCompletionNotification(myagent), "RECEIVE-MISSION-COMPLETION-NOTIFICATION");
 		this.registerState(new GoToBehaviour(myagent), "GO-TO");
 		this.registerLastState(new EndTankBehaviour(myagent), "END-TANK");
 		
@@ -34,8 +36,10 @@ public class TankFSMBehaviour  extends FSMBehaviour {
 		this.registerTransition("RECEIVE-MISSION-REQUEST", "SEND-MISSION-ASSIGNEMENT", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("RECEIVE-MISSION-REQUEST", "RECEIVE-MISSION-ASSIGNEMENT-ACK", FSMCodes.Events.FAILURE.ordinal());
 		this.registerTransition("SEND-MISSION-ASSIGNEMENT", "RECEIVE-MISSION-ASSIGNEMENT-ACK", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("RECEIVE-MISSION-ASSIGNEMENT-ACK", "GO-TO", FSMCodes.Events.FAILURE.ordinal());
-		this.registerTransition("RECEIVE-MISSION-ASSIGNEMENT-ACK", "GO-TO", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("RECEIVE-MISSION-ASSIGNEMENT-ACK", "RECEIVE-MISSION-COMPLETION-NOTIFICATION", FSMCodes.Events.FAILURE.ordinal());
+		this.registerTransition("RECEIVE-MISSION-ASSIGNEMENT-ACK", "RECEIVE-MISSION-COMPLETION-NOTIFICATION", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("RECEIVE-MISSION-COMPLETION-NOTIFICATION", "GO-TO", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("RECEIVE-MISSION-COMPLETION-NOTIFICATION", "GO-TO", FSMCodes.Events.FAILURE.ordinal());
 		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.FAILURE.ordinal());
 		

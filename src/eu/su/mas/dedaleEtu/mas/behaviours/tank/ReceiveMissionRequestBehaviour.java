@@ -33,15 +33,14 @@ public class ReceiveMissionRequestBehaviour extends OneShotBehaviour {
 		
 		ACLMessage msg;
 		
-		msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern);
-		
-		if (msg != null) 
-		{
+		while ((msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern)) != null) {
 			try {
 				Agent agent = (Agent) msg.getContentObject();
 				
-				if (this._myAgent.isInMission(agent) || this._myAgent.getAvailableAgents().contains(agent))
-					return;
+				if (this._myAgent.isInMission(agent) ||  this._myAgent.isAlreadyAvailable(agent))
+					continue;
+				
+				System.out.println("Adding : " + agent.getAID().toString());
 				
 				this.received = true;
 				

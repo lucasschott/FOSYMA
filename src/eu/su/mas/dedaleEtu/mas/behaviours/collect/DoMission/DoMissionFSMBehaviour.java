@@ -28,7 +28,7 @@ public class DoMissionFSMBehaviour extends FSMBehaviour {
 		this.registerTransition("PICK-UP", "END-MISSION", FSMCodes.Events.SUCESS.ordinal());
 	}
 	
-	public int OnEnd() {
+	public int onEnd() {
 		this.resetChildren();
 		this.reset();
 		return FSMCodes.Events.SUCESS.ordinal();

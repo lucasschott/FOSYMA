@@ -37,6 +37,9 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	private boolean moveAllowed = true;
 	private String centroid;
 	
+	private String savedDestinationId = null;
+	private ArrayList<String> savedPath = null;
+	
 	private AgentType type;
 
 	public AbstractMultiAgent(AgentType type) {
@@ -271,5 +274,29 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	public AbstractMultiAgent.AgentType getType()
 	{
 		return this.type;
+	}
+
+	public Integer getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
+
+	public String getSavedDestinationId() {
+		return savedDestinationId;
+	}
+
+	public void setSavedDestinationId(String savedDestinationId) {
+		this.savedDestinationId = savedDestinationId;
+	}
+
+	public ArrayList<String> getSavedPath() {
+		return savedPath;
+	}
+
+	public void setSavedPath(ArrayList<String> savedPath) {
+		this.savedPath = savedPath;
 	}
 }

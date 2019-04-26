@@ -22,9 +22,7 @@ public class PickUpObjectiveBehaviour extends OneShotBehaviour {
 		System.out.println("Current position : " + this._myAgent.getCurrentPosition());
 		System.out.println("Current backpack : " + this._myAgent.getBackPackFreeSpace());
 		System.out.println(this._myAgent.getLocalName() + " PICKED : " + this._myAgent.pick());
-		
 	}
-	
 
 	public int onEnd() {
 		return FSMCodes.Events.SUCESS.ordinal();

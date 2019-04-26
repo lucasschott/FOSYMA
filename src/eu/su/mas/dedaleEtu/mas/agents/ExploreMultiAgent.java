@@ -20,6 +20,7 @@ import eu.su.mas.dedaleEtu.mas.agents.MapHandler;
 public class ExploreMultiAgent extends AbstractMultiAgent {
 
 	private static final long serialVersionUID = -6431752665590433727L;
+	private String previousNode = null;
 	
 	/**
 	 * This method is automatically called when "agent".start() is executed.
@@ -52,5 +53,15 @@ public class ExploreMultiAgent extends AbstractMultiAgent {
 		addBehaviour(new startMyBehaviours(this,lb));
 		
 		System.out.println("the  agent " + this.getLocalName() + " is started");
+	}
+	
+	public void setPreviousNode(String node)
+	{
+		this.previousNode = node;
+	}
+	
+	public String getPreviousNode()
+	{
+		return this.previousNode;
 	}
 }

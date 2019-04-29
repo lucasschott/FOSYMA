@@ -14,6 +14,7 @@ public class Mission implements Serializable {
 	
 	private Agent leader;
 	private boolean pending;
+	private boolean emptyObjective = false;
 	private String uuid;
 	private Integer TTL = 30;
 	private String destination;
@@ -84,5 +85,13 @@ public class Mission implements Serializable {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	public boolean isEmptyObjective() {
+		return emptyObjective;
+	}
+
+	public void setEmptyObjective(boolean emptyObjective) {
+		this.emptyObjective = emptyObjective;
 	}
 }

@@ -29,17 +29,18 @@ public class SendMissionAssignementBehaviour extends OneShotBehaviour {
 	{
 		if (this._myAgent.getAvailableCount() > 0)
 		{
-			if (this._myAgent.getTreasureMap().size() == 0)
-				return;
-			
 			Agent agent = this._myAgent.popAvailable();
 			String max = this._myAgent.getMaxTreasureQuantity(agent.getTreasureType());
+			
+			if (this._myAgent.getTreasureMap().size() == 0 || max == null)
+				return;
+			
 			Mission newMission = new Mission(agent, max,  this._myAgent.getTreasureMap().get(max).getLeft(),  this._myAgent.getTreasureMap().get(max).getRight());
 			
 			this._myAgent.removeFromTreasureMap(max);
 			this._myAgent.addPendingMission(newMission);
 			this.sendAssignMission(agent.getAID(), newMission);
-			}
+		}
 	}
 
 	private void sendAssignMission(AID to, Mission newMission) 

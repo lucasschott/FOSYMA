@@ -7,8 +7,10 @@ import eu.su.mas.dedaleEtu.mas.behaviours.tank.EndTankBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.ReceiveMissionAssignementACKBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.ReceiveMissionCompletionNotification;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.ReceiveMissionRequestBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.tank.ReceiveUpdateTankerKnowledgeBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.SendMissionAssignementBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.StartTankBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.tank.UpdatePendingMissionsTTLBehaviour;
 import jade.core.behaviours.FSMBehaviour;
 
 public class TankFSMBehaviour  extends FSMBehaviour {
@@ -28,6 +30,8 @@ public class TankFSMBehaviour  extends FSMBehaviour {
 		this.registerState(new SendMissionAssignementBehaviour(myagent), "SEND-MISSION-ASSIGNEMENT");
 		this.registerState(new ReceiveMissionAssignementACKBehaviour(myagent), "RECEIVE-MISSION-ASSIGNEMENT-ACK");
 		this.registerState(new ReceiveMissionCompletionNotification(myagent), "RECEIVE-MISSION-COMPLETION-NOTIFICATION");
+		this.registerState(new UpdatePendingMissionsTTLBehaviour(myagent), "UPDATE-PENDING-MISSIONS-TTL");
+		this.registerState(new ReceiveUpdateTankerKnowledgeBehaviour(myagent, "UPDATE-TANKER-KNOWLEDGE"), "RECEIVE-UPDATE-TANKER-KNOWLEDGE");
 		this.registerState(new GoToBehaviour(myagent), "GO-TO");
 		this.registerLastState(new EndTankBehaviour(myagent), "END-TANK");
 		
@@ -38,8 +42,9 @@ public class TankFSMBehaviour  extends FSMBehaviour {
 		this.registerTransition("SEND-MISSION-ASSIGNEMENT", "RECEIVE-MISSION-ASSIGNEMENT-ACK", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("RECEIVE-MISSION-ASSIGNEMENT-ACK", "RECEIVE-MISSION-COMPLETION-NOTIFICATION", FSMCodes.Events.FAILURE.ordinal());
 		this.registerTransition("RECEIVE-MISSION-ASSIGNEMENT-ACK", "RECEIVE-MISSION-COMPLETION-NOTIFICATION", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("RECEIVE-MISSION-COMPLETION-NOTIFICATION", "GO-TO", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("RECEIVE-MISSION-COMPLETION-NOTIFICATION", "GO-TO", FSMCodes.Events.FAILURE.ordinal());
+		this.registerTransition("RECEIVE-MISSION-COMPLETION-NOTIFICATION", "RECEIVE-UPDATE-TANKER-KNOWLEDGE", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("RECEIVE-MISSION-COMPLETION-NOTIFICATION", "RECEIVE-UPDATE-TANKER-KNOWLEDGE", FSMCodes.Events.FAILURE.ordinal());
+		this.registerTransition("RECEIVE-UPDATE-TANKER-KNOWLEDGE", "GO-TO", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.FAILURE.ordinal());
 		

@@ -56,14 +56,14 @@ public final class ConfigurationFile {
 	/**
 	 * Not null when the environment is loaded; should be null if the environment is generated or already online
 	 */
-	public static String INSTANCE_TOPOLOGY="resources/map2018-topology";
-	//public static String INSTANCE_TOPOLOGY= null; //"resources/mapExamples/mapInterlocking1-topology";
+	//public static String INSTANCE_TOPOLOGY="resources/map2018-topology";
+	public static String INSTANCE_TOPOLOGY= null; //"resources/mapExamples/mapInterlocking1-topology";
 	
 	/**
 	 * Not null when the environment is loaded; should be null if the environment is generated or already online
 	 */
-	public static String INSTANCE_CONFIGURATION_ELEMENTS= "resources/map2018-elements";
-	//public static String INSTANCE_CONFIGURATION_ELEMENTS= null;
+	//public static String INSTANCE_CONFIGURATION_ELEMENTS= "resources/map2018-elements";
+	public static String INSTANCE_CONFIGURATION_ELEMENTS= null;
 	
 	/**
 	 * Must'nt be null as it describes the agents capabilities on the map

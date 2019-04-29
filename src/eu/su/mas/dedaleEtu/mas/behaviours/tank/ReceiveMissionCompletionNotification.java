@@ -49,6 +49,12 @@ public class ReceiveMissionCompletionNotification extends OneShotBehaviour {
 			{
 				Mission mission = (Mission) msg.getContentObject();
 				this._myAgent.removeMission(mission);
+				
+				if (mission.isEmptyObjective()) {
+					System.out.println("MISSION OVER : EMPTY OBJECTIVE");
+					this._myAgent.removeFromTreasureMap(mission.getDestination());
+				}
+				
 				sendAck(msg.getSender());
 				System.out.println("SENT MISSION NOTIFICATION ACK");
 				this.received = true;

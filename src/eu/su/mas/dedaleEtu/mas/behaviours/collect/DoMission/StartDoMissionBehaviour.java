@@ -17,6 +17,7 @@ public class StartDoMissionBehaviour extends OneShotBehaviour {
 	public StartDoMissionBehaviour(CollectMultiAgent myagent) {
 		super(myagent);
 		this._myAgent = myagent;
+		this._myAgent.clearTreasureMap();
 	}
 	
 	@Override

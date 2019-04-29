@@ -23,9 +23,6 @@ public class EndTankBehaviour extends OneShotBehaviour
 	public void action() 
 	{
 		this._myAgent.deregisterService("TANK");
-		System.out.println("AVAILABLE : " + this._myAgent.getAvailableAgents());
-		System.out.println("PENDING : " + this._myAgent.getPendingMissions());
-		System.out.println("ONGOING : " + this._myAgent.getOnGoingMissions());
 	}
 
 	public int onEnd()

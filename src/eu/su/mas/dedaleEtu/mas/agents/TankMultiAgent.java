@@ -71,7 +71,8 @@ public class TankMultiAgent extends AbstractMultiAgent {
 			return false;
 		}
 		
-		public void removeMission(Mission mission) {
+		public void removeMission(Mission mission) 
+		{
 			this.onGoingMissions.remove(mission.getUUID());
 		}
 		

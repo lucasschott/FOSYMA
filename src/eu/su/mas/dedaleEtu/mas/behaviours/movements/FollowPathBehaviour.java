@@ -1,11 +1,8 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.movements;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
-import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.OneShotBehaviour;
 
@@ -33,6 +30,7 @@ public class FollowPathBehaviour extends OneShotBehaviour {
 		boolean moved;
 		
 		this._myAgent.doWait(500);
+		
 		if (path.size() > 0) 
 		{
 			moved = this._myAgent.moveTo(path.get(0));
@@ -46,6 +44,8 @@ public class FollowPathBehaviour extends OneShotBehaviour {
 		if (myPosition.equals(_myAgent.getDestinationId())) {
 			this.finished = true;
 		}
+		
+		this._myAgent.updateTreasureMap();
 	}
 	
 	public int onEnd() {

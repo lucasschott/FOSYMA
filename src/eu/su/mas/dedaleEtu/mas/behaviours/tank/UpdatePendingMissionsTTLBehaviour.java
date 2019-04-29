@@ -1,6 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.tank;
 
 import eu.su.mas.dedaleEtu.mas.agents.TankMultiAgent;
+import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.OneShotBehaviour;
 
 public class UpdatePendingMissionsTTLBehaviour extends OneShotBehaviour {
@@ -21,5 +22,9 @@ public class UpdatePendingMissionsTTLBehaviour extends OneShotBehaviour {
 		this._myAgent.updatePendingMissionsTTL();
 	}
 	
+	public int onEnd()
+	{
+		return FSMCodes.Events.SUCESS.ordinal();
+	}
 
 }

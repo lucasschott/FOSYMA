@@ -40,6 +40,8 @@ public class GoToBehaviour extends OneShotBehaviour {
 			}
 						
 		}
+		
+		this._myagent.updateTreasureMap();
 	}
 	
 	public int onEnd() {

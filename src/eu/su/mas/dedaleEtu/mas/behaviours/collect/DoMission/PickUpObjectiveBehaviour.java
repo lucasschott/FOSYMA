@@ -21,7 +21,17 @@ public class PickUpObjectiveBehaviour extends OneShotBehaviour {
 	public void action() {
 		System.out.println("Current position : " + this._myAgent.getCurrentPosition());
 		System.out.println("Current backpack : " + this._myAgent.getBackPackFreeSpace());
+		
 		System.out.println(this._myAgent.getLocalName() + " PICKED : " + this._myAgent.pick());
+		System.out.println("EMPTY : " + this._myAgent.isCurrentPositionEmpty());
+		
+		this._myAgent.updateTreasureMap();
+		this._myAgent.getCurrentMission().setEmptyObjective(this._myAgent.isCurrentPositionEmpty());
+		
+		if (this._myAgent.getCurrentMission().isEmptyObjective())
+			this._myAgent.removeFromTreasureMap(this._myAgent.getCurrentMission().getDestination());
+		
+		System.out.println("Current treasure map : " + this._myAgent.getTreasureMap());
 	}
 
 	public int onEnd() {

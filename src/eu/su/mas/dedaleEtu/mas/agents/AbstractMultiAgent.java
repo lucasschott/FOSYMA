@@ -2,6 +2,8 @@ package eu.su.mas.dedaleEtu.mas.agents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
@@ -298,5 +300,34 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 
 	public void setSavedPath(ArrayList<String> savedPath) {
 		this.savedPath = savedPath;
+	}
+	
+	public boolean isCurrentPositionEmpty()
+	{	
+		return this.observe().get(0).getRight().isEmpty();
+	}
+	
+	public void updateTreasureMap()
+	{
+		//List of observable from the agent's current position
+		List<Couple<String,List<Couple<Observation,Integer>>>> lobs = this.observe();
+		Iterator<Couple<String, List<Couple<Observation, Integer>>>> iter=lobs.iterator();
+		
+		// Update treasures map
+		for (int index = 0; index < lobs.size(); index++)
+		{
+			String node = lobs.get(index).getLeft();
+			
+			for (Couple<Observation, Integer> obs: lobs.get(index).getRight()) {
+				switch(obs.getLeft()) {
+				
+				case DIAMOND:
+				case GOLD:
+					this.updateTreasuresMap(node, obs.getLeft(), obs.getRight());
+				default:
+					break;
+				}
+			}
+		}
 	}
 }

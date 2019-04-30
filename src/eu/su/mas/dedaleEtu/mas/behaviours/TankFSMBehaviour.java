@@ -47,6 +47,7 @@ public class TankFSMBehaviour  extends FSMBehaviour {
 		this.registerTransition("RECEIVE-UPDATE-TANKER-KNOWLEDGE", "GO-TO", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.FAILURE.ordinal());
+		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.END.ordinal());
 		
 	}
 }

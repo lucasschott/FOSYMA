@@ -22,6 +22,8 @@ public class GoToBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() {
 		
+		this.moved = false;
+		
 		if (this._myagent.getMoveAllowed() == false)
 			return;
 		
@@ -35,7 +37,7 @@ public class GoToBehaviour extends OneShotBehaviour {
 		{	
 			List<String> shortestPath = _myagent.map.getMap().getShortestPath(myPosition, _myagent.getDestinationId());
 					
-			if (shortestPath != null) {
+			if (shortestPath != null && shortestPath.size() > 0) {
 				moved = _myagent.moveTo(shortestPath.get(0));
 			}
 						
@@ -44,9 +46,14 @@ public class GoToBehaviour extends OneShotBehaviour {
 		this._myagent.updateTreasureMap();
 	}
 	
-	public int onEnd() {
+	public int onEnd() 
+	{
+		if (this._myagent.getCurrentPosition().equals(this._myagent.getDestinationId()))
+			return FSMCodes.Events.END.ordinal();
+		
 		if (this.moved)
 			return FSMCodes.Events.SUCESS.ordinal();
+		
 		return FSMCodes.Events.FAILURE.ordinal();
 	}
 }

@@ -26,6 +26,7 @@ public class EndMergeObservationsBehaviour extends OneShotBehaviour{
 			System.out.println(this.myAgent.getLocalName() + " Obs : " + ((AbstractMultiAgent)this.myAgent).getTreasureMap());
 			System.out.println("RENDEZ-VOUS-TREE : " + this._myAgent.treeExist("RENDEZ-VOUS-TREE"));
 			this.dispatchBehaviours();
+			this._myAgent.setMoveAllowed(true);
 		}
 		
 		public int onEnd() {

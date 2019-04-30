@@ -20,6 +20,7 @@ public class EndInterlockingBehaviour extends OneShotBehaviour {
 		this._myAgent.setPath(this._myAgent.getSavedPath());
 	}
 
+	@Override
 	public int onEnd()
 	{
 		return FSMCodes.Events.SUCESS.ordinal();

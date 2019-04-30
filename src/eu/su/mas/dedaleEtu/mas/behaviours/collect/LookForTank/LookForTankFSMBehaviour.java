@@ -26,8 +26,9 @@ public class LookForTankFSMBehaviour extends FSMBehaviour {
 	this.registerTransition("START-LOOK-FOR-TANK", "RECEIVE-TANK-BROADCAST", FSMCodes.Events.SUCESS.ordinal());
 	this.registerTransition("RECEIVE-TANK-BROADCAST", "GO-TO", FSMCodes.Events.FAILURE.ordinal());
 	this.registerTransition("RECEIVE-TANK-BROADCAST", "END-LOOK-FOR-TANK", FSMCodes.Events.SUCESS.ordinal());
-	this.registerTransition("GO-TO","RECEIVE-TANK-BROADCAST", FSMCodes.Events.SUCESS.ordinal());
+	this.registerTransition("GO-TO", "RECEIVE-TANK-BROADCAST", FSMCodes.Events.SUCESS.ordinal());
 	this.registerTransition("GO-TO", "RECEIVE-TANK-BROADCAST", FSMCodes.Events.FAILURE.ordinal());
+	this.registerTransition("GO-TO", "RECEIVE-TANK-BROADCAST", FSMCodes.Events.END.ordinal());
 	
 	//this.registerTransition("GO-TO", "HANDLE-CONFLICT", FSMCodes.Events.FAILURE.ordinal());
 

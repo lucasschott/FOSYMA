@@ -4,11 +4,8 @@ import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.OneShotBehaviour;
 
-public class StartInterlockingBehaviour extends OneShotBehaviour {
-
-	/**
-	 * 
-	 */
+public class StartInterlockingBehaviour extends OneShotBehaviour 
+{
 	private static final long serialVersionUID = 8641525653996525290L;
 	private AbstractMultiAgent _myAgent;
 
@@ -25,7 +22,8 @@ public class StartInterlockingBehaviour extends OneShotBehaviour {
 		this._myAgent.setSavedPath(this._myAgent.getPath());
 	}
 	
-	public int onEnd() {
+	public int onEnd() 
+	{
 		return FSMCodes.Events.SUCESS.ordinal();
 	}
 

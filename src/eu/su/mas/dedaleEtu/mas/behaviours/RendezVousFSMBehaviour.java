@@ -40,7 +40,7 @@ public class RendezVousFSMBehaviour extends FSMBehaviour
 		dfd.addServices(sd);
 		
 		this.registerFirstState(new ComputeRendezVousPoint(myagent), "COMPUTE-RENDEZ-VOUS-POINT");
-		this.registerState(new FollowPathBehaviour(myagent), "GO-TO-RENDEZ-VOUS");
+		this.registerState(new GoToBehaviour(myagent), "GO-TO-RENDEZ-VOUS");
 		this.registerState(new SendBroadcastBehaviour(myagent, "RENDEZ-VOUS", "RENDEZ-VOUS"),"SEND-BROADCAST-RENDEZ-VOUS");
 		this.registerState(new InitiateTreeBehaviour(myagent, "RENDEZ-VOUS-TREE"), "INITIATE-TREE-RENDEZ-VOUS");
 		this.registerState(new ReceiveBroadcastBehaviour(myagent, "RENDEZ-VOUS", "RENDEZ-VOUS"),"RECEIVE-BROADCAST-RENDEZ-VOUS");
@@ -54,8 +54,9 @@ public class RendezVousFSMBehaviour extends FSMBehaviour
 		
 		// COMPUTE RENDEZ VOUS POINT -> GO TO RENDEZ VOUS POINT
 		this.registerTransition("COMPUTE-RENDEZ-VOUS-POINT", "GO-TO-RENDEZ-VOUS", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("GO-TO-RENDEZ-VOUS", "INITIATE-TREE-RENDEZ-VOUS", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("GO-TO-RENDEZ-VOUS", "INITIATE-TREE-RENDEZ-VOUS", FSMCodes.Events.END.ordinal());
 		this.registerTransition("GO-TO-RENDEZ-VOUS", "SEND-BROADCAST-RENDEZ-VOUS", FSMCodes.Events.FAILURE.ordinal());
+		this.registerTransition("GO-TO-RENDEZ-VOUS", "SEND-BROADCAST-RENDEZ-VOUS", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("INITIATE-TREE-RENDEZ-VOUS", "SEND-BROADCAST-RENDEZ-VOUS", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("SEND-BROADCAST-RENDEZ-VOUS","RECEIVE-BROADCAST-RENDEZ-VOUS", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("RECEIVE-BROADCAST-RENDEZ-VOUS","SEND-TREE-REQUEST", FSMCodes.Events.SUCESS.ordinal());

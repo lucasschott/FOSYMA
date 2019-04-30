@@ -8,6 +8,7 @@ import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
+import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.OneShotBehaviour;
 
 public class RandomWalkBehaviour extends OneShotBehaviour 
@@ -17,6 +18,7 @@ public class RandomWalkBehaviour extends OneShotBehaviour
 	 */
 	private static final long serialVersionUID = -357919544019754344L;
 	private ExploreMultiAgent _myAgent;
+	private boolean moved = true;
 	
 	public RandomWalkBehaviour(ExploreMultiAgent myagent) {
 		super(myagent);
@@ -67,7 +69,14 @@ public class RandomWalkBehaviour extends OneShotBehaviour
 				moveId=1+r.nextInt(lobs.size()-1);
 		}
 		
-		this._myAgent.moveTo(lobs.get(moveId).getLeft());
+		this.moved = this._myAgent.moveTo(lobs.get(moveId).getLeft());
 		this._myAgent.setPreviousNode(currentPosition);
+	}
+	
+	public int onEnd()
+	{
+		if (this.moved == true)
+			return FSMCodes.Events.SUCESS.ordinal();
+		return FSMCodes.Events.FAILURE.ordinal();
 	}
 }

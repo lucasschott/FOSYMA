@@ -1,11 +1,15 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.interlocking;
 
+import java.util.List;
+
+import dataStructures.tuple.Couple;
+import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
 import jade.core.behaviours.OneShotBehaviour;
 
-public class CheckInterlockingTypeBehaviour extends OneShotBehaviour {
-
+public class CheckInterlockingTypeBehaviour extends OneShotBehaviour 
+{
 	/**
 	 * 
 	 */
@@ -20,22 +24,31 @@ public class CheckInterlockingTypeBehaviour extends OneShotBehaviour {
 	@Override
 	public void action()
 	{
-		String node = this.getRequiredNode();
+		
 	}
 	
 	public String getRequiredNode()
 	{
-		if (this._myAgent.getPath() != null) {
-			return this._myAgent.getPath().get(0);
+		return null;
+	}
+	
+	public List<Couple<Observation, Integer>> getNodeObservation(String node) 
+	{
+		List<Couple<String, List<Couple<Observation, Integer>>>> lobs = this._myAgent.observe();
+		
+		for (Couple<String, List<Couple<Observation, Integer>>> obs: lobs)
+		{
+			if (obs.getLeft().equals(node))
+				return obs.getRight();
 		}
 		
-		return this._myAgent.getDestinationId();
+		return null;
 	}
 	
-	public void getNodeObservation(String node) 
-	{
+	public boolean isWumpusResponsible(List<Couple<Observation, Integer>> obs)
+	{		
+		return false;
 	}
-	
 
 	public int onEnd() 
 	{

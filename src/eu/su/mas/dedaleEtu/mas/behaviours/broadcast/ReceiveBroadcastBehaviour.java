@@ -25,25 +25,27 @@ public class ReceiveBroadcastBehaviour extends OneShotBehaviour {
 	}
 
 	@Override
-	public void action() {
+	public void action() 
+	{
 		this.received = false;
 		MessageTemplate pattern = MessageTemplate.and(MessageTemplate.MatchProtocol(this.serviceName), MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 		pattern = MessageTemplate.and(pattern, MessageTemplate.not(MessageTemplate.MatchSender(this.myAgent.getAID())));
 		
 		ACLMessage msg;
 		
-		msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern);
-		
-		if (msg != null) {
-			this.received = true;
-			this.handleMessage(msg);
-			System.out.println("Received broadcast " + this.match);
-			
+		while ((msg = ((AbstractDedaleAgent)this.myAgent).receive(pattern)) != null)
+		{
+			if (msg != null) {
+				this.received = true;
+				this.handleMessage(msg);
+				System.out.println("Received broadcast " + this.match);
+				
+			}
 		}
 	}
 	
-	public void handleMessage(ACLMessage msg) {
-		
+	public void handleMessage(ACLMessage msg) 
+	{
 	}
 	
 	public int onEnd() {

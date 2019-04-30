@@ -15,6 +15,15 @@ public class InterlockingFSMBehaviour extends FSMBehaviour {
 	public InterlockingFSMBehaviour(AbstractMultiAgent myagent) {
 		super(myagent);
 		this._myAgent = myagent;
+		
+		this.registerFirstState(new StartInterlockingBehaviour(myagent), "START-INTERLOCKING");
+		this.registerState(new CheckInterlockingTypeBehaviour(myagent), "CHECK-INTERLOCKING-TYPE");
+		this.registerState(new RandomInterlockingStrategyBehaviour(myagent), "RANDOM-INTERLOCKING");
+		this.registerLastState(new EndInterlockingBehaviour(myagent), "END-INTERLOCKING");
+		
+		this.registerTransition("START-INTERLOCKING", "CHECK-INTERLOCKING-TYPE", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("CHECK-INTERLOCKING-TYPE", "RANDOM-INTERLOCKING", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("RANDOM-INTERLOCKING", "END-INTERLOCKING", FSMCodes.Events.SUCESS.ordinal());
 	}
 	
 	public int onEnd() {

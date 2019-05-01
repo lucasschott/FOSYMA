@@ -38,6 +38,7 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	private Integer priority = 0;
 	private boolean moveAllowed = true;
 	private String centroid;
+	private Integer tickCount = 0;
 	
 	private String savedDestinationId = null;
 	private ArrayList<String> savedPath = null;
@@ -329,5 +330,18 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 				}
 			}
 		}
+	}
+
+	public Integer getTickCount() {
+		return tickCount;
+	}
+
+	public void setTickCount(Integer tickCount) {
+		this.tickCount = tickCount;
+	}
+	
+	public void incrementTickCount()
+	{
+		this.tickCount = this.tickCount + 1;
 	}
 }

@@ -32,6 +32,7 @@ public class CollectFSMBehaviour  extends FSMBehaviour
 		this.registerTransition("START-COLLECT", "LOOK-FOR-TANK-START", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("LOOK-FOR-TANK-START", "GET-MISSION", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("GET-MISSION", "DO-MISSION", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("GET-MISSION", "LOOK-FOR-TANK-START", FSMCodes.Events.FAILURE.ordinal());
 		this.registerTransition("DO-MISSION", "LOOK-FOR-TANK-END", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("LOOK-FOR-TANK-END", "TRANSFER-SILO", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("TRANSFER-SILO", "LOOK-FOR-TANK-END", FSMCodes.Events.FAILURE.ordinal());

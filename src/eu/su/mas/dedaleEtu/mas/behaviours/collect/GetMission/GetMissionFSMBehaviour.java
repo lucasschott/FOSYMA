@@ -15,17 +15,21 @@ public class GetMissionFSMBehaviour extends FSMBehaviour {
 		
 		this.registerFirstState(new SendMissionRequestBehaviour(myagent), "REQUEST-MISSION");
 		this.registerState(new ReceiveMissionAssignementBehaviour(myagent), "RECEIVE-MISSION");
+		this.registerState(new CheckTimeOutBehaviour(myagent, 20), "CHECK-TIMEOUT");
 		this.registerLastState(new EndGetMissionBehaviour(myagent), "END-GET-MISSION");
 		
+		this.registerTransition("CHECK-TIMEOUT", "REQUEST-MISSION", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("CHECK-TIMEOUT", "END-GET-MISSION", FSMCodes.Events.FAILURE.ordinal());
 		this.registerTransition("REQUEST-MISSION", "RECEIVE-MISSION", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("RECEIVE-MISSION", "END-GET-MISSION", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("RECEIVE-MISSION", "REQUEST-MISSION", FSMCodes.Events.FAILURE.ordinal());
+		this.registerTransition("RECEIVE-MISSION", "CHECK-TIMEOUT", FSMCodes.Events.FAILURE.ordinal());
 	}
 	
 	public int onEnd() 
 	{
 		this.resetChildren();
 		this.reset();
+		this._myAgent.setTickCount(0);
 		System.out.println("END GET MISSION");
 		if (this._myAgent.getCurrentMission() != null) {
 			System.out.println("GOT MY MISSION");

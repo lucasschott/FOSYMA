@@ -19,8 +19,11 @@ public class EndGetMissionBehaviour extends OneShotBehaviour {
 	
 	@Override
 	public void action() {
-		System.out.println("ON MISSION : GOING TO : " + this._myAgent.getCurrentMission().getDestination());
-		System.out.println("Currently on : " + this._myAgent.getCurrentPosition());
+		if (this._myAgent.getCurrentMission() != null)
+		{
+			System.out.println("ON MISSION : GOING TO : " + this._myAgent.getCurrentMission().getDestination());
+			System.out.println("Currently on : " + this._myAgent.getCurrentPosition());	
+		}
 	}
 
 	@Override

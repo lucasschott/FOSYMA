@@ -63,7 +63,7 @@ public class SendMissionRequestBehaviour extends OneShotBehaviour {
 		{
 			if (!this.myAgent.getAID().toString().equals(dsc.getName().toString()))
 				msg.addReceiver(dsc.getName());
-			System.out.println("SENDING REQUEST TO : " + dsc.getName());
+			System.out.println(this._myAgent.getLocalName() + "SENDING REQUEST TO : " + dsc.getName());
 		}
 		
 		return msg;

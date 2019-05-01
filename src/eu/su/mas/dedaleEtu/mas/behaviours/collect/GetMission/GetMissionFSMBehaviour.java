@@ -22,7 +22,8 @@ public class GetMissionFSMBehaviour extends FSMBehaviour {
 		this.registerTransition("RECEIVE-MISSION", "REQUEST-MISSION", FSMCodes.Events.FAILURE.ordinal());
 	}
 	
-	public int onEnd() {
+	public int onEnd() 
+	{
 		this.resetChildren();
 		this.reset();
 		System.out.println("END GET MISSION");

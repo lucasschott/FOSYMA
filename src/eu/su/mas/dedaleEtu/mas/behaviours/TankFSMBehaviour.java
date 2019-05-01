@@ -2,6 +2,7 @@ package eu.su.mas.dedaleEtu.mas.behaviours;
 
 import eu.su.mas.dedaleEtu.mas.agents.TankMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.broadcast.SendBroadcastBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.interlocking.InterlockingFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.movements.GoToBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.EndTankBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.tank.ReceiveMissionAssignementACKBehaviour;
@@ -32,6 +33,7 @@ public class TankFSMBehaviour  extends FSMBehaviour {
 		this.registerState(new ReceiveMissionCompletionNotification(myagent), "RECEIVE-MISSION-COMPLETION-NOTIFICATION");
 		this.registerState(new UpdatePendingMissionsTTLBehaviour(myagent), "UPDATE-PENDING-MISSIONS-TTL");
 		this.registerState(new ReceiveUpdateTankerKnowledgeBehaviour(myagent, "UPDATE-TANKER-KNOWLEDGE"), "RECEIVE-UPDATE-TANKER-KNOWLEDGE");
+		this.registerState(new InterlockingFSMBehaviour(myagent), "INTERLOCKING");
 		this.registerState(new GoToBehaviour(myagent), "GO-TO");
 		this.registerLastState(new EndTankBehaviour(myagent), "END-TANK");
 		
@@ -46,8 +48,9 @@ public class TankFSMBehaviour  extends FSMBehaviour {
 		this.registerTransition("RECEIVE-MISSION-COMPLETION-NOTIFICATION", "RECEIVE-UPDATE-TANKER-KNOWLEDGE", FSMCodes.Events.FAILURE.ordinal());
 		this.registerTransition("RECEIVE-UPDATE-TANKER-KNOWLEDGE", "GO-TO", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.FAILURE.ordinal());
+		this.registerTransition("GO-TO", "INTERLOCKING", FSMCodes.Events.FAILURE.ordinal());
 		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.END.ordinal());
+		this.registerTransition("INTERLOCKING", "BROADCAST-TANK", FSMCodes.Events.SUCESS.ordinal());
 		
 	}
 }

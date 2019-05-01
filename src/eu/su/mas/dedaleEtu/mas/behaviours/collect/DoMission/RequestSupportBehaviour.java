@@ -25,6 +25,7 @@ public class RequestSupportBehaviour extends OneShotBehaviour {
 		DFAgentDescription[] result = this._myAgent.getMatchingAgents("EXPLORE");
 		ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 		
+		message.setProtocol("REQUEST-SUPPORT");
 		message.setSender(this._myAgent.getAID());
 		for (DFAgentDescription dsc: result)
 			message.addReceiver(dsc.getName());
@@ -39,7 +40,8 @@ public class RequestSupportBehaviour extends OneShotBehaviour {
 	}
 
 	@Override
-	public int onEnd() {
+	public int onEnd() 
+	{
 		return FSMCodes.Events.SUCESS.ordinal();
 	}
 

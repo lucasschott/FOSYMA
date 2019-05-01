@@ -2,6 +2,7 @@ package eu.su.mas.dedaleEtu.mas.behaviours;
 
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.broadcast.SendBroadcastBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.explore.AssistFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.explore.EndExploreBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.explore.ReceiveAssistRequestBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.explore.ReceiveKnowledgeRequestBehaviour;
@@ -24,6 +25,7 @@ public class ExploreMultiFSMBehaviour extends FSMBehaviour
 		this.registerState(new SendKnowledgeBehaviour(myagent), "SEND-KNOWLEDGE");
 		this.registerState(new ReceiveAssistRequestBehaviour(myagent), "RECEIVE-ASSIST-REQUEST");
 		this.registerState(new RandomWalkBehaviour(myagent), "RANDOM-WALK");
+		this.registerState(new AssistFSMBehaviour(myagent), "ASSIST");
 		this.registerLastState(new EndExploreBehaviour(myagent), "END-EXPLORE");
 		
 		this.registerTransition("START-EXPLORE","RESET-KNOWLEDGE", FSMCodes.Events.SUCESS.ordinal());

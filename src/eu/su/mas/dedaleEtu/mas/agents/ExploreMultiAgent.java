@@ -9,6 +9,7 @@ import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploMultiFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.TreeNode;
+import eu.su.mas.dedaleEtu.mas.utils.Mission;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
@@ -21,6 +22,7 @@ public class ExploreMultiAgent extends AbstractMultiAgent {
 
 	private static final long serialVersionUID = -6431752665590433727L;
 	private String previousNode = null;
+	private Mission currentAssist;
 	
 	/**
 	 * This method is automatically called when "agent".start() is executed.
@@ -63,5 +65,13 @@ public class ExploreMultiAgent extends AbstractMultiAgent {
 	public String getPreviousNode()
 	{
 		return this.previousNode;
+	}
+
+	public Mission getCurrentAssist() {
+		return currentAssist;
+	}
+
+	public void setCurrentAssist(Mission currentAssist) {
+		this.currentAssist = currentAssist;
 	}
 }

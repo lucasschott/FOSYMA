@@ -4,7 +4,7 @@ import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.agents.AbstractMultiAgent;
 import eu.su.mas.dedaleEtu.mas.agents.ExploreMultiAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.FSMCodes;
-import eu.su.mas.dedaleEtu.mas.behaviours.RandomWalkBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.RandomWalkBehaviourOLD;
 import eu.su.mas.dedaleEtu.mas.behaviours.RendezVousFSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;

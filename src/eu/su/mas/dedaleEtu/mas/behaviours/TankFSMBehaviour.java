@@ -1,6 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.behaviours;
 
 import eu.su.mas.dedaleEtu.mas.agents.TankMultiAgent;
+import eu.su.mas.dedaleEtu.mas.behaviours.InterlockingClient.ClientInterlockingFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.broadcast.SendBroadcastBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.interlocking.InterlockingFSMBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.movements.GoToBehaviour;
@@ -34,10 +35,13 @@ public class TankFSMBehaviour  extends FSMBehaviour {
 		this.registerState(new UpdatePendingMissionsTTLBehaviour(myagent), "UPDATE-PENDING-MISSIONS-TTL");
 		this.registerState(new ReceiveUpdateTankerKnowledgeBehaviour(myagent, "UPDATE-TANKER-KNOWLEDGE"), "RECEIVE-UPDATE-TANKER-KNOWLEDGE");
 		this.registerState(new InterlockingFSMBehaviour(myagent), "INTERLOCKING");
+		this.registerState(new ClientInterlockingFSMBehaviour(myagent), "CLIENT-INTERLOCKING");
 		this.registerState(new GoToBehaviour(myagent), "GO-TO");
+		this.registerState(new UpdatePendingMissionsTTLBehaviour(myagent), "UPDATE-TTL");
 		this.registerLastState(new EndTankBehaviour(myagent), "END-TANK");
 		
-		this.registerTransition("START-TANK", "BROADCAST-TANK", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("START-TANK", "CLIENT-INTERLOCKING", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("CLIENT-INTERLOCKING", "BROADCAST-TANK", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("BROADCAST-TANK", "RECEIVE-MISSION-REQUEST", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("RECEIVE-MISSION-REQUEST", "SEND-MISSION-ASSIGNEMENT", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("RECEIVE-MISSION-REQUEST", "RECEIVE-MISSION-ASSIGNEMENT-ACK", FSMCodes.Events.FAILURE.ordinal());
@@ -47,10 +51,10 @@ public class TankFSMBehaviour  extends FSMBehaviour {
 		this.registerTransition("RECEIVE-MISSION-COMPLETION-NOTIFICATION", "RECEIVE-UPDATE-TANKER-KNOWLEDGE", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("RECEIVE-MISSION-COMPLETION-NOTIFICATION", "RECEIVE-UPDATE-TANKER-KNOWLEDGE", FSMCodes.Events.FAILURE.ordinal());
 		this.registerTransition("RECEIVE-UPDATE-TANKER-KNOWLEDGE", "GO-TO", FSMCodes.Events.SUCESS.ordinal());
-		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("GO-TO", "UPDATE-TTL", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("GO-TO", "INTERLOCKING", FSMCodes.Events.FAILURE.ordinal());
-		this.registerTransition("GO-TO", "BROADCAST-TANK", FSMCodes.Events.END.ordinal());
-		this.registerTransition("INTERLOCKING", "BROADCAST-TANK", FSMCodes.Events.SUCESS.ordinal());
-		
+		this.registerTransition("GO-TO", "UPDATE-TTL", FSMCodes.Events.END.ordinal());
+		this.registerTransition("UPDATE-TTL", "CLIENT-INTERLOCKING", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("INTERLOCKING", "UPDATE-TTL", FSMCodes.Events.SUCESS.ordinal());
 	}
 }

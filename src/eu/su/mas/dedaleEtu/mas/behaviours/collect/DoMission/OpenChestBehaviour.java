@@ -50,7 +50,7 @@ public class OpenChestBehaviour extends OneShotBehaviour {
 	public int onEnd() {
 		if (this.opened)
 			return FSMCodes.Events.SUCESS.ordinal();
-		return FSMCodes.Events.SUCESS.ordinal();
+		return FSMCodes.Events.FAILURE.ordinal();
 	}
 
 }

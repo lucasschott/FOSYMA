@@ -12,6 +12,7 @@ public class CheckTimeOutBehaviour extends OneShotBehaviour {
 	 */
 	private static final long serialVersionUID = -6489435413854606896L;
 	private Integer threshold;
+	private Integer count = 0;
 	private AbstractMultiAgent _myAgent;
 	
 	public CheckTimeOutBehaviour(AbstractMultiAgent myagent, Integer threshold)
@@ -19,21 +20,28 @@ public class CheckTimeOutBehaviour extends OneShotBehaviour {
 		super(myagent);
 		this.threshold = threshold;
 		this._myAgent = myagent;
-		this._myAgent.setTickCount(0);
 	}
 	
 	@Override
 	public void action() 
 	{
-		this._myAgent.incrementTickCount();
+		this.count++;
 	}
 
 	@Override
 	public int onEnd() 
-	{
-		if (this._myAgent.getTickCount() >= this.threshold)
+	{	
+		if (this.count >= this.threshold) {
 			return FSMCodes.Events.FAILURE.ordinal();
+		}
 		return FSMCodes.Events.SUCESS.ordinal();
 	}
 
+	@Override
+	public void reset()
+	{
+		super.reset();
+		this.count = 0;
+	}
+	
 }

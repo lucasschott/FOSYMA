@@ -111,6 +111,7 @@ public class TankMultiAgent extends AbstractMultiAgent {
 		
 		public TankMultiAgent() {
 			super(AbstractMultiAgent.AgentType.TANK);
+			this.setPriority(500);
 		}
 		
 		public void updatePendingMissionsTTL() {
@@ -119,10 +120,23 @@ public class TankMultiAgent extends AbstractMultiAgent {
 		            Map.Entry<String, Mission> entry  = iterator.next();
 		            
 		            if (entry.getValue().decreaseTTL() <= 0) {
+		            	this.updateTreasuresMap(entry.getValue().getDestination(), entry.getValue().getType(), entry.getValue().getQuantity());
 		            	iterator.remove();
-		            	this.addAvailableAgent(entry.getValue().getLeader());
 		            }
 			  }
+		}
+		
+		public void updateAvailableAgentsTTL()
+		{
+			Iterator<Agent> iterator = this.availableAgents.iterator();
+			while (iterator.hasNext()) {
+				Agent entry = iterator.next();
+				
+				if (entry.decreaseTTL() <= 0)
+				{
+					iterator.remove();
+				}
+			}
 		}
 		
 		protected void setup(){

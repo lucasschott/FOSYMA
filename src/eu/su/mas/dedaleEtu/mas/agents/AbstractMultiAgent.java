@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.echoFlooding.TreeNode;
+import eu.su.mas.dedaleEtu.mas.utils.Conflict;
 import jade.core.AID;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
@@ -39,14 +41,18 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	private boolean moveAllowed = true;
 	private String centroid;
 	private Integer tickCount = 0;
-	
+	private Stack<Integer> tickCounts = new Stack<Integer>();
+	private Stack<Conflict> conflicts = new Stack<Conflict>();
+	private Conflict currentConflict;
 	private String savedDestinationId = null;
 	private ArrayList<String> savedPath = null;
 	
 	private AgentType type;
 
-	public AbstractMultiAgent(AgentType type) {
+	public AbstractMultiAgent(AgentType type) 
+	{
 		this.type = type;
+		this.priority = 100;
 	}
 	
 	public AgentType getAgentType()
@@ -305,7 +311,18 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 	
 	public boolean isCurrentPositionEmpty()
 	{	
-		return this.observe().get(0).getRight().isEmpty();
+		List<Couple<Observation, Integer>> lobs = this.observe().get(0).getRight();
+		System.out.println("Current observations : " + lobs);
+		
+		for (Couple<Observation, Integer> obs: lobs)
+		{
+			if (obs.getLeft() == Observation.GOLD || obs.getLeft() == Observation.DIAMOND)
+			{
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	public void updateTreasureMap()
@@ -332,16 +349,55 @@ public class AbstractMultiAgent extends AbstractDedaleAgent {
 		}
 	}
 
-	public Integer getTickCount() {
-		return tickCount;
-	}
-
-	public void setTickCount(Integer tickCount) {
-		this.tickCount = tickCount;
+	public Integer getTickCount() 
+	{
+		return this.tickCounts.peek();
 	}
 	
 	public void incrementTickCount()
 	{
-		this.tickCount = this.tickCount + 1;
+		int count = this.tickCounts.pop();
+		this.tickCounts.push(count + 1);
+	}
+	
+	public void createTickCount()
+	{
+		this.tickCounts.push(0);
+	}
+
+	public void deleteTickCount()
+	{
+		this.tickCounts.pop();
+	}
+	
+	public Conflict getCurrentConflict() 
+	{
+		return currentConflict;
+	}
+
+	public void setCurrentConflict(Conflict currentConflict) 
+	{
+		this.currentConflict = currentConflict;
+	}
+	
+	public void PushConflict(Conflict newConflict)
+	{
+		this.conflicts.push(newConflict);
+	}
+	
+	public void popConflict()
+	{
+		if (this.conflicts.size() > 0)
+			this.conflicts.pop();
+	}
+	
+	public int getConflictCount()
+	{
+		return this.conflicts.size();
+	}
+	
+	public Conflict peekConflict()
+	{
+		return this.conflicts.peek();
 	}
 }

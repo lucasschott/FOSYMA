@@ -139,7 +139,9 @@ public class ExploreBehaviour extends OneShotBehaviour {
 							Random r = new Random();
 							int moveId=1+r.nextInt(lobs.size()-1);//removing the current position from the list of target, not necessary as to stay is an action but allow quicker random move
 							//The move action (if any) should be the last action of your behaviour
-							((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+							
+							if (lobs.get(moveId).getLeft() != null && this._myAgent.map.getMap().getNeighbours(this._myAgent.getCurrentPosition()).contains(lobs.get(moveId).getLeft()))
+								((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 							
 					}
 

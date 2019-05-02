@@ -26,12 +26,13 @@ public class OpenChestFSMBehaviour extends FSMBehaviour
 		this.registerTransition("START-OPEN-CHEST", "OPEN-CHEST", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("OPEN-CHEST", "DISBAND-SUPPORT", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("OPEN-CHEST", "REQUEST-SUPPORT", FSMCodes.Events.FAILURE.ordinal());
-		this.registerTransition("REQUEST-SUPPOORT", "OPEN-CHEST", FSMCodes.Events.SUCESS.ordinal());
+		this.registerTransition("REQUEST-SUPPORT", "OPEN-CHEST", FSMCodes.Events.SUCESS.ordinal());
 		this.registerTransition("DISBAND-SUPPORT", "END-OPEN-CHEST", FSMCodes.Events.SUCESS.ordinal());
 	}
 	
 	public int onEnd()
 	{
+		System.out.println(this._myAgent.getLocalName() + " ONEPEND CHEST !");
 		return FSMCodes.Events.SUCESS.ordinal();
 	}
 }

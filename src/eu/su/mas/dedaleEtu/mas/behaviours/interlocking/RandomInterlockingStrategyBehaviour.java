@@ -17,6 +17,7 @@ public class RandomInterlockingStrategyBehaviour extends OneShotBehaviour
 	 */
 	private static final long serialVersionUID = 3862582056157912733L;
 	private AbstractMultiAgent _myAgent;
+	private boolean moved = false;
 
 	public RandomInterlockingStrategyBehaviour(AbstractMultiAgent myagent)
 	{
@@ -28,20 +29,28 @@ public class RandomInterlockingStrategyBehaviour extends OneShotBehaviour
 	public void action() 
 	{
 		String node = this._myAgent.getDestinationId();
+		this.moved = false;
 		randomMove(node);
 	}
 	
 	public int onEnd()
 	{
-		return FSMCodes.Events.SUCESS.ordinal();
+		if (this.moved)
+			return FSMCodes.Events.SUCESS.ordinal();
+		return FSMCodes.Events.FAILURE.ordinal();
 	}
 	
 	public void randomMove(String node)
 	{
-		List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();
-		Random r= new Random();
-		int moveId=1+r.nextInt(lobs.size()-1);//removing the current position from the list of target, not necessary as to stay is an action but allow quicker random move
+		if (this._myAgent.getMoveAllowed() == false)
+			return;
 		
-		this._myAgent.moveTo(lobs.get(moveId).getLeft());
+		List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();
+		
+		Random r= new Random();
+		int moveId=1+r.nextInt(lobs.size()-1);
+		this.moved = this._myAgent.moveTo(lobs.get(moveId).getLeft());
+		
+		return;
 	}
 }

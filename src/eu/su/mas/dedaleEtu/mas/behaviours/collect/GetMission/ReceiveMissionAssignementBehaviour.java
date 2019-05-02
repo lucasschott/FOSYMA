@@ -49,7 +49,7 @@ public class ReceiveMissionAssignementBehaviour extends OneShotBehaviour {
 				e.printStackTrace();
 			}
 			
-			System.out.println("RECEIVE MISSION ASSIGNEMENT");
+			System.out.println(this._myAgent.getLocalName() + " RECEIVE MISSION ASSIGNEMENT");
 			DFAgentDescription[] result = this._myAgent.getMatchingAgents("TANK");
 			this.sendAck(result, this._myAgent.getCurrentMission().getUUID());
 			this._myAgent.setDestinationId(this._myAgent.getCurrentMission().getDestination());
@@ -70,7 +70,7 @@ public class ReceiveMissionAssignementBehaviour extends OneShotBehaviour {
 		{
 			if (!this.myAgent.getAID().toString().equals(dsc.getName().toString()))
 				msg.addReceiver(dsc.getName());
-			System.out.println("SENDING MISSION ACK TO : " + dsc.getName());
+			System.out.println(this._myAgent.getLocalName() + " SENDING MISSION ACK TO : " + dsc.getName());
 		}
 		
 		msg.setContent(uuid);

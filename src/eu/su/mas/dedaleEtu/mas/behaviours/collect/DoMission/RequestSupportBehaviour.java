@@ -37,6 +37,7 @@ public class RequestSupportBehaviour extends OneShotBehaviour {
 		}
 		
 		this._myAgent.sendMessage(message);
+		System.out.println(this._myAgent.getLocalName()  + " REQUEST SUPPORT");
 	}
 
 	@Override

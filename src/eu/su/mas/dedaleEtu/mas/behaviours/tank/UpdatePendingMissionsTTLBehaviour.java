@@ -20,6 +20,7 @@ public class UpdatePendingMissionsTTLBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() {
 		this._myAgent.updatePendingMissionsTTL();
+		this._myAgent.updateAvailableAgentsTTL();
 	}
 	
 	public int onEnd()

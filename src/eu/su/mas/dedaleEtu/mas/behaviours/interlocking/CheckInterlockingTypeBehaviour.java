@@ -15,6 +15,7 @@ public class CheckInterlockingTypeBehaviour extends OneShotBehaviour
 	 */
 	private static final long serialVersionUID = 8020596227535247137L;
 	private AbstractMultiAgent _myAgent;
+	private boolean wumpus = false;
 	
 	public CheckInterlockingTypeBehaviour(AbstractMultiAgent myagent) {
 		super(myagent);
@@ -24,11 +25,27 @@ public class CheckInterlockingTypeBehaviour extends OneShotBehaviour
 	@Override
 	public void action()
 	{
+		String node = getRequiredNode();
+		List<Couple<Observation, Integer>> lobs = getNodeObservation(node);
+		
+		wumpus = false;
+		
+		if (node == null)
+			return;
+		
+		for (Couple<Observation, Integer> obs: lobs)
+		{
+			if (obs.getLeft() == Observation.WIND)
+				wumpus = true;
+		}
 		
 	}
 	
 	public String getRequiredNode()
 	{
+		List<String> path = this._myAgent.map.getMap().getShortestPath(this._myAgent.getCurrentPosition(), this._myAgent.getDestinationId());
+		if (path.size() >= 1)
+			return path.get(0);
 		return null;
 	}
 	
@@ -52,6 +69,8 @@ public class CheckInterlockingTypeBehaviour extends OneShotBehaviour
 
 	public int onEnd() 
 	{
-		return FSMCodes.Events.SUCESS.ordinal();
+		if (this.wumpus)
+			return FSMCodes.Events.WUMPUS.ordinal();
+		return FSMCodes.Events.CONFLICT.ordinal();
 	}
 }

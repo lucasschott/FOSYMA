@@ -28,6 +28,7 @@ public class RandomWalkBehaviour extends OneShotBehaviour
 	@Override
 	public void action() 
 	{
+		this._myAgent.doWait(500);
 		updateTreasureMap();
 		randomWalk();
 	}
@@ -73,6 +74,7 @@ public class RandomWalkBehaviour extends OneShotBehaviour
 		this._myAgent.setPreviousNode(currentPosition);
 	}
 	
+	@Override
 	public int onEnd()
 	{
 		if (this.moved == true)

@@ -16,7 +16,7 @@ public class Mission implements Serializable {
 	private boolean pending;
 	private boolean emptyObjective = false;
 	private String uuid;
-	private Integer TTL = 30;
+	private Integer TTL = 5;
 	private String destination;
 	private Observation type;
 	private Integer quantity;

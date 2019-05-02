@@ -14,11 +14,18 @@ public class Agent implements Serializable {
 	
 	AID id;
 	Integer capacity;
+	Integer TTL = 10;
 	Integer lockPick;
 	Integer strength;
 	Observation treasureType;
 	
 	public Agent() {
+	}
+	
+	public Integer decreaseTTL()
+	{
+		this.TTL--;
+		return this.TTL;
 	}
 	
 	public void setAID(AID id) {

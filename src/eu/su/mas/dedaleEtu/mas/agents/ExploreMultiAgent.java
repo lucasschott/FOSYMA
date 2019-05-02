@@ -32,8 +32,10 @@ public class ExploreMultiAgent extends AbstractMultiAgent {
 	 *          
 	 */
 	
-	public ExploreMultiAgent() {
+	public ExploreMultiAgent() 
+	{
 		super(AbstractMultiAgent.AgentType.EXPLORATION);
+		this.setPriority(1000);
 	}
 	
 	protected void setup(){

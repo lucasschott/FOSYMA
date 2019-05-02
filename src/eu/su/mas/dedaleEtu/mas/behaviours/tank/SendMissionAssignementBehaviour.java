@@ -33,7 +33,10 @@ public class SendMissionAssignementBehaviour extends OneShotBehaviour {
 			String max = this._myAgent.getMaxTreasureQuantity(agent.getTreasureType());
 			
 			if (this._myAgent.getTreasureMap().size() == 0 || max == null)
+			{
+				this._myAgent.addAvailableAgent(agent);
 				return;
+			}
 			
 			Mission newMission = new Mission(agent, max,  this._myAgent.getTreasureMap().get(max).getLeft(),  this._myAgent.getTreasureMap().get(max).getRight());
 			

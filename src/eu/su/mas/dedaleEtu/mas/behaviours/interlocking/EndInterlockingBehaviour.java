@@ -18,6 +18,9 @@ public class EndInterlockingBehaviour extends OneShotBehaviour {
 	public void action() {
 		this._myAgent.setDestinationId(this._myAgent.getSavedDestinationId());
 		this._myAgent.setPath(this._myAgent.getSavedPath());
+		
+		if (this._myAgent.getConflictCount() > 0)
+			this._myAgent.popConflict();
 	}
 
 	@Override
